@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <title>web-servicde.ubodigat.com – Open Source Web Framework</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Open-Source Webservice Framework zur Erstellung und Automatisierung moderner Web- & Serverprojekte.">
+    <meta name="robots" content="index, follow">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <canvas id="bg-canvas"></canvas>
+
+    <header class="topbar">
+        <div class="container topbar__inner">
+            <a class="brand" href="index.html">
+                <img src="ubodigatlogo.svg" alt="ubodigat Logo" class="brand__logo">
+                <span class="brand__text">
+                    web-service<span class="brand__dim">.ubodigat.com</span>
+                </span>
+            </a>
+
+            <nav class="nav">
+                <button class="nav__toggle" id="navToggle">
+                    <span></span><span></span><span></span>
+                </button>
+                <ul class="nav__list" id="navList">
+                    <li><a href="#projekt">Projekt</a></li>
+                    <li><a href="#module">Module</a></li>
+                    <li><a href="#moeglichkeiten">Möglichkeiten</a></li>
+                    <li><a href="install.html">Installation</a></li>
+                    <li><button id="themeToggle" class="theme">Theme</button></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main id="top">
+
+        <section class="hero">
+            <div class="container hero__inner">
+                <div>
+                    <div class="pill">
+                        <span class="dot"></span>
+                        <span>Open Source • Modular • Dokumentiert</span>
+                    </div>
+
+                    <h1>
+                        Ein offenes Framework<br>
+                        <span class="grad">für Web- & Serverprojekte</span>
+                    </h1>
+
+                    <p class="lead">
+                        web-servicde ist ein Open-Source-Projekt, das als Vorlage und Referenz
+                        für moderne Web-Setups, Automatisierungen und Serverstrukturen dient.
+                    </p>
+
+                    <div class="hero__cta">
+                        <a href="install.html" class="btn">Installation ansehen</a>
+                        <a href="#module" class="btn btn--ghost">Module</a>
+                    </div>
+                </div>
+
+                <div class="glass card">
+                    <div class="card__title">Projektfakten</div>
+                    <div class="list">
+                        <div class="list__row">
+                            <span class="kbd">Lizenz</span>
+                            <span>Open Source</span>
+                            <span class="badge badge--ok">frei</span>
+                        </div>
+                        <div class="list__row">
+                            <span class="kbd">Stack</span>
+                            <span>HTML / CSS / JS</span>
+                            <span class="badge badge--ok">clean</span>
+                        </div>
+                        <div class="list__row">
+                            <span class="kbd">Ziel</span>
+                            <span>Vorlage & Lernen</span>
+                            <span class="badge badge--ok">klar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="projekt">
+            <div class="container">
+                <div class="section__head">
+                    <h2>Was ist web-servicde?</h2>
+                </div>
+
+                <div class="glass block">
+                    <p>
+                        web-servicde ist kein fertiges Produkt, sondern eine
+                        <strong>offene Projektbasis</strong>.
+                        Ziel ist es, eine saubere, nachvollziehbare und erweiterbare
+                        Grundlage für eigene Web- und Serverprojekte zu bieten.
+                    </p>
+                    <p class="muted">
+                        Alle Bestandteile sind bewusst einfach gehalten und vollständig dokumentiert.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="module">
+            <div class="container">
+                <div class="section__head">
+                    <h2>Projekt-Module</h2>
+                </div>
+
+                <div class="grid grid--3">
+                    <article class="glass feature">
+                        <h3>📦 Projektvorlage</h3>
+                        <p>Strukturierte Basis für neue Webprojekte ohne Ballast.</p>
+                    </article>
+
+                    <article class="glass feature">
+                        <h3>🌐 Frontend</h3>
+                        <p>Moderne UI mit Dark/Light Mode, responsiv & barrierearm.</p>
+                    </article>
+
+                    <article class="glass feature">
+                        <h3>⚙️ Automatisierung</h3>
+                        <p>Vorbereitet für Skripte, CI/CD und Server-Setups.</p>
+                    </article>
+
+                    <article class="glass feature">
+                        <h3>🔐 Sicherheit</h3>
+                        <p>Saubere Trennung von Darstellung, Logik und Konfiguration.</p>
+                    </article>
+
+                    <article class="glass feature">
+                        <h3>🧩 Erweiterbarkeit</h3>
+                        <p>Ideal für Module wie Adminpanels, APIs oder Tools.</p>
+                    </article>
+
+                    <article class="glass feature">
+                        <h3>🧠 Lernprojekt</h3>
+                        <p>Perfekt zum Lernen von Web- & Serverarchitekturen.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="moeglichkeiten">
+            <div class="container">
+                <div class="section__head">
+                    <h2>Was ist möglich?</h2>
+                </div>
+
+                <div class="glass block">
+                    <ul class="check">
+                        <li>Eigene Open-Source-Projekte starten</li>
+                        <li>Webseiten & Tools strukturiert entwickeln</li>
+                        <li>Server-Setups dokumentieren</li>
+                        <li>Installationsanleitungen bereitstellen</li>
+                        <li>Projekt als Lernplattform nutzen</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <footer class="footer">
+            <div class="container footer__inner">
+                <span class="muted">© <span id="year"></span> ubodigat.com • Open Source</span>
+                <a href="#top">nach oben</a>
+            </div>
+        </footer>
+
+        <script src="script.js"></script>
+    </main>
+</body>
+
+</html>
