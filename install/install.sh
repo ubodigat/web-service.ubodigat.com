@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e
 
 # 🛡️ Root-Rechte prüfen
 if [ "$EUID" -ne 0 ]; then
@@ -8,38 +9,69 @@ fi
 
 echo "🔧 Starte automatische Webserver-Installation..."
 
-# 🔄 Paketlisten aktualisieren
-apt update && apt upgrade -y
+# 🔄 Paketlisten aktualisieren (KEIN upgrade!)
+apt update -y
 
-# 📦 Apache, PHP, MariaDB und phpMyAdmin installieren
-apt install -y apache2 php libapache2-mod-php php-mysql mariadb-server unzip curl wget php-cli php-curl php-zip php-mbstring php-xml phpmyadmin
+# 📦 Apache, PHP, MariaDB, phpMyAdmin (non-interactive)
+export DEBIAN_FRONTEND=noninteractive
 
-# 🔐 MariaDB sichern
-mysql_secure_installation
+apt install -y \
+  apache2 \
+  mariadb-server \
+  php \
+  libapache2-mod-php \
+  php-mysql \
+  php-cli \
+  php-curl \
+  php-zip \
+  php-mbstring \
+  php-xml \
+  unzip \
+  curl \
+  wget \
+  phpmyadmin
 
-# 📁 Zielverzeichnis erstellen
+# 🔐 MariaDB absichern (non-interactive)
+mysql -e "DELETE FROM mysql.user WHERE User='';"
+mysql -e "DROP DATABASE IF EXISTS test;"
+mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
+mysql -e "FLUSH PRIVILEGES;"
+
+# 🔧 Apache vorbereiten
+a2enmod rewrite
+sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
+sed -i 's/DirectoryIndex .*/DirectoryIndex index.php index.html/' /etc/apache2/mods-enabled/dir.conf
+
+# 📁 Webroot
 mkdir -p /var/www/html
 
-# 🌐 Projekt-ZIP herunterladen
+# 🌐 Projekt laden
 echo "📥 Lade Projektvorlage herunter..."
-wget -O /tmp/webprojekt-template.zip https://web-service.ubodigat.com/install/webprojekt-template.zip
+wget -O /tmp/webprojekt-template.zip \
+  https://web-service.ubodigat.com/install/webprojekt-template.zip
 
 # 📦 Entpacken
-unzip -o /tmp/webprojekt-template.zip -d /var/www/html
+unzip -oq /tmp/webprojekt-template.zip -d /var/www/html
 
-# 🔐 Setup-Datei vorbereiten
+# ⚙️ Konfigurationsvorlagen
 cp /var/www/html/filemanager/config.sample.php /var/www/html/filemanager/config.php
 cp /var/www/html/projekt/config.sample.php /var/www/html/projekt/config.php
 
-# 📂 Berechtigungen
+# 🔐 Rechte setzen
 chown -R www-data:www-data /var/www/html
-chmod -R 755 /var/www/html
+find /var/www/html -type d -exec chmod 755 {} \;
+find /var/www/html -type f -exec chmod 644 {} \;
 
-# 🔁 Apache neustarten
+# 🔁 Apache neu starten
 systemctl restart apache2
 
-# 🧠 Info
+# 🌍 IP anzeigen
+SERVER_IP=$(hostname -I | awk '{print $1}')
+
+echo ""
 echo "✅ Die Basisinstallation ist abgeschlossen."
 echo ""
 echo "👉 Bitte rufe im Browser folgende Seite auf, um die Einrichtung abzuschließen:"
-echo "     http://<SERVER-IP>/install/setup.php"
+echo ""
+echo "    http://${SERVER_IP}/install/setup.php"
+echo ""

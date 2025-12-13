@@ -3,22 +3,20 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Installation</title>
+    <title>Installation – web-service.ubodigat.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Moderne Installationsanleitung für web-servicde – mehrere Installationswege, ein Projekt.">
+    <meta name="description" content="Automatisches Setup für Webserver, Datenbank und Projektumgebung – ein Befehl, ein Setup.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/x-icon.png" type="image/x-icon">
-    <link rel="apple-touch-icon" href="/x-icon.png" />
 </head>
 
 <body>
-
     <canvas id="bg-canvas"></canvas>
 
     <header class="topbar">
         <div class="container topbar__inner">
             <a class="brand" href="index.html">
-                <img src="ubodigatlogo.svg" class="brand__logo">
+                <img src="ubodigatlogo.svg" class="brand__logo" alt="ubodigat Logo">
                 <span class="brand__text">
                     web-service<span class="brand__dim">.ubodigat.com</span>
                 </span>
@@ -31,11 +29,11 @@
 
             <div class="section__head">
                 <h2>Installation & Nutzung</h2>
-                <p>Wähle deine Umgebung – die Anleitung passt sich automatisch an.</p>
+                <p>Ein automatisches Setup – unabhängig von Umgebung oder Plattform.</p>
             </div>
 
             <div class="install-tabs">
-                <button class="install-tab active" data-target="linux">Linux (Allgemein)</button>
+                <button class="install-tab active" data-target="linux">Linux (Standard)</button>
                 <button class="install-tab" data-target="proxmox">Proxmox</button>
                 <button class="install-tab" data-target="vps">VPS / Bare Metal</button>
             </div>
@@ -43,27 +41,25 @@
             <section class="install-section active" id="linux">
 
                 <div class="install-card">
-                    <h3>1️⃣ Projektstruktur vorbereiten</h3>
+                    <h3>1️⃣ Projektüberblick</h3>
                     <p>
-                        Das Projekt wird als ZIP-Paket bereitgestellt und ist modular aufgebaut.
-                        Die wichtigsten Dateien sind bereits an den vorgesehenen Stellen platziert:
+                        Das Projekt besteht aus einem automatisierten Installationsskript
+                        sowie einem einmaligen browserbasierten Abschluss-Setup.
                     </p>
 
                     <ul class="check">
-                        <li><strong>install/setup.php</strong> – browserbasiertes Abschluss-Setup</li>
+                        <li><strong>install.sh</strong> – installiert Webserver, PHP, MariaDB & phpMyAdmin</li>
+                        <li><strong>install/setup.php</strong> – finale Einrichtung im Browser</li>
                         <li><strong>sql/struktur.sql</strong> – initiale Datenbankstruktur</li>
-                        <li>
-                            <strong>config.sample.php</strong> – Konfigurationsvorlage
-                            (jeweils vorhanden in <code>projekt/</code> und <code>filemanager/</code>)
-                        </li>
                     </ul>
                 </div>
 
                 <div class="install-card">
-                    <h3>2️⃣ Öffentliche Projektseite (GitHub Pages)</h3>
+                    <h3>2️⃣ Projektseite (GitHub Pages)</h3>
                     <p>
-                        Die Projektwebseite wird über GitHub Pages veröffentlicht und dient ausschließlich
-                        zur Dokumentation und zum Bereitstellen der Installationsdateien.
+                        Die Projektseite dient ausschließlich der Dokumentation
+                        und der Bereitstellung der Installationsdateien.
+                        <br><strong>Es wird dort kein Server-Code ausgeführt.</strong>
                     </p>
 
                     <div class="cmd" data-copy="https://web-service.ubodigat.com">
@@ -73,30 +69,59 @@
                 </div>
 
                 <div class="install-card">
-                    <h3>3️⃣ Installation auf dem Zielserver starten</h3>
+                    <h3>3️⃣ Installation auf dem Zielserver</h3>
                     <p>
-                        Auf dem Zielsystem (Debian / Ubuntu) wird die Installation mit einem einzigen Befehl gestartet.
+                        Führe die folgenden Befehle <strong>direkt auf dem Zielserver</strong>
+                        als <strong>root</strong> oder per <strong>sudo</strong> aus:
                     </p>
 
-                    <div class="cmd" data-copy="wget https://web-service.ubodigat.com/install/install.sh">
-                        <code>wget https://web-service.ubodigat.com/install/install.sh</code>
+                    <div class="cmd" data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh">
+                        <code>wget -O install.sh https://web-service.ubodigat.com/install/install.sh</code>
                         <span>Klicken zum Kopieren</span>
                     </div>
 
-                    <div class="cmd" data-copy="chmod +x install.sh && sudo ./install.sh">
-                        <code>chmod +x install.sh && sudo ./install.sh</code>
+                    <div class="cmd" data-copy="chmod +x install.sh">
+                        <code>chmod +x install.sh</code>
+                        <span>Klicken zum Kopieren</span>
+                    </div>
+
+                    <div class="cmd" data-copy="./install.sh">
+                        <code>./install.sh</code>
                         <span>Klicken zum Kopieren</span>
                     </div>
 
                     <p class="muted">
-                        Das Skript installiert alle erforderlichen Komponenten und richtet die Projektstruktur automatisch ein.
+                        Das Skript installiert automatisch alle benötigten Komponenten
+                        und richtet die Projektstruktur ein.
                     </p>
                 </div>
 
                 <div class="install-card">
-                    <h3>4️⃣ Browserbasiertes Setup abschließen</h3>
+                    <h3>🔐 MariaDB absichern (wichtig)</h3>
                     <p>
-                        Nach Abschluss der Installation wird das Setup im Browser aufgerufen:
+                        Während der Installation stellt MariaDB einige Sicherheitsfragen.
+                        Bitte beantworte diese <strong>genau wie folgt</strong>:
+                    </p>
+
+                    <ul class="check">
+                        <li><code>Enter current password for root</code> → <strong>ENTER</strong></li>
+                        <li><code>Switch to unix_socket authentication?</code> → <strong>n</strong></li>
+                        <li><code>Change the root password?</code> → <strong>n</strong></li>
+                        <li><code>Remove anonymous users?</code> → <strong>y</strong></li>
+                        <li><code>Disallow root login remotely?</code> → <strong>y</strong></li>
+                        <li><code>Remove test database and access to it?</code> → <strong>y</strong></li>
+                        <li><code>Reload privilege tables now?</code> → <strong>y</strong></li>
+                    </ul>
+
+                    <p class="muted">
+                        Diese Einstellungen sind sicher, bewährt und für den produktiven Betrieb empfohlen.
+                    </p>
+                </div>
+
+                <div class="install-card">
+                    <h3>4️⃣ Einrichtung im Browser abschließen</h3>
+                    <p>
+                        Nach erfolgreicher Installation rufe folgende Adresse im Browser auf:
                     </p>
 
                     <div class="cmd" data-copy="http://SERVER-IP/install/setup.php">
@@ -105,75 +130,66 @@
                     </div>
 
                     <p class="muted">
-                        Hier werden Administrator-Zugangsdaten sowie Datenbankparameter final konfiguriert.
+                        Hier werden Administrator-Zugangsdaten sowie Datenbankparameter gesetzt.
+                        Das Setup ist <strong>nur einmal</strong> ausführbar.
                     </p>
                 </div>
 
                 <div class="install-card">
-                    <h3>✅ Installation abgeschlossen</h3>
+                    <h3>✅ Fertig</h3>
                     <p>
-                        Das System ist nun vollständig eingerichtet und betriebsbereit.
+                        Das System ist nun vollständig eingerichtet.
+                        <br>
+                        Das Setup sperrt und entfernt sich automatisch.
                     </p>
                 </div>
 
             </section>
 
-
             <section class="install-section" id="proxmox">
 
                 <div class="install-card">
-                    <h3>1️⃣ Virtuelle Umgebung erstellen</h3>
+                    <h3>1️⃣ Proxmox-Umgebung vorbereiten</h3>
                     <p>
-                        Erstelle in Proxmox einen Container (CT) oder eine virtuelle Maschine (VM)
-                        auf Basis von <strong>Debian 12</strong>.
+                        Erstelle einen Container (CT) oder eine VM auf Basis von
+                        <strong>Debian 12</strong>.
                     </p>
 
                     <ul class="check">
-                        <li>Netzwerkanbindung per DHCP oder statischer IP</li>
-                        <li>SSH-Zugriff aktivieren</li>
-                        <li>Ausreichend Speicher und Arbeitsspeicher einplanen</li>
+                        <li>Netzwerk aktiv (DHCP oder statisch)</li>
+                        <li>Root-Zugriff per Konsole oder SSH</li>
                     </ul>
                 </div>
 
                 <div class="install-card">
-                    <h3>2️⃣ Verbindung zur Umgebung herstellen</h3>
-
-                    <div class="cmd" data-copy="ssh root@SERVER-IP">
-                        <code>ssh root@SERVER-IP</code>
-                        <span>Klicken zum Kopieren</span>
-                    </div>
-                </div>
-
-                <div class="install-card">
-                    <h3>3️⃣ Installation durchführen</h3>
+                    <h3>2️⃣ Installation durchführen</h3>
                     <p>
-                        Die weitere Installation erfolgt identisch zur Standard-Linux-Installation
+                        Die Installation erfolgt identisch zur Linux-Standardinstallation
                         über das bereitgestellte Installationsskript.
                     </p>
                 </div>
 
             </section>
 
-
             <section class="install-section" id="vps">
 
                 <div class="install-card">
-                    <h3>1️⃣ Server vorbereiten</h3>
-                    <p>
-                        Stelle sicher, dass ein aktuelles Debian- oder Ubuntu-System installiert ist
-                        und Root- oder sudo-Zugriff besteht.
-                    </p>
-                </div>
+                    <h3>Installation auf VPS / Bare Metal</h3>
+                    <p>Voraussetzungen:</p>
 
-                <div class="install-card">
-                    <h3>2️⃣ Installation starten</h3>
+                    <ul class="check">
+                        <li>Debian oder Ubuntu</li>
+                        <li>Root-Zugriff</li>
+                        <li>Aktive Internetverbindung</li>
+                    </ul>
+
                     <p>
-                        Lade das Installationsskript direkt von der Projektwebseite herunter und führe es aus.
+                        Anschließend erfolgt die Installation identisch
+                        zur Linux-Standardinstallation.
                     </p>
                 </div>
 
             </section>
-
 
         </div>
     </main>
@@ -186,6 +202,7 @@
     </footer>
 
     <script src="/script.js"></script>
+
 </body>
 
 </html>
