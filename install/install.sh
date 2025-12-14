@@ -1,20 +1,20 @@
 #!/bin/bash
 set -e
 
-# 🛡️ Root-Rechte prüfen
+# =========================
+# Root prüfen
+# =========================
 if [ "$EUID" -ne 0 ]; then
   echo "❌ Dieses Skript muss als root ausgeführt werden."
   exit 1
 fi
 
-echo "🔧 Starte automatische Webserver-Installation..."
+echo "🔧 Starte automatische Webprojekt-Installation …"
 
-# 🔄 Paketlisten aktualisieren (KEIN upgrade!)
+# =========================
+# System vorbereiten
+# =========================
 apt update -y
-
-# 📦 Apache, PHP, MariaDB, phpMyAdmin (non-interactive)
-export DEBIAN_FRONTEND=noninteractive
-
 apt install -y \
   apache2 \
   mariadb-server \
@@ -29,49 +29,69 @@ apt install -y \
   unzip \
   curl \
   wget \
-  phpmyadmin
+  openssl
 
-# 🔐 MariaDB absichern (non-interactive)
-mysql -e "DELETE FROM mysql.user WHERE User='';"
-mysql -e "DROP DATABASE IF EXISTS test;"
-mysql -e "DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';"
-mysql -e "FLUSH PRIVILEGES;"
+systemctl enable apache2 mariadb
+systemctl start apache2 mariadb
 
-# 🔧 Apache vorbereiten
-a2enmod rewrite
-sed -i 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf
-sed -i 's/DirectoryIndex .*/DirectoryIndex index.php index.html/' /etc/apache2/mods-enabled/dir.conf
+# =========================
+# Datenbank automatisch anlegen
+# =========================
+DB_NAME="webprojekt"
+DB_USER="webprojekt_user"
+DB_PASS="$(openssl rand -base64 24)"
 
-# 📁 Webroot
-mkdir -p /var/www/html
+echo "🗄️ Erstelle Datenbank & Benutzer …"
 
-# 🌐 Projekt laden
-echo "📥 Lade Projektvorlage herunter..."
+mysql <<EOF
+CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
+  CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
+
+CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost'
+  IDENTIFIED BY '${DB_PASS}';
+
+GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.* TO '${DB_USER}'@'localhost';
+FLUSH PRIVILEGES;
+EOF
+
+# =========================
+# Projekt herunterladen
+# =========================
+echo "📥 Lade Projektvorlage …"
+
 wget -O /tmp/webprojekt-template.zip \
   https://web-service.ubodigat.com/install/webprojekt-template.zip
 
-# 📦 Entpacken
-unzip -oq /tmp/webprojekt-template.zip -d /var/www/html
+rm -rf /var/www/html/*
+unzip -q /tmp/webprojekt-template.zip -d /var/www/html
 
-# ⚙️ Konfigurationsvorlagen
-cp /var/www/html/filemanager/config.sample.php /var/www/html/filemanager/config.php
-cp /var/www/html/projekt/config.sample.php /var/www/html/projekt/config.php
+# =========================
+# DB-Zugang für Setup ablegen
+# =========================
+cat > /var/www/html/install/.db.env <<EOF
+DB_HOST=localhost
+DB_NAME=${DB_NAME}
+DB_USER=${DB_USER}
+DB_PASS=${DB_PASS}
+EOF
 
-# 🔐 Rechte setzen
+chown www-data:www-data /var/www/html/install/.db.env
+chmod 600 /var/www/html/install/.db.env
+
+# =========================
+# Rechte setzen
+# =========================
 chown -R www-data:www-data /var/www/html
 find /var/www/html -type d -exec chmod 755 {} \;
 find /var/www/html -type f -exec chmod 644 {} \;
 
-# 🔁 Apache neu starten
 systemctl restart apache2
 
-# 🌍 IP anzeigen
 SERVER_IP=$(hostname -I | awk '{print $1}')
 
 echo ""
-echo "✅ Die Basisinstallation ist abgeschlossen."
+echo "✅ Basisinstallation abgeschlossen"
 echo ""
-echo "👉 Bitte rufe im Browser folgende Seite auf, um die Einrichtung abzuschließen:"
-echo ""
-echo "    http://${SERVER_IP}/install/setup.php"
+echo "👉 Öffne im Browser:"
+echo "   http://${SERVER_IP}/install/setup.php"
 echo ""
