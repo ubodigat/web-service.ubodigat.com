@@ -1,5 +1,5 @@
 #!/bin/bash
-set -e
+set -euo pipefail
 
 # ==========================================================
 # 🔐 Root-Check
@@ -11,10 +11,10 @@ fi
 
 export DEBIAN_FRONTEND=noninteractive
 
-echo "🔧 Starte automatische Installation..."
+echo "🔧 Starte automatische Installation (Stabilitätsmodus)..."
 
 # ==========================================================
-# 📦 Variablen
+# 📦 Konfiguration
 # ==========================================================
 DB_NAME="webprojekt"
 DB_USER="webprojekt"
@@ -28,25 +28,29 @@ ZIP_URL="https://web-service.ubodigat.com/install/webprojekt-template.zip"
 ZIP_TMP="/tmp/webprojekt.zip"
 
 # ==========================================================
-# 🧱 System aktualisieren
+# 🧱 System aktualisieren (OHNE Upgrade)
 # ==========================================================
+echo "📦 Aktualisiere Paketlisten..."
 apt update -y
-apt upgrade -y
 
 # ==========================================================
-# 🐘 phpMyAdmin – Vorkonfiguration (WICHTIG!)
+# 🐘 phpMyAdmin – Non-Interactive Preseed
 # ==========================================================
 echo "⚙️ Konfiguriere phpMyAdmin (non-interactive)..."
 
-echo "phpmyadmin phpmyadmin/dbconfig-install boolean true" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/admin-pass password ${DB_PASS}" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/mysql/app-pass password ${DB_PASS}" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/app-password-confirm password ${DB_PASS}" | debconf-set-selections
-echo "phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2" | debconf-set-selections
+debconf-set-selections <<EOF
+phpmyadmin phpmyadmin/dbconfig-install boolean true
+phpmyadmin phpmyadmin/mysql/admin-pass password ${DB_PASS}
+phpmyadmin phpmyadmin/mysql/app-pass password ${DB_PASS}
+phpmyadmin phpmyadmin/app-password-confirm password ${DB_PASS}
+phpmyadmin phpmyadmin/reconfigure-webserver multiselect apache2
+EOF
 
 # ==========================================================
 # 📦 Pakete installieren
 # ==========================================================
+echo "📦 Installiere Systempakete..."
+
 apt install -y \
   apache2 \
   mariadb-server \
@@ -67,6 +71,7 @@ apt install -y \
 # ==========================================================
 # ▶️ Dienste aktivieren & starten
 # ==========================================================
+echo "▶️ Starte Dienste..."
 systemctl enable apache2 mariadb
 systemctl start apache2 mariadb
 
@@ -92,6 +97,7 @@ EOF
 # ==========================================================
 # 🌐 Apache vorbereiten
 # ==========================================================
+echo "🌐 Konfiguriere Apache..."
 a2enmod rewrite
 a2enconf phpmyadmin
 systemctl restart apache2
@@ -103,12 +109,29 @@ echo "📥 Lade Projektdateien..."
 
 rm -f "${INSTALL_DIR}/index.html"
 
-wget -O "${ZIP_TMP}" "${ZIP_URL}"
-unzip -o "${ZIP_TMP}" -d "${INSTALL_DIR}"
+if ! wget -q -O "${ZIP_TMP}" "${ZIP_URL}"; then
+  echo "❌ Download fehlgeschlagen: ${ZIP_URL}"
+  exit 1
+fi
+
+if ! unzip -oq "${ZIP_TMP}" -d "${INSTALL_DIR}"; then
+  echo "❌ ZIP-Datei konnte nicht entpackt werden"
+  exit 1
+fi
+
+# ==========================================================
+# 🔍 Struktur prüfen
+# ==========================================================
+if [ ! -f "${INSTALL_DIR}/install/setup.php" ]; then
+  echo "❌ setup.php fehlt – ZIP-Struktur fehlerhaft"
+  exit 1
+fi
 
 # ==========================================================
 # 🔐 .db.env schreiben (Single Source of Truth)
 # ==========================================================
+echo "🔐 Erstelle .db.env..."
+
 mkdir -p "${INSTALL_SUBDIR}"
 
 cat > "${ENV_FILE}" <<EOF
@@ -122,11 +145,14 @@ chown www-data:www-data "${ENV_FILE}"
 chmod 600 "${ENV_FILE}"
 
 # ==========================================================
-# 📁 Verzeichnisstruktur & Rechte
+# 📁 Rechte & Struktur
 # ==========================================================
+echo "📁 Setze Dateirechte..."
+
 mkdir -p "${INSTALL_DIR}/config"
 
 chown -R www-data:www-data "${INSTALL_DIR}"
+
 find "${INSTALL_DIR}" -type d -exec chmod 755 {} \;
 find "${INSTALL_DIR}" -type f -exec chmod 644 {} \;
 
@@ -135,7 +161,7 @@ chmod 600 "${ENV_FILE}"
 # ==========================================================
 # ✅ Abschluss
 # ==========================================================
-SERVER_IP=$(hostname -I | awk '{print $1}')
+SERVER_IP="$(hostname -I | awk '{print $1}')"
 
 echo ""
 echo "✅ BASISINSTALLATION ABGESCHLOSSEN"
@@ -143,8 +169,10 @@ echo ""
 echo "➡ Setup im Browser starten:"
 echo "   http://${SERVER_IP}/install/setup.php"
 echo ""
-echo "🔐 Datenbank-Zugang (intern):"
+echo "🔐 Datenbank (intern):"
 echo "   DB:   ${DB_NAME}"
 echo "   User: ${DB_USER}"
-echo "   Pass: (gespeichert in install/.db.env)"
+echo "   Pass: (install/.db.env)"
+echo ""
+echo "ℹ️  Nach Setup wird .db.env automatisch gelöscht"
 echo ""
