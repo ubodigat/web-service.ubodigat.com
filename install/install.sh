@@ -18,7 +18,7 @@ echo "🔧 Starte automatische Installation (Stabilitätsmodus)..."
 # ==========================================================
 DB_NAME="webprojekt"
 DB_USER="webprojekt"
-DB_PASS="$(openssl rand -base64 24)"
+DB_PASS="$(openssl rand -hex 16)"
 
 INSTALL_DIR="/var/www/html"
 INSTALL_SUBDIR="${INSTALL_DIR}/install"
@@ -75,6 +75,7 @@ apt install -y \
 echo "▶️ Starte Dienste..."
 systemctl enable apache2 mariadb
 systemctl start apache2 mariadb
+sleep 5
 
 # ==========================================================
 # 🗄️ Datenbank & Benutzer anlegen
@@ -137,10 +138,10 @@ echo "🔐 Erstelle .db.env..."
 mkdir -p "${INSTALL_SUBDIR}"
 
 cat > "${ENV_FILE}" <<EOF
-DB_HOST=localhost
-DB_USER=${DB_USER}
-DB_PASS=${DB_PASS}
-DB_NAME=${DB_NAME}
+DB_HOST="localhost"
+DB_USER="${DB_USER}"
+DB_PASS="${DB_PASS}"
+DB_NAME="${DB_NAME}"
 EOF
 
 chown www-data:www-data "${ENV_FILE}"
