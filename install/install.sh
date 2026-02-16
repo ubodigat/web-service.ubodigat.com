@@ -199,7 +199,7 @@ echo ""
 echo -e "${BLUE}🔐 INTERNE DATENBANK-LOGINS:${NC}"
 echo -e "  ➡ ${NC}Datenbank:${NC}          ${DB_NAME}"
 echo -e "  ➡ ${NC}Benutzer:${NC}           ${DB_USER}"
-echo -e "  ➡ ${NC}Passwort:${NC}           (In install/.db.env gespeichert)"
+echo -e "  ➡ ${NC}Passwort:${NC}           ${DB_PASS}"
 echo ""
 
 echo -e "${YELLOW}ℹ️  WICHTIGER HINWEIS:${NC}"
