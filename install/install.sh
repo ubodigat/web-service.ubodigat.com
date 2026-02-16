@@ -159,20 +159,51 @@ find "${INSTALL_DIR}" -type f -exec chmod 644 {} \;
 chmod 600 "${ENV_FILE}"
 
 # ==========================================================
-# ✅ Abschluss
+# ✅ Abschluss & Zusammenfassung
 # ==========================================================
 SERVER_IP="$(hostname -I | awk '{print $1}')"
 
+# Farben für die Konsole
+GREEN='\033[0;32m'
+BLUE='\033[0;34m'
+YELLOW='\033[1;33m'
+CYAN='\033[0;36m'
+NC='\033[0m' # No Color
+
+echo -e "${GREEN}"
+echo "=========================================================="
+echo "      ✅ BASISINSTALLATION ERFOLGREICH ABGESCHLOSSEN      "
+echo "=========================================================="
+echo -e "${NC}"
+
+echo -e "${BLUE}🌐 WEB-ZUGANG:${NC}"
+echo -e "  ➡ ${CYAN}Projekt-Landingpage:${NC}  http://${SERVER_IP}/"
+echo -e "  ➡ ${YELLOW}Setup starten (Wichtig):${NC} http://${SERVER_IP}/install/setup.php"
 echo ""
-echo "✅ BASISINSTALLATION ABGESCHLOSSEN"
+
+echo -e "${BLUE}🗄️ DATENBANK-VERWALTUNG:${NC}"
+echo -e "  ➡ ${CYAN}phpMyAdmin:${NC}           http://${SERVER_IP}/phpmyadmin"
+echo -e "    ${NC}Login via DB_USER:     ${DB_USER}"
 echo ""
-echo "➡ Setup im Browser starten:"
-echo "   http://${SERVER_IP}/install/setup.php"
+
+# Automatischer Check für Dateimanager im Verzeichnis
+FM_URL="Nicht gefunden"
+if [ -d "${INSTALL_DIR}/filemanager" ]; then FM_URL="http://${SERVER_IP}/filemanager"; fi
+if [ -f "${INSTALL_DIR}/fm.php" ]; then FM_URL="http://${SERVER_IP}/fm.php"; fi
+if [ -d "${INSTALL_DIR}/vendor" ]; then FM_URL="http://${SERVER_IP}/ (via Dashboard)"; fi
+
+echo -e "${BLUE}📁 DATEI-VERWALTUNG:${NC}"
+echo -e "  ➡ ${CYAN}Dateimanager:${NC}          ${FM_URL}"
 echo ""
-echo "🔐 Datenbank (intern):"
-echo "   DB:   ${DB_NAME}"
-echo "   User: ${DB_USER}"
-echo "   Pass: (install/.db.env)"
+
+echo -e "${BLUE}🔐 INTERNE DATENBANK-LOGINS:${NC}"
+echo -e "  ➡ ${NC}Datenbank:${NC}          ${DB_NAME}"
+echo -e "  ➡ ${NC}Benutzer:${NC}           ${DB_USER}"
+echo -e "  ➡ ${NC}Passwort:${NC}           (In install/.db.env gespeichert)"
 echo ""
-echo "ℹ️  Nach Setup wird .db.env automatisch gelöscht"
+
+echo -e "${YELLOW}ℹ️  WICHTIGER HINWEIS:${NC}"
+echo "Das Setup im Browser muss einmalig ausgeführt werden, um die"
+echo "Administrator-Zugänge zu setzen. Danach wird .db.env gelöscht."
+echo "----------------------------------------------------------"
 echo ""

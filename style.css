@@ -775,6 +775,38 @@ textarea:focus {
 /* -------------------------
    Responsive
 -------------------------- */
+/* -------------------------
+   Installation Page Utilities
+-------------------------- */
+.cmd-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.cmd--large {
+    padding: 18px;
+    font-size: 1.1em;
+    margin: 16px 0;
+}
+
+.info-note {
+    padding: 14px;
+    margin-top: 16px;
+    border-left: 4px solid var(--accent2);
+    font-size: 0.9em;
+}
+
+.card--highlite {
+    border: 1px solid var(--accent1);
+    background: linear-gradient(180deg, rgba(124, 92, 255, 0.1), transparent);
+}
+
+.spacer {
+    display: block;
+}
+
 @media (max-width: 980px) {
     .hero__inner {
         grid-template-columns: 1fr;
