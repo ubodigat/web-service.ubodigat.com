@@ -66,7 +66,8 @@ apt install -y \
   curl \
   wget \
   openssl \
-  phpmyadmin
+  phpmyadmin \
+  libarchive-tools
 
 # ==========================================================
 # ▶️ Dienste aktivieren & starten
@@ -114,8 +115,9 @@ if ! wget -q -O "${ZIP_TMP}" "${ZIP_URL}"; then
   exit 1
 fi
 
-if ! unzip -oq "${ZIP_TMP}" -d "${INSTALL_DIR}"; then
-  echo "❌ ZIP-Datei konnte nicht entpackt werden"
+# Wir nutzen bsdtar, da es besser mit Pfadtrennzeichen (Windows/Linux) umgehen kann
+if ! bsdtar -xf "${ZIP_TMP}" -C "${INSTALL_DIR}"; then
+  echo "❌ Archiv konnte nicht entpackt werden"
   exit 1
 fi
 
