@@ -1,7 +1,7 @@
 # 🌐 web-service.ubodigat.com
 
 ![Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+![License](https://img.shields.io/badge/license-Apache%20License%202.0-green)
 ![Platform](https://img.shields.io/badge/platform-Ubuntu%20%7C%20Debian-orange.svg)
 
 **Ein leistungsstarker, automatisierter Webserver-Stack mit Datenbank und integriertem Web-Dateimanager – optimiert für Schnelligkeit und Benutzerfreundlichkeit.**
@@ -55,7 +55,7 @@ Das System nutzt ein vorkonfiguriertes Template (`webprojekt-template`), welches
 
 ## 📄 Lizenz
 
-Dieses Projekt ist unter der **MIT-Lizenz** lizenziert. Weitere Informationen findest du in der [LICENSE](LICENSE) Datei.
+Dieses Projekt ist unter der **Apache License 2.0** lizenziert. Weitere Informationen findest du in der [LICENSE](LICENSE) Datei.
 
 ---
 
