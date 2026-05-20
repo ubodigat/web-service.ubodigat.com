@@ -1,4 +1,4 @@
-#!/bin/bash
+﻿#!/bin/bash
 set -euo pipefail
 
 # ==========================================================
@@ -87,7 +87,9 @@ CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`
   CHARACTER SET utf8mb4
   COLLATE utf8mb4_unicode_ci;
 
-CREATE USER IF NOT EXISTS '${DB_USER}'@'localhost'
+-- Immer neu anlegen (verhindert Passwort-Mismatch)
+DROP USER IF EXISTS '${DB_USER}'@'localhost';
+CREATE USER '${DB_USER}'@'localhost'
   IDENTIFIED BY '${DB_PASS}';
 
 GRANT ALL PRIVILEGES ON \`${DB_NAME}\`.*
