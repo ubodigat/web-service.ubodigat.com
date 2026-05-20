@@ -1,2 +1,4 @@
-/install/webprojekt-template/
-/install/webprojekt-template.zip
+﻿/install/webprojekt-template/
+/.claude/
+.gitignore
+.vscodeignore
