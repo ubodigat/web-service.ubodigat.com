@@ -5,8 +5,7 @@
     <meta charset="UTF-8">
     <title>Installation – web-service.ubodigat.com</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description"
-        content="Automatisches Setup für Webserver, Datenbank und Projektumgebung – ein Befehl, ein Setup.">
+    <meta name="description" content="Automatisches Setup für Webserver, Dateimanager und Admin-Panel – ein Befehl, alles läuft.">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/x-icon.png" type="image/x-icon">
 </head>
@@ -24,7 +23,7 @@
             </a>
             <div class="pill mini">
                 <span class="dot"></span>
-                <span>Installation Guide v1.0</span>
+                <span>Installation Guide · v1.3.20</span>
             </div>
         </div>
     </header>
@@ -35,7 +34,7 @@
             <div class="section__head">
                 <div>
                     <h2>Server Setup</h2>
-                    <p>In wenigen Schritten zu deinem eigenen Web- & Datenbankserver.</p>
+                    <p>In wenigen Schritten zu deinem eigenen Web-Server mit Dateimanager & Admin-Panel.</p>
                 </div>
                 <div class="install-tabs glass">
                     <button class="install-tab active" data-target="linux">Linux / Ubuntu</button>
@@ -44,10 +43,10 @@
                 </div>
             </div>
 
+            <!-- ── Linux / Ubuntu ── -->
             <section class="install-section active" id="linux">
 
                 <div class="grid grid--2">
-                    <!-- Step 1: Preparation -->
                     <div class="glass card">
                         <div class="chip">Schritt 1</div>
                         <h3 class="card__title">📦 Vorbereitung</h3>
@@ -59,14 +58,12 @@
                         </ul>
                     </div>
 
-                    <!-- Step 2: Download -->
                     <div class="glass card">
                         <div class="chip">Schritt 2</div>
                         <h3 class="card__title">📥 Skript laden</h3>
                         <p class="muted">Lade das automatisierte Installationsskript direkt auf deinen Server.</p>
                         <div class="cmd-list">
-                            <div class="cmd"
-                                data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh">
+                            <div class="cmd" data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh">
                                 <code>wget -O install.sh https://web-service.ubodigat...</code>
                                 <span class="mini">Datei herunterladen</span>
                             </div>
@@ -80,14 +77,13 @@
 
                 <div class="spacer" style="height: 24px;"></div>
 
-                <!-- Step 3: Execution -->
                 <div class="glass block">
                     <div class="chip">Schritt 3</div>
                     <h3 class="card__title">🚀 Installation starten</h3>
                     <p>Führe das Skript aus und folge den Anweisungen auf dem Bildschirm. Der Server wird automatisch
                         für Apache, MariaDB und PHP konfiguriert.</p>
 
-                    <div class="cmd cmd--large" data-copy="./install.sh">
+                    <div class="cmd cmd--large" data-copy="sudo ./install.sh">
                         <code>sudo ./install.sh</code>
                         <span>Klicken zum Kopieren</span>
                     </div>
@@ -95,18 +91,17 @@
                     <div class="info-note glass">
                         <strong>🔐 MariaDB Konfiguration</strong>
                         <p class="mini">Das Skript fragt nach Sicherheitsoptionen. Empfohlene Antworten:
-                            <strong>Enter</strong> (Passwort), <strong>n</strong> (Socket), <strong>n</strong> (Root
-                            Pass), then <strong>y</strong> for everything else.</p>
+                            <strong>Enter</strong> (Passwort), <strong>n</strong> (Socket), <strong>n</strong> (Root Pass),
+                            danach <strong>y</strong> für alle weiteren Fragen.</p>
                     </div>
                 </div>
 
                 <div class="spacer" style="height: 24px;"></div>
 
-                <!-- Step 4: Finalize -->
                 <div class="glass card card--highlite">
                     <div class="chip">Schritt 4</div>
                     <h3 class="card__title">🌐 Web-Setup abschließen</h3>
-                    <p>Nachdem das Skript fertig ist, öffne dein neues Dashboard im Browser:</p>
+                    <p>Nachdem das Skript fertig ist, öffne das Setup-Dashboard im Browser:</p>
 
                     <div class="cmd" data-copy="http://SERVER-IP/install/setup.php">
                         <code>http://<span class="grad">&lt;deine-server-ip&gt;</span>/install/setup.php</code>
@@ -115,38 +110,67 @@
 
                     <div class="list" style="margin-top: 20px;">
                         <div class="list__row">
-                            <span class="kbd">Admin</span>
-                            <span>Dein Dashboard</span>
+                            <span class="kbd">Admin-Panel</span>
+                            <span>Benutzerverwaltung & Einstellungen</span>
                             <span class="badge badge--ok">bereit</span>
                         </div>
                         <div class="list__row">
-                            <span class="kbd">Database</span>
-                            <span>phpMyAdmin Login</span>
+                            <span class="kbd">Dateimanager</span>
+                            <span>Dateien im Browser verwalten</span>
+                            <span class="badge badge--ok">bereit</span>
+                        </div>
+                        <div class="list__row">
+                            <span class="kbd">Datenbank</span>
+                            <span>MariaDB + phpMyAdmin Login</span>
                             <span class="badge badge--ok">bereit</span>
                         </div>
                     </div>
                 </div>
 
+                <div class="spacer" style="height: 24px;"></div>
+
+                <div class="glass block">
+                    <h3 class="card__title">✅ Was nach der Installation verfügbar ist</h3>
+                    <div class="grid grid--2" style="margin-top: 12px;">
+                        <ul class="check">
+                            <li>Web-Dateimanager mit Monaco-Editor</li>
+                            <li>Chunk-Upload bis 2 GB mit Fortschrittsbalken</li>
+                            <li>Bild- & Video-Vorschau im Browser</li>
+                            <li>Metadaten-Editor für Mediadateien</li>
+                        </ul>
+                        <ul class="check">
+                            <li>Admin-Panel mit 2FA (TOTP)</li>
+                            <li>Ordnerspezifische Berechtigungen</li>
+                            <li>Sichtbarkeit pro Datei/Ordner steuerbar</li>
+                            <li>Ein-Klick-Update auf neue Versionen</li>
+                        </ul>
+                    </div>
+                </div>
+
             </section>
 
+            <!-- ── Proxmox ── -->
             <section class="install-section" id="proxmox">
                 <div class="glass block">
                     <h3>Proxmox Container (LXC)</h3>
-                    <p>Erstelle einen Container mit Debian 12 oder Ubuntu 24.04. Stelle sicher, dass "Nesting" aktiviert
-                        ist, falls du Docker innerhalb des Projekts nutzen möchtest.</p>
-                    <ul class="check">
-                        <li>Fahre fort wie bei der Standard-Installation.</li>
+                    <p>Erstelle einen Container mit Debian 12 oder Ubuntu 24.04.</p>
+                    <ul class="check" style="margin-top: 12px;">
+                        <li>Aktiviere „Nesting", falls du Docker innerhalb des Projekts nutzen möchtest</li>
+                        <li>Weise dem Container mindestens 1 GB RAM und 10 GB Disk zu</li>
+                        <li>Fahre danach mit der Standard-Linux-Installation fort (Schritt 2–4)</li>
                     </ul>
                 </div>
             </section>
 
+            <!-- ── VPS ── -->
             <section class="install-section" id="vps">
                 <div class="glass block">
                     <h3>VPS / Bare Metal</h3>
-                    <p>Funktioniert auf allen gängigen Cloud-Anbietern (Hetzner, DigitalOcean, AWS). Nutze ein frisches
-                        Image für die besten Ergebnisse.</p>
-                    <ul class="check">
-                        <li>Standard-Installation nutzen.</li>
+                    <p>Funktioniert auf allen gängigen Cloud-Anbietern (Hetzner, DigitalOcean, AWS, etc.).</p>
+                    <ul class="check" style="margin-top: 12px;">
+                        <li>Nutze ein frisches Ubuntu 22.04 / 24.04 Image für die besten Ergebnisse</li>
+                        <li>Stelle sicher, dass Port 80 und 443 in der Firewall des Anbieters geöffnet sind</li>
+                        <li>Fahre danach mit der Standard-Linux-Installation fort (Schritt 2–4)</li>
                     </ul>
                 </div>
             </section>
@@ -154,12 +178,9 @@
         </div>
     </main>
 
-    </div>
-    </main>
-
     <footer class="footer">
         <div class="container footer__inner">
-            <span class="muted">© <span id="year"></span> ubodigat.com • Open Source</span>
+            <span class="muted">© <span id="year"></span> ubodigat.com • Open Source • v1.3.20</span>
             <a href="index.html">Projektseite</a>
         </div>
     </footer>

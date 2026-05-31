@@ -3,9 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Open Source Web Framework</title>
+    <title>web-service.ubodigat.com – Webprojekt-Template</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Open-Source Webservice Framework zur Erstellung und Automatisierung moderner Web- & Serverprojekte.">
+    <meta name="description" content="Fertiges Webprojekt-Template mit Dateimanager, Admin-Panel, 2FA, Sicherheit und automatischem Server-Setup.">
     <meta name="robots" content="index, follow">
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="/x-icon.png" type="image/x-icon">
@@ -31,6 +31,7 @@
                 <ul class="nav__list" id="navList">
                     <li><a href="#projekt">Projekt</a></li>
                     <li><a href="#module">Module</a></li>
+                    <li><a href="#features">Features</a></li>
                     <li><a href="#moeglichkeiten">Möglichkeiten</a></li>
                     <li><a href="install.html">Installation</a></li>
                     <li><button id="themeToggle" class="theme">Theme</button></li>
@@ -46,22 +47,23 @@
                 <div>
                     <div class="pill">
                         <span class="dot"></span>
-                        <span>Open Source • Modular • Dokumentiert</span>
+                        <span>Open Source • Komplett • Einsatzbereit</span>
                     </div>
 
                     <h1>
-                        Ein offenes Framework<br>
+                        Fertiges Template<br>
                         <span class="grad">für Web- & Serverprojekte</span>
                     </h1>
 
                     <p class="lead">
-                        web-servicde ist ein Open-Source-Projekt, das als Vorlage und Referenz
-                        für moderne Web-Setups, Automatisierungen und Serverstrukturen dient.
+                        web-service ist ein vollständiges Open-Source-Paket: Server-Setup, Web-Dateimanager,
+                        Admin-Panel mit 2FA, Benutzerverwaltung, Ordner-ACL und automatische Updates –
+                        alles in einem Installationsskript.
                     </p>
 
                     <div class="hero__cta">
-                        <a href="install.html" class="btn">Installation ansehen</a>
-                        <a href="#module" class="btn btn--ghost">Module</a>
+                        <a href="install.html" class="btn">Jetzt installieren</a>
+                        <a href="#module" class="btn btn--ghost">Module ansehen</a>
                     </div>
                 </div>
 
@@ -69,19 +71,29 @@
                     <div class="card__title">Projektfakten</div>
                     <div class="list">
                         <div class="list__row">
-                            <span class="kbd">Lizenz</span>
-                            <span>Open Source</span>
-                            <span class="badge badge--ok">frei</span>
+                            <span class="kbd">Version</span>
+                            <span>Aktuell</span>
+                            <span class="badge badge--ok">v1.3.20</span>
                         </div>
                         <div class="list__row">
                             <span class="kbd">Stack</span>
-                            <span>HTML / CSS / JS</span>
+                            <span>PHP · HTML · CSS · JS</span>
                             <span class="badge badge--ok">clean</span>
                         </div>
                         <div class="list__row">
-                            <span class="kbd">Ziel</span>
-                            <span>Vorlage & Lernen</span>
-                            <span class="badge badge--ok">klar</span>
+                            <span class="kbd">Dateimanager</span>
+                            <span>Web-basiert</span>
+                            <span class="badge badge--ok">✓ inkl.</span>
+                        </div>
+                        <div class="list__row">
+                            <span class="kbd">Admin-Panel</span>
+                            <span>2FA + ACL</span>
+                            <span class="badge badge--ok">✓ inkl.</span>
+                        </div>
+                        <div class="list__row">
+                            <span class="kbd">Lizenz</span>
+                            <span>Open Source</span>
+                            <span class="badge badge--ok">frei</span>
                         </div>
                     </div>
                 </div>
@@ -91,18 +103,19 @@
         <section class="section" id="projekt">
             <div class="container">
                 <div class="section__head">
-                    <h2>Was ist web-servicde?</h2>
+                    <h2>Was ist web-service?</h2>
                 </div>
 
                 <div class="glass block">
                     <p>
-                        web-servicde ist kein fertiges Produkt, sondern eine
-                        <strong>offene Projektbasis</strong>.
-                        Ziel ist es, eine saubere, nachvollziehbare und erweiterbare
-                        Grundlage für eigene Web- und Serverprojekte zu bieten.
+                        web-service ist ein <strong>fertiges Webprojekt-Template</strong>, das mit einem einzigen
+                        Installationsskript einen vollständigen Web- & Datenbankserver aufbaut. Enthalten sind
+                        ein browserbasierter Dateimanager, ein Admin-Panel mit Benutzerverwaltung und
+                        Zwei-Faktor-Authentifizierung sowie ein automatisches Update-System.
                     </p>
-                    <p class="muted">
-                        Alle Bestandteile sind bewusst einfach gehalten und vollständig dokumentiert.
+                    <p class="muted" style="margin-top: 12px;">
+                        Alle Komponenten sind sauber getrennt, dokumentiert und direkt einsatzbereit –
+                        ideal für eigene Webprojekte, Homeserver oder als Lern- und Referenzprojekt.
                     </p>
                 </div>
             </div>
@@ -112,38 +125,95 @@
             <div class="container">
                 <div class="section__head">
                     <h2>Projekt-Module</h2>
+                    <p>Alle enthaltenen Komponenten im Überblick.</p>
                 </div>
 
                 <div class="grid grid--3">
                     <article class="glass feature">
-                        <h3>📦 Projektvorlage</h3>
-                        <p>Strukturierte Basis für neue Webprojekte ohne Ballast.</p>
+                        <h3>🚀 Server-Setup</h3>
+                        <p>Ein Skript richtet Apache, MariaDB und PHP vollautomatisch ein. Keine manuelle Konfiguration nötig.</p>
                     </article>
 
                     <article class="glass feature">
-                        <h3>🌐 Frontend</h3>
-                        <p>Moderne UI mit Dark/Light Mode, responsiv & barrierearm.</p>
+                        <h3>📂 Web-Dateimanager</h3>
+                        <p>Dateien direkt im Browser verwalten: Upload (Chunks bis 2 GB), Umbenennen, Löschen, Monaco-Editor zum Bearbeiten.</p>
                     </article>
 
                     <article class="glass feature">
-                        <h3>⚙️ Automatisierung</h3>
-                        <p>Vorbereitet für Skripte, CI/CD und Server-Setups.</p>
+                        <h3>🖼️ Media-Viewer</h3>
+                        <p>Bilder und Videos direkt im Browser vorschauen. Metadaten (Datum, Standort, Beschreibung) erfassen und speichern.</p>
                     </article>
 
                     <article class="glass feature">
-                        <h3>🔐 Sicherheit</h3>
-                        <p>Saubere Trennung von Darstellung, Logik und Konfiguration.</p>
+                        <h3>⚙️ Admin-Panel</h3>
+                        <p>Vollständiges Dashboard: Benutzerverwaltung, Ordner-ACL, Hintergrundbilder, Versionscheck und Ein-Klick-Updates.</p>
                     </article>
 
                     <article class="glass feature">
-                        <h3>🧩 Erweiterbarkeit</h3>
-                        <p>Ideal für Module wie Adminpanels, APIs oder Tools.</p>
+                        <h3>🔐 2FA & Sicherheit</h3>
+                        <p>Zwei-Faktor-Authentifizierung (TOTP) für Admins. Session-Timeout, MIME-Check, Pfad-Absicherung und systemgesperrte Ordner.</p>
                     </article>
 
                     <article class="glass feature">
-                        <h3>🧠 Lernprojekt</h3>
-                        <p>Perfekt zum Lernen von Web- & Serverarchitekturen.</p>
+                        <h3>👥 Benutzerverwaltung</h3>
+                        <p>Separate Rollen für Admins und Normalnutzer. Ordnerspezifische Berechtigungen: Upload, Bearbeiten, Umbenennen, Löschen.</p>
                     </article>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section__head">
+                    <h2>Dateimanager-Features</h2>
+                    <p>Was der integrierte Web-Dateimanager alles kann.</p>
+                </div>
+
+                <div class="grid grid--2">
+                    <div class="glass card">
+                        <div class="card__title">📂 Dateiverwaltung</div>
+                        <ul class="check">
+                            <li>Dateien & Ordner erstellen, umbenennen, löschen</li>
+                            <li>Chunk-Upload bis 2 GB mit Fortschrittsanzeige</li>
+                            <li>Drag & Drop Upload direkt ins Browser-Fenster</li>
+                            <li>Monaco-Editor (VS Code Engine) zum Bearbeiten</li>
+                            <li>Syntax-Highlighting für PHP, JS, CSS, HTML</li>
+                            <li>Speichern per Ctrl+S direkt im Editor</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass card">
+                        <div class="card__title">🔒 Sichtbarkeit & Rechte</div>
+                        <ul class="check">
+                            <li>Dateien & Ordner als privat oder öffentlich markieren</li>
+                            <li>Cascade-Option: ganzen Ordner auf einmal umschalten</li>
+                            <li>Systemgesperrte Einträge mit Hinweis-Meldung</li>
+                            <li>Ordnerspezifische Berechtigungen pro Nutzerrolle</li>
+                            <li>Admins sehen alle Einträge, Normalnutzer nur öffentliche</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass card">
+                        <div class="card__title">🖼️ Medien</div>
+                        <ul class="check">
+                            <li>Bild-Vorschau (JPG, PNG, GIF, WebP, SVG)</li>
+                            <li>Video-Player direkt im Browser (MP4, WebM, MOV)</li>
+                            <li>Medien in neuem Tab öffnen</li>
+                            <li>Metadaten-Editor: Datum, Standort, Beschreibung</li>
+                            <li>Dateidatum wird beim Speichern aktualisiert</li>
+                        </ul>
+                    </div>
+
+                    <div class="glass card">
+                        <div class="card__title">⚙️ Admin & Updates</div>
+                        <ul class="check">
+                            <li>Versionscheck gegen aktuellen Stand auf GitHub</li>
+                            <li>Ein-Klick-Update: Dateien werden automatisch ersetzt</li>
+                            <li>Konfigurationsdateien bleiben beim Update erhalten</li>
+                            <li>opcache wird nach Update automatisch invalidiert</li>
+                            <li>Hintergrundbilder für Login-Seiten hochladbar</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </section>
@@ -156,11 +226,14 @@
 
                 <div class="glass block">
                     <ul class="check">
-                        <li>Eigene Open-Source-Projekte starten</li>
-                        <li>Webseiten & Tools strukturiert entwickeln</li>
-                        <li>Server-Setups dokumentieren</li>
-                        <li>Installationsanleitungen bereitstellen</li>
-                        <li>Projekt als Lernplattform nutzen</li>
+                        <li>Webserver in Minuten aufsetzen – Apache, MariaDB & PHP vollautomatisch</li>
+                        <li>Dateien direkt im Browser verwalten, bearbeiten und hochladen (kein FTP nötig)</li>
+                        <li>Admin-Benutzer mit Zwei-Faktor-Authentifizierung (TOTP) absichern</li>
+                        <li>Ordnerspezifische Berechtigungen für Normalnutzer vergeben</li>
+                        <li>Bilder und Videos im Browser vorschauen und Metadaten erfassen</li>
+                        <li>Dateimanager per Ein-Klick auf die neueste Version aktualisieren</li>
+                        <li>Sicherheitseinstellungen zentral über das Admin-Panel verwalten</li>
+                        <li>Als Lernprojekt für Web- & Serverarchitekturen nutzen</li>
                     </ul>
                 </div>
             </div>
@@ -168,7 +241,7 @@
 
         <footer class="footer">
             <div class="container footer__inner">
-                <span class="muted">© <span id="year"></span> ubodigat.com • Open Source</span>
+                <span class="muted">© <span id="year"></span> ubodigat.com • Open Source • v1.3.20</span>
                 <a href="#top">nach oben</a>
             </div>
         </footer>
