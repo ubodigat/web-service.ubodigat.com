@@ -1,4 +1,4 @@
-﻿#!/bin/bash
+#!/bin/bash
 set -euo pipefail
 
 # ==========================================================
@@ -104,6 +104,27 @@ EOF
 echo "🌐 Konfiguriere Apache..."
 a2enmod rewrite
 a2enconf phpmyadmin
+systemctl restart apache2
+
+# ==========================================================
+# 📤 PHP Upload-Limits setzen (2 GB)
+# ==========================================================
+echo "📤 Setze PHP Upload-Limits auf 2 GB..."
+PHP_INI=$(php -r "echo php_ini_loaded_file();")
+if [ -n "$PHP_INI" ] && [ -f "$PHP_INI" ]; then
+    sed -i 's/^upload_max_filesize.*/upload_max_filesize = 2G/' "$PHP_INI"
+    sed -i 's/^post_max_size.*/post_max_size = 2G/' "$PHP_INI"
+    sed -i 's/^max_execution_time.*/max_execution_time = 600/' "$PHP_INI"
+    sed -i 's/^max_input_time.*/max_input_time = 600/' "$PHP_INI"
+fi
+# Auch für Apache-PHP-Modul (oft anderer Pfad)
+PHP_APACHE_INI="/etc/php/$(php -r 'echo PHP_MAJOR_VERSION.".".PHP_MINOR_VERSION;')/apache2/php.ini"
+if [ -f "$PHP_APACHE_INI" ]; then
+    sed -i 's/^upload_max_filesize.*/upload_max_filesize = 2G/' "$PHP_APACHE_INI"
+    sed -i 's/^post_max_size.*/post_max_size = 2G/' "$PHP_APACHE_INI"
+    sed -i 's/^max_execution_time.*/max_execution_time = 600/' "$PHP_APACHE_INI"
+    sed -i 's/^max_input_time.*/max_input_time = 600/' "$PHP_APACHE_INI"
+fi
 systemctl restart apache2
 
 # ==========================================================
