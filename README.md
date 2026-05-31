@@ -1,4 +1,4 @@
-﻿# ðŸŒ web-service.ubodigat.com
+﻿# web-service.ubodigat.com
 
 ![Version](https://img.shields.io/badge/version-1.3.18-blue.svg)
 ![License](https://img.shields.io/badge/license-Apache%20License%202.0-green)
@@ -8,7 +8,7 @@
 
 ---
 
-## ðŸš€ Das Konzept
+## Das Konzept
 
 Die Grundidee dieses Projekts ist die radikale Vereinfachung der Server-Einrichtung. Mit nur einem Befehl verwandelst du einen frischen Ubuntu/Debian-Server in eine voll funktionsfÃ¤hige Web-Umgebung inklusive:
 
@@ -20,7 +20,7 @@ Die Grundidee dieses Projekts ist die radikale Vereinfachung der Server-Einricht
 
 ---
 
-## ðŸ› ï¸ Installation
+## Installation
 
 Du benÃ¶tigst lediglich einen SSH-Zugang zu deinem Server. Kopiere den folgenden Block und fÃ¼ge ihn in dein Terminal ein:
 
@@ -32,28 +32,28 @@ chmod +x install.sh && \
 
 ---
 
-## âœ¨ Highlights
+## Highlights
 
-### ðŸŽ¨ Modernes Dashboard
+### Modernes Dashboard
 Nach der Installation erwartet dich ein elegantes Setup-Interface im Darkmode-Design. Hier konfigurierst du PasswÃ¶rter, Administrator-Accounts und sogar das Design deiner Login-Seiten.
 
-### ðŸ“ Datei-Verwaltung 2.0
+### Datei-Verwaltung 2.0
 Kein FTP/SFTP mehr nÃ¶tig. Der integrierte Dateimanager ermÃ¶glicht es dir, Dateien hochzuladen, direkt im Browser zu bearbeiten (Monaco Editor Integration) und Verzeichnisse zu verwalten.
 
-### ðŸ” Layered Security
+### Layered Security
 *   Automatisierter MariaDB Secure-Install.
 *   Optionaler Passwortschutz fÃ¼r die gesamte Webseite.
 *   Timeout-gesteuerte Sessions fÃ¼r den Dateimanager.
 
 ---
 
-## ðŸ›  Entfaltung des Templates
+## Entfaltung des Templates
 
 Das System nutzt ein vorkonfiguriertes Template (`webprojekt-template`), welches bei der Installation automatisch entpackt und personalisiert wird. Dies beinhaltet bereits eine Demo-Datenbank mit Beispielinhalten, damit du sofort loslegen kannst.
 
 ---
 
-## ðŸ“„ Lizenz
+## Lizenz
 
 Dieses Projekt ist unter der **Apache License 2.0** lizenziert. Weitere Informationen findest du in der [LICENSE](LICENSE) Datei.
 
