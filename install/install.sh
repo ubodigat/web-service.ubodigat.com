@@ -145,6 +145,15 @@ if ! bsdtar -xf "${ZIP_TMP}" -C "${INSTALL_DIR}"; then
   exit 1
 fi
 
+# Falls das Archiv einen Container-Ordner enthält, Inhalt eine Ebene nach oben ziehen
+EXTRACT_ROOT="${INSTALL_DIR}/webprojekt-template"
+if [ ! -f "${INSTALL_DIR}/install/setup.php" ] && [ -f "${EXTRACT_ROOT}/install/setup.php" ]; then
+  echo "ℹ️ ZIP enthält einen Container-Ordner, strukturiere um..."
+  shopt -s dotglob nullglob
+  mv "${EXTRACT_ROOT}"/* "${INSTALL_DIR}/"
+  shopt -u dotglob nullglob
+fi
+
 # ==========================================================
 # 🔍 Struktur prüfen
 # ==========================================================
