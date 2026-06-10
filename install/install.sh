@@ -104,6 +104,17 @@ EOF
 echo "🌐 Konfiguriere Apache..."
 a2enmod rewrite
 a2enconf phpmyadmin
+
+# AllowOverride All aktivieren, damit .htaccess-Dateien (RewriteEngine, php_flag) funktionieren
+cat > /etc/apache2/conf-available/webprojekt-htaccess.conf << 'EOF'
+<Directory /var/www/html>
+    AllowOverride All
+    Options FollowSymLinks
+    Require all granted
+</Directory>
+EOF
+a2enconf webprojekt-htaccess
+
 systemctl restart apache2
 
 # ==========================================================
