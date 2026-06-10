@@ -104,17 +104,6 @@ EOF
 echo "🌐 Konfiguriere Apache..."
 a2enmod rewrite
 a2enconf phpmyadmin
-
-# AllowOverride All aktivieren, damit .htaccess-Dateien (RewriteEngine, php_flag) funktionieren
-cat > /etc/apache2/conf-available/webprojekt-htaccess.conf << 'EOF'
-<Directory /var/www/html>
-    AllowOverride All
-    Options FollowSymLinks
-    Require all granted
-</Directory>
-EOF
-a2enconf webprojekt-htaccess
-
 systemctl restart apache2
 
 # ==========================================================
@@ -154,15 +143,6 @@ fi
 if ! bsdtar -xf "${ZIP_TMP}" -C "${INSTALL_DIR}"; then
   echo "❌ Archiv konnte nicht entpackt werden"
   exit 1
-fi
-
-# Falls das Archiv einen Container-Ordner enthält, Inhalt eine Ebene nach oben ziehen
-EXTRACT_ROOT="${INSTALL_DIR}/webprojekt-template"
-if [ ! -f "${INSTALL_DIR}/install/setup.php" ] && [ -f "${EXTRACT_ROOT}/install/setup.php" ]; then
-  echo "ℹ️ ZIP enthält einen Container-Ordner, strukturiere um..."
-  shopt -s dotglob nullglob
-  mv "${EXTRACT_ROOT}"/* "${INSTALL_DIR}/"
-  shopt -u dotglob nullglob
 fi
 
 # ==========================================================
