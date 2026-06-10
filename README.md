@@ -1,28 +1,28 @@
-﻿# web-service.ubodigat.com
+# web-service.ubodigat.com
 
-![Version](https://img.shields.io/badge/version-1.4.0-blue.svg)
+![Version](https://img.shields.io/badge/version-1.4.1-blue.svg)
 ![License](https://img.shields.io/badge/license-Apache%20License%202.0-green)
 ![Platform](https://img.shields.io/badge/platform-Ubuntu%20%7C%20Debian-orange.svg)
 
-**Ein leistungsstarker, automatisierter Webserver-Stack mit Datenbank und integriertem Web-Dateimanager â€“ optimiert fÃ¼r Schnelligkeit und Benutzerfreundlichkeit.**
+**Ein leistungsstarker, automatisierter Webserver-Stack mit Datenbank und integriertem Web-Dateimanager – optimiert für Schnelligkeit und Benutzerfreundlichkeit.**
 
 ---
 
 ## Das Konzept
 
-Die Grundidee dieses Projekts ist die radikale Vereinfachung der Server-Einrichtung. Mit nur einem Befehl verwandelst du einen frischen Ubuntu/Debian-Server in eine voll funktionsfÃ¤hige Web-Umgebung inklusive:
+Die Grundidee dieses Projekts ist die radikale Vereinfachung der Server-Einrichtung. Mit nur einem Befehl verwandelst du einen frischen Ubuntu/Debian-Server in eine voll funktionsfähige Web-Umgebung inklusive:
 
 *   **Apache2 Webserver**: Vorkonfiguriert und optimiert.
 *   **MariaDB Datenbank**: Sicher eingerichtet inklusive Verwaltungstool.
 *   **Web-Dateimanager**: Verwaltung deiner Dateien direkt im Browser.
-*   **phpMyAdmin**: Volle Kontrolle Ã¼ber deine Datenbanken.
-*   **Modernes Setup**: Ein intuitives Web-Interface fÃ¼r die finale Konfiguration.
+*   **phpMyAdmin**: Volle Kontrolle über deine Datenbanken.
+*   **Modernes Setup**: Ein intuitives Web-Interface für die finale Konfiguration.
 
 ---
 
 ## Installation
 
-Du benÃ¶tigst lediglich einen SSH-Zugang zu deinem Server. Kopiere den folgenden Block und fÃ¼ge ihn in dein Terminal ein:
+Du benötigst lediglich einen SSH-Zugang zu deinem Server. Kopiere den folgenden Block und füge ihn in dein Terminal ein:
 
 ```bash
 wget -O install.sh https://web-service.ubodigat.com/install/install.sh && \
@@ -35,15 +35,15 @@ chmod +x install.sh && \
 ## Highlights
 
 ### Modernes Dashboard
-Nach der Installation erwartet dich ein elegantes Setup-Interface im Darkmode-Design. Hier konfigurierst du PasswÃ¶rter, Administrator-Accounts und sogar das Design deiner Login-Seiten.
+Nach der Installation erwartet dich ein elegantes Setup-Interface im Darkmode-Design. Hier konfigurierst du Passwörter, Administrator-Accounts und sogar das Design deiner Login-Seiten.
 
 ### Datei-Verwaltung 2.0
-Kein FTP/SFTP mehr nÃ¶tig. Der integrierte Dateimanager ermÃ¶glicht es dir, Dateien hochzuladen, direkt im Browser zu bearbeiten (Monaco Editor Integration) und Verzeichnisse zu verwalten.
+Kein FTP/SFTP mehr nötig. Der integrierte Dateimanager ermöglicht es dir, Dateien hochzuladen, direkt im Browser zu bearbeiten (Monaco Editor Integration) und Verzeichnisse zu verwalten.
 
 ### Layered Security
 *   Automatisierter MariaDB Secure-Install.
-*   Optionaler Passwortschutz fÃ¼r die gesamte Webseite.
-*   Timeout-gesteuerte Sessions fÃ¼r den Dateimanager.
+*   Optionaler Passwortschutz für die gesamte Webseite.
+*   Timeout-gesteuerte Sessions für den Dateimanager.
 
 ---
 
@@ -60,5 +60,5 @@ Dieses Projekt ist unter der **Apache License 2.0** lizenziert. Weitere Informat
 ---
 
 <p align="center">
-  Entwickelt mit â¤ï¸ von <a href="https://ubodigat.com">ubodigat.com</a>
+  Entwickelt mit ❤️ von <a href="https://ubodigat.com">ubodigat.com</a>
 </p>
