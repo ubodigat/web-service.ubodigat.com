@@ -1,1 +1,1 @@
-12.06.2026 | v.1.5.8 | Bugfix Button und Updatemeldung
+13.06.2026 | v.1.5.9 | Sicherheitspatch & Funktion replace
