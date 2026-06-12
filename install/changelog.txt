@@ -1,1 +1,1 @@
-12.06.2026 | v.1.5.3 | Verbesserung Protokolierung
+12.06.2026 | v.1.5.3 | Bugfixes
