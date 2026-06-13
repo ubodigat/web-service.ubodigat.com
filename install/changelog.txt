@@ -1,1 +1,1 @@
-13.06.2026 | v.1.6.0 | Bugfixes
+13.06.2026 | v.1.6.1 | Designverbesserungen & Bugfixes
