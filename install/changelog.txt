@@ -1,1 +1,1 @@
-13.06.2026 | v.1.6.4 | Einstellbare Sicherheitsrichtlinien & Bugfixes
+13.06.2026 | v.1.6.5 | Designanpassungen & Funktionsanpassungen
