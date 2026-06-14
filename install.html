@@ -1,193 +1,372 @@
 <!DOCTYPE html>
-<html lang="de">
-
+<html lang="de" data-theme="dark">
 <head>
-    <meta charset="UTF-8">
-    <title>Installation – web-service.ubodigat.com</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Automatisches Setup für Webserver, Dateimanager und Admin-Panel – ein Befehl, alles läuft.">
-    <link rel="stylesheet" href="style.css">
-    <link rel="icon" href="/x-icon.png" type="image/x-icon">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Installationsanleitung – web-service.ubodigat.com</title>
+  <meta name="description" content="Schritt-für-Schritt Installationsanleitung für den web-service Webserver Stack auf Ubuntu, Debian, Proxmox und VPS.">
+  <meta name="robots" content="index, follow">
+  <meta name="author" content="ubodigat.com">
+  <link rel="canonical" href="https://web-service.ubodigat.com/install.html">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Installationsanleitung – web-service">
+  <meta property="og:description" content="Webserver Stack in Minuten einrichten: Apache, PHP, MariaDB, Dateimanager und Admin-Panel mit einem Befehl.">
+  <meta property="og:url" content="https://web-service.ubodigat.com/install.html">
+  <meta property="og:image" content="https://web-service.ubodigat.com/x-icon.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="/x-icon.png" type="image/png">
+  <link rel="apple-touch-icon" href="/x-icon.png">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    "name": "web-service Webserver Stack installieren",
+    "description": "Schritt-für-Schritt Anleitung zur Installation des web-service Webserver Stacks auf Ubuntu oder Debian.",
+    "step": [
+      { "@type": "HowToStep", "position": 1, "name": "Vorbereitung", "text": "Ubuntu 22.04/24.04 oder Debian 12 mit SSH-Zugriff bereitstellen." },
+      { "@type": "HowToStep", "position": 2, "name": "Skript laden", "text": "wget -O install.sh https://web-service.ubodigat.com/install/install.sh" },
+      { "@type": "HowToStep", "position": 3, "name": "Rechte setzen", "text": "chmod +x install.sh" },
+      { "@type": "HowToStep", "position": 4, "name": "Installation starten", "text": "sudo ./install.sh" },
+      { "@type": "HowToStep", "position": 5, "name": "Setup abschließen", "text": "Browser öffnen und http://SERVER-IP/install/setup.php aufrufen." }
+    ],
+    "totalTime": "PT10M",
+    "estimatedCost": { "@type": "MonetaryAmount", "currency": "EUR", "value": "0" }
+  }
+  </script>
 </head>
-
 <body>
-    <canvas id="bg-canvas"></canvas>
+  <!-- ── SVG Sprites ── -->
+  <svg class="sprites" aria-hidden="true">
+    <symbol id="i-server" viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 10h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2ZM7 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 10a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></symbol>
+    <symbol id="i-database" viewBox="0 0 24 24"><path d="M12 3C7.6 3 4 4.6 4 6.5v11c0 1.9 3.6 3.5 8 3.5s8-1.6 8-3.5v-11C20 4.6 16.4 3 12 3Zm0 2c3.3 0 6 1.1 6 1.5S15.3 8 12 8 6 6.9 6 6.5 8.7 5 12 5Zm6 12.5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3v1.8Zm0-5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3V12Z"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><path d="m20.7 19.3-4.4-4.4a7.4 7.4 0 1 0-1.4 1.4l4.4 4.4 1.4-1.4ZM10.5 16a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><path d="M12.65 10A6 6 0 1 0 14 12.65l8.35-8.35-1.4-1.4L19 4.8l-1.5-1.5-1.4 1.4L17.6 6.2l-1.4 1.4-1.5-1.5-1.4 1.4 1.5 1.5L12.65 10ZM8 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5ZM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></symbol>
+    <symbol id="i-video" viewBox="0 0 24 24"><path d="M17 10.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3.5l4 4v-11l-4 4ZM15 17H5V7h10v10Z"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></symbol>
+    <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm-2 14-4-4 1.4-1.4L10 13.2l6.6-6.6L18 8l-8 8Z"/></symbol>
+    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></symbol>
+    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.488.488 0 0 0-.59.22L2.74 8.87a.49.49 0 0 0 .12.61l2.03 1.58a7.2 7.2 0 0 0-.07.94c0 .32.02.64.07.94L2.86 14.5a.5.5 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.04.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.01-1.56ZM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></symbol>
+    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"/></symbol>
+    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm4 18H6V4h7v5h5v11Z"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a3 3 0 0 1 3-3h4.2l2.1 2H18a3 3 0 0 1 3 3v7.5a3.5 3.5 0 0 1-3.5 3.5h-11A3.5 3.5 0 0 1 3 16.5V7Zm2 0v9.5A1.5 1.5 0 0 0 6.5 18h11a1.5 1.5 0 0 0 1.5-1.5V9a1 1 0 0 0-1-1h-6.5L9.4 6H6a1 1 0 0 0-1 1Z"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="M9.7 7.3 5 12l4.7 4.7-1.4 1.4L2.2 12l6.1-6.1 1.4 1.4Zm4.6 0 1.4-1.4 6.1 6.1-6.1 6.1-1.4-1.4L19 12l-4.7-4.7ZM13.5 4l-3 16h-2l3-16h2Z"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><path d="M7 10V8a5 5 0 1 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2 0h6V8a3 3 0 1 0-6 0v2Zm3 7a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 12 17Z"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3 17.4 8.4 16 9.8l-3-3V16h-2V6.8l-3 3-1.4-1.4L12 3ZM5 18h14v2H5v-2Z"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M11 4h2v8.2l3-3 1.4 1.4L12 16l-5.4-5.4L8 9.2l3 3V4ZM5 18h14v2H5v-2Z"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.2 7.4A8 8 0 0 0 5.1 9.7l-1.9-.6A10 10 0 0 1 20.7 6L22 4.7V10h-5.3l2.5-2.6ZM4.8 16.6A8 8 0 0 0 18.9 14.3l1.9.6A10 10 0 0 1 3.3 18L2 19.3V14h5.3l-2.5 2.6Z"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m9.3 16.6-4.2-4.2-1.4 1.4 5.6 5.6L21 7.7l-1.4-1.4L9.3 16.6Z"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-1v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V7Zm3-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-7Zm-3 4H7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1h-4a3 3 0 0 1-3-3v-4Z"/></symbol>
+    <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.1-4.7-5A3.9 3.9 0 0 1 6.6 8.7c-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1a9.8 9.8 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 2V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v7c0 4.4 3.3 8.5 8 9.5 4.7-1 8-5.1 8-9.5V5l-8-3Zm-1 12.4-2.8-2.8 1.4-1.4 1.4 1.4 3.4-3.4 1.4 1.4-4.8 4.8Z"/></symbol>
+    <symbol id="i-terminal" viewBox="0 0 24 24"><path d="M3 3h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 4 5 4-5 4 1.4 1.4L12 12l-6.6-5.4L4 7Zm8 8h6v2h-6v-2Z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><path d="M21 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.5 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM5 18l4.5-6L13 16l2.5-3L19 18H5Z"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><path d="M11 10h2v8h-2v-8Zm0-4h2v2h-2V6Zm1-4a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><path d="M11 2h2v3h-2V2Zm0 17h2v3h-2v-3ZM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1Zm12.1 12.1 1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1ZM2 11h3v2H2v-2Zm17 0h3v2h-3v-2ZM4.2 18.4l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM16.3 6.3l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a9.5 9.5 0 1 0 12.3 12.3Z"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.5 15.5 0 0 0-1.1-5A8 8 0 0 1 18.9 11ZM12 4.1c.7 1 1.4 3.2 1.7 6.9h-3.4c.3-3.7 1-5.9 1.7-6.9ZM4.1 13h3.1c.1 1.9.5 3.6 1.1 5A8 8 0 0 1 4.1 13Zm3.1-2H4.1A8 8 0 0 1 8.3 6c-.6 1.4-1 3.1-1.1 5ZM12 19.9c-.7-1-1.4-3.2-1.7-6.9h3.4c-.3 3.7-1 5.9-1.7 6.9Zm3.7-1.9c.6-1.4 1-3.1 1.1-5h3.1a8 8 0 0 1-4.2 5Z"/></symbol>
+  </svg>
 
-    <header class="topbar">
-        <div class="container topbar__inner">
-            <a class="brand" href="index.html">
-                <img src="ubodigatlogo.svg" class="brand__logo" alt="ubodigat Logo">
-                <span class="brand__text">
-                    web-service<span class="brand__dim">.ubodigat.com</span>
-                </span>
+  <div class="bg" aria-hidden="true"></div>
+  <canvas class="particle-bg" id="particleBg" aria-hidden="true"></canvas>
+
+  <!-- ── Header ── -->
+  <header class="header">
+    <div class="container head">
+      <a class="brand" href="index.html" aria-label="web-service Startseite">
+        <img src="ubodigatlogo.svg" alt="ubodigat Logo" width="100" height="52">
+        <span class="brand-copy"><b>web-service.ubodigat.com</b><small>Installationsanleitung</small></span>
+      </a>
+      <button class="menu" id="mobileMenu" type="button" aria-label="Menü öffnen" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+      <nav class="nav" id="navLinks" aria-label="Hauptnavigation">
+        <a href="index.html"><svg class="icon"><use href="#i-home"></use></svg><span>Startseite</span></a>
+        <a href="index.html#overview"><svg class="icon"><use href="#i-server"></use></svg><span>Überblick</span></a>
+        <a href="index.html#filemanager"><svg class="icon"><use href="#i-folder"></use></svg><span>Dateimanager</span></a>
+        <a href="index.html#security"><svg class="icon"><use href="#i-shield"></use></svg><span>Sicherheit</span></a>
+        <a href="index.html#faq"><svg class="icon"><use href="#i-info"></use></svg><span>FAQ</span></a>
+        <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon"><use href="#i-github"></use></svg><span>GitHub</span></a>
+        <button class="theme" id="themeToggle" type="button" aria-label="Light Mode aktivieren" aria-pressed="false">
+          <span class="theme-orb">
+            <svg class="icon theme-moon"><use href="#i-moon"></use></svg>
+            <svg class="icon theme-sun"><use href="#i-sun"></use></svg>
+          </span>
+        </button>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ── Page Hero ── -->
+    <section class="section" style="padding-top: 100px; padding-bottom: 40px;">
+      <div class="container">
+        <div class="reveal" style="max-width: 720px;">
+          <p class="kicker">Schritt-für-Schritt Anleitung</p>
+          <h1 style="font-size: clamp(1.8rem, 4vw, 2.8rem); margin: 12px 0 18px; line-height: 1.18;">
+            Webserver Stack installieren
+          </h1>
+          <p class="lead" style="color: var(--muted); max-width: 580px;">
+            Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel und 2FA in unter 10 Minuten — ein Befehl genügt.
+          </p>
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 22px;">
+            <span class="badge badge--ok"><svg class="icon" style="width:13px;height:13px"><use href="#i-check-circle"></use></svg> Ubuntu 22.04 / 24.04</span>
+            <span class="badge badge--ok"><svg class="icon" style="width:13px;height:13px"><use href="#i-check-circle"></use></svg> Debian 12</span>
+            <span class="badge badge--ok"><svg class="icon" style="width:13px;height:13px"><use href="#i-check-circle"></use></svg> Proxmox LXC</span>
+            <span class="badge badge--ok"><svg class="icon" style="width:13px;height:13px"><use href="#i-check-circle"></use></svg> VPS / Bare Metal</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── Tabs ── -->
+    <section class="section" style="padding-top: 0; padding-bottom: 60px;">
+      <div class="container">
+
+        <!-- Tab bar -->
+        <div class="reveal" style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap; margin-bottom: 32px;">
+          <span style="color: var(--muted); font-size: 13px; font-weight: 700;">Plattform:</span>
+          <div class="install-tabs glass" style="border-radius: 999px; padding: 4px;">
+            <button class="install-tab active" data-target="linux">
+              <svg class="icon" style="width:14px;height:14px"><use href="#i-terminal"></use></svg> Linux / Ubuntu
+            </button>
+            <button class="install-tab" data-target="proxmox">
+              <svg class="icon" style="width:14px;height:14px"><use href="#i-server"></use></svg> Proxmox LXC
+            </button>
+            <button class="install-tab" data-target="vps">
+              <svg class="icon" style="width:14px;height:14px"><use href="#i-globe"></use></svg> VPS / Cloud
+            </button>
+          </div>
+        </div>
+
+        <!-- ── Linux / Ubuntu ── -->
+        <section class="install-section active" id="linux">
+          <div class="grid grid--2 reveal" style="margin-bottom: 24px;">
+
+            <!-- Schritt 1 -->
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-check-circle"></use></svg> Schritt 1</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-server"></use></svg> Vorbereitung</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:12px;">Stelle sicher, dass du Root-Zugriff auf deinen Ubuntu- oder Debian-Server hast.</p>
+              <ul class="check">
+                <li>Ubuntu 22.04 / 24.04 oder Debian 12</li>
+                <li>SSH-Zugriff mit Root oder sudo</li>
+                <li>Aktive Internetverbindung</li>
+                <li>Frisches oder vorher gesichertes System</li>
+              </ul>
+            </div>
+
+            <!-- Schritt 2 -->
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-download"></use></svg> Schritt 2</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-download"></use></svg> Installationsskript laden</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:14px;">Lade das Installationsskript auf deinen Server und setze die Ausführungsrechte.</p>
+              <div class="cmd-list">
+                <div class="cmd" data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh">
+                  <code>wget -O install.sh https://web-service.ubodigat.com/install/install.sh</code>
+                  <span class="copy-hint"><svg class="icon" style="width:13px;height:13px"><use href="#i-copy"></use></svg>Kopieren</span>
+                </div>
+                <div class="cmd" style="margin-top:8px;" data-copy="chmod +x install.sh">
+                  <code>chmod +x install.sh</code>
+                  <span class="copy-hint"><svg class="icon" style="width:13px;height:13px"><use href="#i-copy"></use></svg>Kopieren</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Schritt 3 -->
+          <div class="glass block reveal" style="margin-bottom: 24px;">
+            <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-terminal"></use></svg> Schritt 3</div>
+            <h3 class="card__title" style="font-size:18px;"><svg class="icon" style="width:20px;height:20px"><use href="#i-terminal"></use></svg> Installation starten</h3>
+            <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">
+              Starte das Installationsskript mit Root-Rechten. Der gesamte Vorgang dauert ca. 5–10 Minuten und ist vollautomatisch.
+            </p>
+            <div class="cmd cmd--large" data-copy="sudo ./install.sh">
+              <code>sudo ./install.sh</code>
+              <span class="copy-hint"><svg class="icon" style="width:13px;height:13px"><use href="#i-copy"></use></svg>Kopieren</span>
+            </div>
+            <div class="note" style="margin-top:16px;">
+              <strong><svg class="icon" style="width:14px;height:14px"><use href="#i-check-circle"></use></svg> Vollautomatische Konfiguration</strong>
+              <p style="margin-top:8px;color:var(--muted);font-size:13px;line-height:1.7;">
+                Das Skript konfiguriert MariaDB <strong>vollautomatisch</strong> — es sind <strong>keine manuellen Eingaben</strong> erforderlich. Datenbank, Benutzer und Passwort werden im Hintergrund angelegt. Nach Abschluss das Web-Setup unter <code style="color:var(--cyan);font-size:12px;">http://&lt;SERVER-IP&gt;/install/setup.php</code> aufrufen.
+              </p>
+            </div>
+          </div>
+
+          <!-- Schritt 4 -->
+          <div class="glass card reveal" style="margin-bottom: 24px; border: 1px solid rgba(79,142,247,.28); background: rgba(79,142,247,.06);">
+            <div class="chip" style="background:rgba(79,142,247,.18);"><svg class="icon" style="width:12px;height:12px"><use href="#i-globe"></use></svg> Schritt 4</div>
+            <h3 class="card__title" style="font-size:18px;"><svg class="icon" style="width:20px;height:20px"><use href="#i-settings"></use></svg> Web-Setup abschließen</h3>
+            <p style="color:var(--muted);font-size:14px;margin-bottom:16px;">
+              Nachdem das Terminal-Skript abgeschlossen ist, öffne die Setup-Seite im Browser um Admin-Zugangsdaten und Einstellungen einzurichten.
+            </p>
+            <div class="cmd" data-copy="http://SERVER-IP/install/setup.php">
+              <code>http://<span class="grad">&lt;deine-server-ip&gt;</span>/install/setup.php</code>
+              <span class="copy-hint"><svg class="icon" style="width:13px;height:13px"><use href="#i-copy"></use></svg>Kopieren</span>
+            </div>
+            <div class="list" style="margin-top: 20px;">
+              <div class="list__row">
+                <span class="kbd">Admin-Panel</span>
+                <span style="color:var(--muted);font-size:13px;">Benutzerverwaltung &amp; Einstellungen</span>
+                <span class="badge badge--ok">bereit</span>
+              </div>
+              <div class="list__row" style="margin-top:8px;">
+                <span class="kbd">Dateimanager</span>
+                <span style="color:var(--muted);font-size:13px;">Dateien im Browser verwalten</span>
+                <span class="badge badge--ok">bereit</span>
+              </div>
+              <div class="list__row" style="margin-top:8px;">
+                <span class="kbd">phpMyAdmin</span>
+                <span style="color:var(--muted);font-size:13px;">MariaDB Datenbank-Verwaltung</span>
+                <span class="badge badge--ok">bereit</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Was nach der Installation verfügbar ist -->
+          <div class="glass block reveal">
+            <h3 class="card__title" style="font-size:17px;"><svg class="icon" style="width:18px;height:18px"><use href="#i-check-circle"></use></svg> Was nach der Installation verfügbar ist</h3>
+            <div class="grid grid--2" style="margin-top: 14px; gap: 0 32px;">
+              <ul class="check">
+                <li>Web-Dateimanager mit Monaco-Editor</li>
+                <li>Chunk-Upload bis 2 GB mit Fortschrittsbalken</li>
+                <li>Bild- &amp; Video-Vorschau im Browser</li>
+                <li>Metadaten-Editor für Mediadateien</li>
+                <li>phpMyAdmin Datenbankzugang</li>
+              </ul>
+              <ul class="check">
+                <li>Admin-Panel mit 2FA / TOTP</li>
+                <li>Ordnerspezifische Zugriffsrechte (ACL)</li>
+                <li>Sichtbarkeit pro Datei und Ordner steuerbar</li>
+                <li>Ein-Klick-Update auf neue Versionen</li>
+                <li>Bcrypt-Passwort-Hashing und Sitzungs-Schutz</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── Proxmox ── -->
+        <section class="install-section" id="proxmox">
+          <div class="grid grid--2 reveal" style="margin-bottom: 24px;">
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-server"></use></svg> Container erstellen</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-server"></use></svg> Proxmox LXC Vorbereitung</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:12px;">Erstelle einen Linux Container (LXC) mit Ubuntu 24.04 oder Debian 12 als Template.</p>
+              <ul class="check">
+                <li>Mindestens 1 GB RAM zuweisen</li>
+                <li>Mindestens 10 GB Festplattenspeicher</li>
+                <li>Netzwerk-Interface einrichten (DHCP)</li>
+                <li>Option „Nesting" aktivieren (für Docker-Support)</li>
+              </ul>
+            </div>
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-terminal"></use></svg> Installation</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-terminal"></use></svg> Container einrichten</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:12px;">Verbinde dich per Proxmox-Konsole oder SSH mit dem Container und führe die Standard-Installation aus.</p>
+              <ul class="check">
+                <li>Container starten und Konsole öffnen</li>
+                <li>Als root anmelden</li>
+                <li>Installationsbefehl ausführen (Schritt 2–4 der Linux-Anleitung)</li>
+                <li>Setup im Browser abschließen</li>
+              </ul>
+            </div>
+          </div>
+          <div class="glass block reveal">
+            <div class="note">
+              <strong><svg class="icon" style="width:14px;height:14px"><use href="#i-info"></use></svg> Hinweis zu Proxmox</strong>
+              <p style="color:var(--muted);font-size:14px;margin-top:8px;">
+                Die Installation in einem Proxmox LXC Container entspricht der Standard-Linux-Installation. Fahre nach der Container-Erstellung mit Schritt 2 der Linux-Anleitung fort.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- ── VPS ── -->
+        <section class="install-section" id="vps">
+          <div class="grid grid--2 reveal" style="margin-bottom: 24px;">
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-server"></use></svg> VPS vorbereiten</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-server"></use></svg> Cloud VPS Setup</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:12px;">Funktioniert auf allen gängigen Cloud-Anbietern mit Ubuntu- oder Debian-Image.</p>
+              <ul class="check">
+                <li>Hetzner Cloud, DigitalOcean, AWS, Vultr, etc.</li>
+                <li>Ubuntu 22.04 / 24.04 Image wählen</li>
+                <li>SSH-Key beim Erstellen hinterlegen</li>
+                <li>Mindestens 1 vCPU, 1 GB RAM, 20 GB Disk</li>
+              </ul>
+            </div>
+            <div class="glass card">
+              <div class="chip"><svg class="icon" style="width:12px;height:12px"><use href="#i-shield"></use></svg> Firewall prüfen</div>
+              <h3 class="card__title"><svg class="icon" style="width:18px;height:18px"><use href="#i-shield"></use></svg> Netzwerk &amp; Firewall</h3>
+              <p class="muted" style="font-size:14px;margin-bottom:12px;">Stelle sicher, dass die nötigen Ports im Anbieter-Dashboard freigegeben sind.</p>
+              <ul class="check">
+                <li>Port 80 (HTTP) öffnen</li>
+                <li>Port 443 (HTTPS) öffnen</li>
+                <li>Port 22 (SSH) öffnen</li>
+                <li>Anbieter-Firewall-Regeln prüfen</li>
+              </ul>
+            </div>
+          </div>
+          <div class="glass block reveal">
+            <div class="note">
+              <strong><svg class="icon" style="width:14px;height:14px"><use href="#i-info"></use></svg> Tipp für VPS</strong>
+              <p style="color:var(--muted);font-size:14px;margin-top:8px;">
+                Nach dem Erstellen des VPS per SSH verbinden und die Standard-Linux-Installation (Schritte 2–4) ausführen. Für öffentlich erreichbare Server empfehlen wir zusätzlich HTTPS (Let's Encrypt), Fail2ban und regelmäßige Backups.
+              </p>
+            </div>
+          </div>
+        </section>
+
+      </div>
+    </section>
+
+    <!-- ── Kurzbefehl ── -->
+    <section class="section" style="padding-top: 0; padding-bottom: 80px;">
+      <div class="container">
+        <div class="glass block reveal" style="border: 1px solid rgba(79,142,247,.22); background: rgba(79,142,247,.05); text-align: center;">
+          <p class="kicker" style="margin-bottom: 12px;">Einzel-Befehl</p>
+          <h2 style="font-size: clamp(1.2rem, 3vw, 1.6rem); margin-bottom: 16px;">Alles in einem Befehl</h2>
+          <p style="color: var(--muted); font-size:14px; margin-bottom: 20px; max-width: 540px; margin-left: auto; margin-right: auto;">
+            Laden, Rechte setzen und starten in einer Zeile — kopiere diesen Befehl direkt in dein Terminal.
+          </p>
+          <div class="cmd cmd--large" data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh" style="max-width: 800px; margin: 0 auto; text-align: left;">
+            <code style="word-break: break-all;">wget -O install.sh https://web-service.ubodigat.com/install/install.sh &amp;&amp; chmod +x install.sh &amp;&amp; ./install.sh</code>
+            <span class="copy-hint"><svg class="icon" style="width:13px;height:13px"><use href="#i-copy"></use></svg>Kopieren</span>
+          </div>
+          <div style="display: flex; justify-content: center; flex-wrap: wrap; gap: 14px; margin-top: 28px;">
+            <a class="btn primary" href="index.html">
+              <svg class="icon"><use href="#i-home"></use></svg> Zurück zur Übersicht
             </a>
-            <div class="pill mini">
-                <span class="dot"></span>
-                <span>Installation Guide · v1.6.8</span>
-            </div>
+            <a class="btn ghost" href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer">
+              <svg class="icon"><use href="#i-github"></use></svg> GitHub ansehen
+            </a>
+          </div>
         </div>
-    </header>
+      </div>
+    </section>
 
-    <main class="section">
-        <div class="container">
+  </main>
 
-            <div class="section__head">
-                <div>
-                    <h2>Server Setup</h2>
-                    <p>In wenigen Schritten zu deinem eigenen Web-Server mit Dateimanager & Admin-Panel.</p>
-                </div>
-                <div class="install-tabs glass">
-                    <button class="install-tab active" data-target="linux">Linux / Ubuntu</button>
-                    <button class="install-tab" data-target="proxmox">Proxmox</button>
-                    <button class="install-tab" data-target="vps">VPS</button>
-                </div>
-            </div>
+  <!-- ── Toast ── -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-            <!-- ── Linux / Ubuntu ── -->
-            <section class="install-section active" id="linux">
+  <!-- ── Footer ── -->
+  <footer class="footer">
+    <div class="container footer__inner">
+      <span>© <span id="year"></span> <a href="https://ubodigat.com" style="color:var(--muted)">ubodigat.com</a> · Open Source · Apache License 2.0 · v1.6.9</span>
+      <nav style="display:flex;gap:14px;align-items:center;flex-wrap:wrap;">
+        <a href="index.html">Projektseite</a>
+        <a href="index.html#faq">FAQ</a>
+        <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer">GitHub</a>
+      </nav>
+    </div>
+  </footer>
 
-                <div class="grid grid--2">
-                    <div class="glass card">
-                        <div class="chip">Schritt 1</div>
-                        <h3 class="card__title">📦 Vorbereitung</h3>
-                        <p class="muted">Stelle sicher, dass du Root-Zugriff auf deinen Ubuntu/Debian Server hast.</p>
-                        <ul class="check">
-                            <li>Ubuntu 22.04 / 24.04 empfohlen</li>
-                            <li>Aktive Internetverbindung</li>
-                            <li>SSH-Zugriff bereit</li>
-                        </ul>
-                    </div>
-
-                    <div class="glass card">
-                        <div class="chip">Schritt 2</div>
-                        <h3 class="card__title">📥 Skript laden</h3>
-                        <p class="muted">Lade das automatisierte Installationsskript direkt auf deinen Server.</p>
-                        <div class="cmd-list">
-                            <div class="cmd" data-copy="wget -O install.sh https://web-service.ubodigat.com/install/install.sh">
-                                <code>wget -O install.sh https://web-service.ubodigat...</code>
-                                <span class="mini">Datei herunterladen</span>
-                            </div>
-                            <div class="cmd" data-copy="chmod +x install.sh">
-                                <code>chmod +x install.sh</code>
-                                <span class="mini">Rechte setzen</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="spacer" style="height: 24px;"></div>
-
-                <div class="glass block">
-                    <div class="chip">Schritt 3</div>
-                    <h3 class="card__title">🚀 Installation starten</h3>
-                    <p>Führe das Skript aus und folge den Anweisungen auf dem Bildschirm. Der Server wird automatisch
-                        für Apache, MariaDB und PHP konfiguriert.</p>
-
-                    <div class="cmd cmd--large" data-copy="sudo ./install.sh">
-                        <code>sudo ./install.sh</code>
-                        <span>Klicken zum Kopieren</span>
-                    </div>
-
-                    <div class="info-note glass">
-                        <strong>🔐 MariaDB Konfiguration</strong>
-                        <p class="mini">Das Skript fragt nach Sicherheitsoptionen. Empfohlene Antworten:
-                            <strong>Enter</strong> (Passwort), <strong>n</strong> (Socket), <strong>n</strong> (Root Pass),
-                            danach <strong>y</strong> für alle weiteren Fragen.
-                        </p>
-                    </div>
-                </div>
-
-                <div class="spacer" style="height: 24px;"></div>
-
-                <div class="glass card card--highlite">
-                    <div class="chip">Schritt 4</div>
-                    <h3 class="card__title">🌐 Web-Setup abschließen</h3>
-                    <p>Nachdem das Skript fertig ist, öffne das Setup-Dashboard im Browser:</p>
-
-                    <div class="cmd" data-copy="http://SERVER-IP/install/setup.php">
-                        <code>http://<span class="grad">&lt;deine-server-ip&gt;</span>/install/setup.php</code>
-                        <span class="mini">Im Browser öffnen</span>
-                    </div>
-
-                    <div class="list" style="margin-top: 20px;">
-                        <div class="list__row">
-                            <span class="kbd">Admin-Panel</span>
-                            <span>Benutzerverwaltung & Einstellungen</span>
-                            <span class="badge badge--ok">bereit</span>
-                        </div>
-                        <div class="list__row">
-                            <span class="kbd">Dateimanager</span>
-                            <span>Dateien im Browser verwalten</span>
-                            <span class="badge badge--ok">bereit</span>
-                        </div>
-                        <div class="list__row">
-                            <span class="kbd">Datenbank</span>
-                            <span>MariaDB + phpMyAdmin Login</span>
-                            <span class="badge badge--ok">bereit</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="spacer" style="height: 24px;"></div>
-
-                <div class="glass block">
-                    <h3 class="card__title">✅ Was nach der Installation verfügbar ist</h3>
-                    <div class="grid grid--2" style="margin-top: 12px;">
-                        <ul class="check">
-                            <li>Web-Dateimanager mit Monaco-Editor</li>
-                            <li>Chunk-Upload bis 2 GB mit Fortschrittsbalken</li>
-                            <li>Bild- & Video-Vorschau im Browser</li>
-                            <li>Metadaten-Editor für Mediadateien</li>
-                        </ul>
-                        <ul class="check">
-                            <li>Admin-Panel mit 2FA (TOTP)</li>
-                            <li>Ordnerspezifische Berechtigungen</li>
-                            <li>Sichtbarkeit pro Datei/Ordner steuerbar</li>
-                            <li>Ein-Klick-Update auf neue Versionen</li>
-                        </ul>
-                    </div>
-                </div>
-
-            </section>
-
-            <!-- ── Proxmox ── -->
-            <section class="install-section" id="proxmox">
-                <div class="glass block">
-                    <h3>Proxmox Container (LXC)</h3>
-                    <p>Erstelle einen Container mit Debian 12 oder Ubuntu 24.04.</p>
-                    <ul class="check" style="margin-top: 12px;">
-                        <li>Aktiviere „Nesting", falls du Docker innerhalb des Projekts nutzen möchtest</li>
-                        <li>Weise dem Container mindestens 1 GB RAM und 10 GB Disk zu</li>
-                        <li>Fahre danach mit der Standard-Linux-Installation fort (Schritt 2–4)</li>
-                    </ul>
-                </div>
-            </section>
-
-            <!-- ── VPS ── -->
-            <section class="install-section" id="vps">
-                <div class="glass block">
-                    <h3>VPS / Bare Metal</h3>
-                    <p>Funktioniert auf allen gängigen Cloud-Anbietern (Hetzner, DigitalOcean, AWS, etc.).</p>
-                    <ul class="check" style="margin-top: 12px;">
-                        <li>Nutze ein frisches Ubuntu 22.04 / 24.04 Image für die besten Ergebnisse</li>
-                        <li>Stelle sicher, dass Port 80 und 443 in der Firewall des Anbieters geöffnet sind</li>
-                        <li>Fahre danach mit der Standard-Linux-Installation fort (Schritt 2–4)</li>
-                    </ul>
-                </div>
-            </section>
-
-        </div>
-    </main>
-
-    <footer class="footer">
-        <div class="container footer__inner">
-            <span class="muted">© <span id="year"></span> ubodigat.com • Open Source • v1.6.8</span>
-            <a href="index.html">Projektseite</a>
-        </div>
-    </footer>
-
-    <script src="/script.js"></script>
+  <script src="script.js"></script>
 
 </body>
-
 </html>

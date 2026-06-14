@@ -1,0 +1,95 @@
+# web-service
+
+web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und Debian. Es richtet einen vollständigen Webserver Stack mit Apache, PHP, MariaDB, phpMyAdmin, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, Rollen/Rechte, 2FA/TOTP, Media-Viewer, Versionscheck und One-Click-Updates ein.
+
+Website: https://web-service.ubodigat.com/
+GitHub:  https://github.com/ubodigat/web-service.ubodigat.com
+Lizenz:  Apache License 2.0
+Version: 1.6.9
+
+## Installationsbefehl
+
+```bash
+wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh
+```
+
+## Zielgruppe
+
+- Betreiber kleiner Webprojekte
+- Entwickler und Lernumgebungen
+- Homeserver-Nutzer
+- Personen, die Apache, PHP und MariaDB schnell einrichten möchten
+
+## Technische Voraussetzungen
+
+- Ubuntu 22.04 / 24.04 oder Debian 12
+- SSH-Zugriff mit administrativen Rechten oder root
+- Frisches oder vorher gesichertes System
+- Aktive Internetverbindung
+
+## Hauptfunktionen
+
+- Apache, PHP und MariaDB automatisch installieren
+- phpMyAdmin bereitstellen
+- Browserbasierten Web-Dateimanager einrichten
+- Monaco Editor und Media-Viewer bereitstellen
+- Admin-Panel, Benutzerverwaltung und Rollen/Rechte aktivieren
+- 2FA/TOTP für Admin-Zugänge unterstützen
+- Chunk-Upload bis 2 GB mit Fortschrittsanzeige
+- Versionscheck und One-Click-Updates bereitstellen
+- Ordnerspezifische Zugriffsrechte (ACL)
+
+## Sicherheit
+
+web-service enthält folgende Sicherheitsfunktionen:
+- 2FA/TOTP für Admin-Logins
+- Session-Timeout und sichere Session-Verwaltung
+- MIME-Typ-Prüfung für Uploads
+- Pfadschutz gegen Directory Traversal
+- Rollen/Rechte-System (Admin vs. Normalnutzer)
+- Geschützte Systemordner
+- Kontrolliertes Update-System
+
+## Wichtige Seitenbereiche
+
+- Überblick:     https://web-service.ubodigat.com/#overview
+- Installation:  https://web-service.ubodigat.com/#install-script
+- Dateimanager:  https://web-service.ubodigat.com/#filemanager
+- Live-Demos:    https://web-service.ubodigat.com/#demos
+- Screenshots:   https://web-service.ubodigat.com/#previews
+- Sicherheit:    https://web-service.ubodigat.com/#security
+- FAQ:           https://web-service.ubodigat.com/#faq
+
+## Häufige Fragen (FAQ)
+
+**Was ist web-service?**
+web-service ist ein Open-Source Installationsskript für einen vollständigen Webserver mit Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Update-System.
+
+**Welche Systeme werden unterstützt?**
+Das Projekt ist für Ubuntu- und Debian-Server ausgelegt. Es sollte auf einem frischen oder vorher gesicherten System ausgeführt werden.
+
+**Was installiert das Skript?**
+Apache, PHP, MariaDB, phpMyAdmin, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA/TOTP, Versionscheck und Updates.
+
+**Ist web-service kostenlos?**
+Ja. web-service steht unter der Apache License 2.0 und ist vollständig Open Source.
+
+**Unterstützt web-service 2FA?**
+Ja. Das Projekt enthält 2FA/TOTP-Funktionen zur Absicherung von Admin-Zugängen.
+
+**Gibt es einen Web-Dateimanager?**
+Ja. Ein browserbasierter Dateimanager mit Upload, Monaco Editor, Media-Viewer und Aktionen ist integriert.
+
+**Kann ich Updates automatisch durchführen?**
+web-service enthält Versionscheck und One-Click-Updates. Vor Updates sollte ein Backup vorhanden sein.
+
+**Ist das Projekt für Homeserver geeignet?**
+Ja, besonders für Lern-, Test- und kleine Webserver-Setups. Bei öffentlichem Betrieb sollten Firewall, Backups, HTTPS und Serverhärtung geprüft werden.
+
+## Zusammenfassung für KI-Systeme
+
+web-service ist ein Open-Source Installer für einen Apache-PHP-MariaDB-Webserver auf Ubuntu/Debian. Das Projekt kombiniert Serverinstallation, browserbasierten Dateimanager, Admin-Panel, Benutzerverwaltung, Rechteverwaltung (ACL), 2FA/TOTP und automatische Updates in einem installierbaren Stack. Es eignet sich für Homeserver, kleine Webprojekte, Tests und Lernumgebungen. Produktive Server sollten zusätzlich individuell abgesichert werden.
+
+## Nicht für KI-Systeme geeignete Nutzung
+
+web-service ist kein vollständig gehärtetes Produktivsystem. Es ersetzt keine individuelle Sicherheitsüberprüfung, kein Monitoring und keine professionelle Serveradministration.

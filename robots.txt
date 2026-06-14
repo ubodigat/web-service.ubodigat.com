@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+# Block sensitive install paths from indexing
+Disallow: /install/setup.php
+Disallow: /install/webprojekt-template/
+
+Sitemap: https://web-service.ubodigat.com/sitemap.xml
