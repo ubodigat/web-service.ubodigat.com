@@ -771,16 +771,36 @@ function initPermissions() {
       newRule.className = "saved-rule";
       const svgEdit = `<svg class="icon" style="width:13px;height:13px"><use href="#i-edit"></use></svg>`;
       const svgTrash = `<svg class="icon" style="width:13px;height:13px"><use href="#i-trash"></use></svg>`;
-      newRule.innerHTML = `
-        <div>
-          <b>${folder}</b>
-          ${inactive.map(n => `<span>${n}</span>`).join("")}
-          ${active.map(n => `<span class="on">${n}</span>`).join("")}
-        </div>
-        <div>
-          <button class="mini yellow" type="button">${svgEdit}</button>
-          <button class="mini red" type="button">${svgTrash}</button>
-        </div>`;
+      const left = document.createElement("div");
+      const folderEl = document.createElement("b");
+      folderEl.textContent = folder;
+      left.appendChild(folderEl);
+      inactive.forEach(n => {
+        const span = document.createElement("span");
+        span.textContent = n;
+        left.appendChild(span);
+      });
+      active.forEach(n => {
+        const span = document.createElement("span");
+        span.className = "on";
+        span.textContent = n;
+        left.appendChild(span);
+      });
+
+      const right = document.createElement("div");
+      const editBtn = document.createElement("button");
+      editBtn.className = "mini yellow";
+      editBtn.type = "button";
+      editBtn.innerHTML = svgEdit;
+      const trashBtn = document.createElement("button");
+      trashBtn.className = "mini red";
+      trashBtn.type = "button";
+      trashBtn.innerHTML = svgTrash;
+      right.appendChild(editBtn);
+      right.appendChild(trashBtn);
+
+      newRule.appendChild(left);
+      newRule.appendChild(right);
       rulesBox.parentNode.insertBefore(newRule, rulesBox.nextSibling);
       if (window._attachRuleButtons) window._attachRuleButtons(newRule);
       notify(`Regel für "${folder}" gespeichert.`);
