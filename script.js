@@ -387,14 +387,33 @@ function initFilemanager() {
       const path = built;
       return { label: part, path };
     });
-    breadcrumb.innerHTML = segments.map((seg, i) => {
+    breadcrumb.textContent = "";
+    segments.forEach((seg, i) => {
       if (i < segments.length - 1) {
-        return `<button class="fm-bc-btn" data-path="${seg.path}">${seg.label}</button><span class="fm-bc-sep">${makeIcon("#i-chevron-right")}</span>`;
+        const btn = document.createElement("button");
+        btn.className = "fm-bc-btn";
+        btn.dataset.path = seg.path;
+        btn.textContent = seg.label;
+        btn.addEventListener("click", () => navigateTo(btn.dataset.path));
+        breadcrumb.appendChild(btn);
+
+        const sep = document.createElement("span");
+        sep.className = "fm-bc-sep";
+        const iconWrap = document.createElement("span");
+        iconWrap.innerHTML = makeIcon("#i-chevron-right");
+        if (iconWrap.firstElementChild) {
+          sep.appendChild(iconWrap.firstElementChild);
+        } else {
+          sep.textContent = "›";
+        }
+        breadcrumb.appendChild(sep);
+        return;
       }
-      return `<span class="fm-bc-cur">${seg.label}</span>`;
-    }).join("");
-    breadcrumb.querySelectorAll(".fm-bc-btn").forEach(btn => {
-      btn.addEventListener("click", () => navigateTo(btn.dataset.path));
+
+      const cur = document.createElement("span");
+      cur.className = "fm-bc-cur";
+      cur.textContent = seg.label;
+      breadcrumb.appendChild(cur);
     });
   }
 
