@@ -725,7 +725,7 @@ function initFilemanager() {
 
     /* ── Monaco editor overlay ── */
     const FILE_CONTENT = {
-        "index.php": `<?php\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/filemanager/security.php';\n\n$page_title = 'Willkommen';\n$version    = '1.7.0';\n\necho '<h1>Willkommen bei web-service</h1>';\necho '<p>Version: ' . htmlspecialchars($version) . '</p>';\n?>`,
+        "index.php": `<?php\ndeclare(strict_types=1);\n\nrequire __DIR__ . '/filemanager/security.php';\n\n$page_title = 'Willkommen';\n$version    = '1.7.1';\n\necho '<h1>Willkommen bei web-service</h1>';\necho '<p>Version: ' . htmlspecialchars($version) . '</p>';\n?>`,
         "README.md": `# Projektdokumentation\n\n## Übersicht\nDieses Projekt wurde mit web-service eingerichtet.\n\n## Struktur\n- /bilder  – Bilddateien\n- /css     – Stylesheets\n- /js      – Skripte\n\n## Lizenz\nApache License 2.0`,
         "style.css": `:root {\n  --primary: #4f8ef7;\n  --bg:      #0b1117;\n  --text:    #edf6f9;\n}\n\nbody {\n  margin: 0;\n  font-family: system-ui, sans-serif;\n  background: var(--bg);\n  color: var(--text);\n}\n\n.container {\n  max-width: 1180px;\n  margin: 0 auto;\n  padding: 0 24px;\n}`,
         "main.js": `"use strict";\n\nconst $ = q => document.querySelector(q);\n\ndocument.addEventListener('DOMContentLoaded', () => {\n  const nav = $('.nav');\n  const btn = $('.menu-btn');\n\n  btn?.addEventListener('click', () => {\n    nav?.classList.toggle('open');\n  });\n\n  console.log('web-service ready.');\n});`,
@@ -915,11 +915,11 @@ function initAdmin() {
 
         window.setTimeout(() => {
             status.textContent = "Neue Version verfügbar!";
-            if (msg) msg.textContent = "Aktuelle Version: 1.7.0  →  Neue Version: 1.7.0";
+            if (msg) msg.textContent = "Aktuelle Version: 1.7.1  →  Neue Version: 1.7.1";
             if (badge) badge.classList.remove("hidden");
             if (doUpdate) doUpdate.disabled = false;
             btn.disabled = false;
-            notify("Update verfügbar: v1.7.0");
+            notify("Update verfügbar: v1.7.1");
         }, 1400);
     });
 
@@ -930,12 +930,12 @@ function initAdmin() {
             if (msg) msg.textContent = "Update wird eingespielt …";
             window.setTimeout(() => {
                 if (badge) badge.classList.add("hidden");
-                if (msg) msg.textContent = "Update auf v1.7.0 erfolgreich (Demo).";
+                if (msg) msg.textContent = "Update auf v1.7.1 erfolgreich (Demo).";
                 const ver = $("#currentVersion");
-                if (ver) ver.textContent = "1.7.0";
-                status.textContent = "Version: 1.7.0 aktuell";
+                if (ver) ver.textContent = "1.7.1";
+                status.textContent = "Version: 1.7.1 aktuell";
                 btn.disabled = false;
-                notify("Update auf v1.7.0 eingespielt (Demo).");
+                notify("Update auf v1.7.1 eingespielt (Demo).");
             }, 1600);
         });
     }

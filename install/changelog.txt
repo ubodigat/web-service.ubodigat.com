@@ -1,1 +1,1 @@
-18.06.2026 | v1.7.0 | Bugfix Filterung
+18.06.2026 | v1.7.1 | Bugfix Filterung
