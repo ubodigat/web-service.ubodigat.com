@@ -1,1 +1,1 @@
-18.06.2026 | v1.7.2 | Bugfix Filterung, Bugfix speichern Sicherheitsrichtlinien, Breadcrumb Navigation
+18.06.2026 | v1.7.3 | Bugfix Filterung, Bugfix speichern Sicherheitsrichtlinien
