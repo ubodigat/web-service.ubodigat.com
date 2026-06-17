@@ -5,7 +5,7 @@ web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und De
 Website: https://web-service.ubodigat.com/
 GitHub:  https://github.com/ubodigat/web-service.ubodigat.com
 Lizenz:  Apache License 2.0
-Version: 1.6.9
+Version: 1.7.0
 
 ## Installationsbefehl
 

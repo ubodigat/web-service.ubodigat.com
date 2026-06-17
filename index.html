@@ -1,914 +1,1444 @@
 <!DOCTYPE html>
 <html lang="de" data-theme="dark">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>web-service: Webserver Installationsskript für Ubuntu & Debian</title>
-  <meta name="description" content="web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und Debian. Es installiert Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Updates.">
-  <meta name="robots" content="index, follow, max-image-preview:large">
-  <meta name="author" content="ubodigat.com">
-  <meta name="keywords" content="Webserver Installationsskript, Ubuntu Webserver automatisch installieren, Debian Webserver Setup, Apache PHP MariaDB Installer, Web-Dateimanager Open Source, Browserbasierter Dateimanager, Admin Panel Webserver, Webserver Stack Open Source, PHP MariaDB Apache Setup, Homeserver Webserver einrichten">
-  <link rel="canonical" href="https://web-service.ubodigat.com/">
-  <meta property="og:locale" content="de_DE">
-  <meta property="og:type" content="website">
-  <meta property="og:site_name" content="web-service">
-  <meta property="og:title" content="web-service: Open-Source Webserver Stack für Ubuntu und Debian">
-  <meta property="og:description" content="Ein Installationsskript richtet Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und One-Click-Updates ein.">
-  <meta property="og:url" content="https://web-service.ubodigat.com/">
-  <meta property="og:image" content="https://web-service.ubodigat.com/assets/ubodigatlogo-breit.svg">
-  <meta property="og:image:alt" content="ubodigat.com – web-service">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="web-service – Webserver Installationsskript für Ubuntu &amp; Debian">
-  <meta name="twitter:description" content="Open-Source Installer für Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, 2FA und Updates auf Ubuntu/Debian.">
-  <meta name="twitter:image" content="https://web-service.ubodigat.com/assets/ubodigatlogo-breit.svg">
-  <link rel="stylesheet" href="style.css">
-  <link rel="icon" href="/assets/x-icon.png" type="image/png">
-  <link rel="apple-touch-icon" href="/assets/x-icon.png">
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebSite",
-        "@id": "https://web-service.ubodigat.com/#website",
-        "url": "https://web-service.ubodigat.com/",
-        "name": "web-service",
-        "description": "Open-Source Webserver Installationsskript für Ubuntu und Debian.",
-        "inLanguage": "de"
-      },
-      {
-        "@type": "SoftwareApplication",
-        "@id": "https://web-service.ubodigat.com/#software",
-        "name": "web-service",
-        "applicationCategory": "DeveloperApplication",
-        "operatingSystem": "Ubuntu, Debian",
-        "softwareVersion": "1.6.9",
-        "url": "https://web-service.ubodigat.com/",
-        "codeRepository": "https://github.com/ubodigat/web-service.ubodigat.com",
-        "license": "https://www.apache.org/licenses/LICENSE-2.0",
-        "description": "web-service installiert Apache, PHP, MariaDB, phpMyAdmin, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, Rollen/Rechte, 2FA, Media-Viewer, Versionscheck und One-Click-Updates.",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
-        "featureList": [
-          "Apache, PHP, MariaDB automatisch installieren",
-          "Browserbasierter Web-Dateimanager mit Monaco Editor",
-          "Admin-Panel mit Benutzerverwaltung und 2FA/TOTP",
-          "Ordnerspezifische Zugriffsrechte (ACL)",
-          "Media-Viewer für Bilder und Videos",
-          "Versionscheck und One-Click-Updates",
-          "Chunk-Upload bis 2 GB",
-          "phpMyAdmin Datenbankzugang"
-        ]
-      },
-      {
-        "@type": "HowTo",
-        "@id": "https://web-service.ubodigat.com/#installation",
-        "name": "Ubuntu oder Debian Webserver mit web-service installieren",
-        "description": "Installation eines Webserver Stacks mit Apache, PHP, MariaDB und Web-Dateimanager über ein Installationsskript.",
-        "step": [
-          { "@type": "HowToStep", "name": "Server vorbereiten", "text": "Einen frischen oder gesicherten Ubuntu- oder Debian-Server bereitstellen." },
-          { "@type": "HowToStep", "name": "Per SSH verbinden", "text": "Als administrativer Benutzer oder root per SSH anmelden." },
-          { "@type": "HowToStep", "name": "Installationsbefehl ausführen", "text": "wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh" },
-          { "@type": "HowToStep", "name": "Webinterface öffnen", "text": "Nach Abschluss das Setup im Browser öffnen und den Admin einrichten." }
-        ],
-        "estimatedCost": { "@type": "MonetaryAmount", "currency": "EUR", "value": "0" },
-        "totalTime": "PT10M"
-      },
-      {
-        "@type": "FAQPage",
-        "@id": "https://web-service.ubodigat.com/#faq",
-        "mainEntity": [
-          { "@type": "Question", "name": "Was ist web-service?", "acceptedAnswer": { "@type": "Answer", "text": "web-service ist ein Open-Source Installationsskript für einen vollständigen Webserver mit Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Update-System." } },
-          { "@type": "Question", "name": "Welche Systeme werden unterstützt?", "acceptedAnswer": { "@type": "Answer", "text": "Das Projekt ist für Ubuntu- und Debian-Server ausgelegt. Es sollte auf einem frischen oder vorher gesicherten System ausgeführt werden." } },
-          { "@type": "Question", "name": "Was installiert das Skript?", "acceptedAnswer": { "@type": "Answer", "text": "Das Skript installiert und konfiguriert Apache, PHP, MariaDB, phpMyAdmin, Projektdateien, Web-Dateimanager, Adminbereich, Rollen/Rechte, 2FA und Update-Funktionen." } },
-          { "@type": "Question", "name": "Ist web-service kostenlos?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. web-service ist Open Source und steht unter der Apache License 2.0 auf GitHub zur Verfügung." } },
-          { "@type": "Question", "name": "Brauche ich Programmierkenntnisse?", "acceptedAnswer": { "@type": "Answer", "text": "Grundkenntnisse im Umgang mit SSH und Linux-Servern sind hilfreich. Die Installation selbst ist auf einen einzigen Befehl reduziert." } },
-          { "@type": "Question", "name": "Gibt es einen Web-Dateimanager?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. web-service enthält einen browserbasierten Dateimanager mit Upload, Dateiliste, Aktionen, Monaco Editor und Media-Viewer." } },
-          { "@type": "Question", "name": "Unterstützt web-service 2FA?", "acceptedAnswer": { "@type": "Answer", "text": "Ja. Das Projekt enthält 2FA/TOTP-Funktionen zur Absicherung von Admin-Zugängen." } },
-          { "@type": "Question", "name": "Kann ich Updates automatisch durchführen?", "acceptedAnswer": { "@type": "Answer", "text": "web-service enthält Versionscheck und One-Click-Updates. Vor Updates sollte trotzdem ein Backup vorhanden sein." } },
-          { "@type": "Question", "name": "Ist das Projekt für Homeserver geeignet?", "acceptedAnswer": { "@type": "Answer", "text": "Ja, besonders für Lern-, Test- und kleine Webserver-Setups. Bei öffentlichem Betrieb sollten Firewall, Backups, HTTPS und Serverhärtung geprüft werden." } }
-        ]
-      },
-      {
-        "@type": "BreadcrumbList",
-        "@id": "https://web-service.ubodigat.com/#breadcrumb",
-        "itemListElement": [
-          { "@type": "ListItem", "position": 1, "name": "Startseite", "item": "https://web-service.ubodigat.com/" },
-          { "@type": "ListItem", "position": 2, "name": "Installation", "item": "https://web-service.ubodigat.com/#install-script" },
-          { "@type": "ListItem", "position": 3, "name": "Dateimanager", "item": "https://web-service.ubodigat.com/#filemanager" },
-          { "@type": "ListItem", "position": 4, "name": "FAQ", "item": "https://web-service.ubodigat.com/#faq" }
-        ]
-      },
-      {
-        "@type": "Organization",
-        "@id": "https://ubodigat.com/#organization",
-        "name": "ubodigat.com",
-        "url": "https://ubodigat.com/"
-      }
-    ]
-  }
-  </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>web-service: Webserver Installationsskript für Ubuntu & Debian</title>
+    <meta name="description" content="web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und Debian. Es installiert Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Updates.">
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <meta name="author" content="ubodigat.com">
+    <meta name="keywords" content="Webserver Installationsskript, Ubuntu Webserver automatisch installieren, Debian Webserver Setup, Apache PHP MariaDB Installer, Web-Dateimanager Open Source, Browserbasierter Dateimanager, Admin Panel Webserver, Webserver Stack Open Source, PHP MariaDB Apache Setup, Homeserver Webserver einrichten">
+    <link rel="canonical" href="https://web-service.ubodigat.com/">
+    <meta property="og:locale" content="de_DE">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="web-service">
+    <meta property="og:title" content="web-service: Open-Source Webserver Stack für Ubuntu und Debian">
+    <meta property="og:description" content="Ein Installationsskript richtet Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und One-Click-Updates ein.">
+    <meta property="og:url" content="https://web-service.ubodigat.com/">
+    <meta property="og:image" content="https://web-service.ubodigat.com/assets/ubodigatlogo-breit.svg">
+    <meta property="og:image:alt" content="ubodigat.com – web-service">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="web-service – Webserver Installationsskript für Ubuntu &amp; Debian">
+    <meta name="twitter:description" content="Open-Source Installer für Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, 2FA und Updates auf Ubuntu/Debian.">
+    <meta name="twitter:image" content="https://web-service.ubodigat.com/assets/ubodigatlogo-breit.svg">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="/assets/x-icon.png" type="image/png">
+    <link rel="apple-touch-icon" href="/assets/x-icon.png">
+    <script type="application/ld+json">
+        {
+            "@context": "https://schema.org",
+            "@graph": [{
+                    "@type": "WebSite",
+                    "@id": "https://web-service.ubodigat.com/#website",
+                    "url": "https://web-service.ubodigat.com/",
+                    "name": "web-service",
+                    "description": "Open-Source Webserver Installationsskript für Ubuntu und Debian.",
+                    "inLanguage": "de"
+                },
+                {
+                    "@type": "SoftwareApplication",
+                    "@id": "https://web-service.ubodigat.com/#software",
+                    "name": "web-service",
+                    "applicationCategory": "DeveloperApplication",
+                    "operatingSystem": "Ubuntu, Debian",
+                    "softwareVersion": "1.7.0",
+                    "url": "https://web-service.ubodigat.com/",
+                    "codeRepository": "https://github.com/ubodigat/web-service.ubodigat.com",
+                    "license": "https://www.apache.org/licenses/LICENSE-2.0",
+                    "description": "web-service installiert Apache, PHP, MariaDB, phpMyAdmin, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, Rollen/Rechte, 2FA, Media-Viewer, Versionscheck und One-Click-Updates.",
+                    "offers": {
+                        "@type": "Offer",
+                        "price": "0",
+                        "priceCurrency": "EUR"
+                    },
+                    "featureList": [
+                        "Apache, PHP, MariaDB automatisch installieren",
+                        "Browserbasierter Web-Dateimanager mit Monaco Editor",
+                        "Admin-Panel mit Benutzerverwaltung und 2FA/TOTP",
+                        "Ordnerspezifische Zugriffsrechte (ACL)",
+                        "Media-Viewer für Bilder und Videos",
+                        "Versionscheck und One-Click-Updates",
+                        "Chunk-Upload bis 2 GB",
+                        "phpMyAdmin Datenbankzugang"
+                    ]
+                },
+                {
+                    "@type": "HowTo",
+                    "@id": "https://web-service.ubodigat.com/#installation",
+                    "name": "Ubuntu oder Debian Webserver mit web-service installieren",
+                    "description": "Installation eines Webserver Stacks mit Apache, PHP, MariaDB und Web-Dateimanager über ein Installationsskript.",
+                    "step": [{
+                            "@type": "HowToStep",
+                            "name": "Server vorbereiten",
+                            "text": "Einen frischen oder gesicherten Ubuntu- oder Debian-Server bereitstellen."
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Per SSH verbinden",
+                            "text": "Als administrativer Benutzer oder root per SSH anmelden."
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Installationsbefehl ausführen",
+                            "text": "wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh"
+                        },
+                        {
+                            "@type": "HowToStep",
+                            "name": "Webinterface öffnen",
+                            "text": "Nach Abschluss das Setup im Browser öffnen und den Admin einrichten."
+                        }
+                    ],
+                    "estimatedCost": {
+                        "@type": "MonetaryAmount",
+                        "currency": "EUR",
+                        "value": "0"
+                    },
+                    "totalTime": "PT10M"
+                },
+                {
+                    "@type": "FAQPage",
+                    "@id": "https://web-service.ubodigat.com/#faq",
+                    "mainEntity": [{
+                            "@type": "Question",
+                            "name": "Was ist web-service?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "web-service ist ein Open-Source Installationsskript für einen vollständigen Webserver mit Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Update-System."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Welche Systeme werden unterstützt?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Das Projekt ist für Ubuntu- und Debian-Server ausgelegt. Es sollte auf einem frischen oder vorher gesicherten System ausgeführt werden."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Was installiert das Skript?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Das Skript installiert und konfiguriert Apache, PHP, MariaDB, phpMyAdmin, Projektdateien, Web-Dateimanager, Adminbereich, Rollen/Rechte, 2FA und Update-Funktionen."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Ist web-service kostenlos?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Ja. web-service ist Open Source und steht unter der Apache License 2.0 auf GitHub zur Verfügung."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Brauche ich Programmierkenntnisse?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Grundkenntnisse im Umgang mit SSH und Linux-Servern sind hilfreich. Die Installation selbst ist auf einen einzigen Befehl reduziert."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Gibt es einen Web-Dateimanager?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Ja. web-service enthält einen browserbasierten Dateimanager mit Upload, Dateiliste, Aktionen, Monaco Editor und Media-Viewer."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Unterstützt web-service 2FA?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Ja. Das Projekt enthält 2FA/TOTP-Funktionen zur Absicherung von Admin-Zugängen."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Kann ich Updates automatisch durchführen?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "web-service enthält Versionscheck und One-Click-Updates. Vor Updates sollte trotzdem ein Backup vorhanden sein."
+                            }
+                        },
+                        {
+                            "@type": "Question",
+                            "name": "Ist das Projekt für Homeserver geeignet?",
+                            "acceptedAnswer": {
+                                "@type": "Answer",
+                                "text": "Ja, besonders für Lern-, Test- und kleine Webserver-Setups. Bei öffentlichem Betrieb sollten Firewall, Backups, HTTPS und Serverhärtung geprüft werden."
+                            }
+                        }
+                    ]
+                },
+                {
+                    "@type": "BreadcrumbList",
+                    "@id": "https://web-service.ubodigat.com/#breadcrumb",
+                    "itemListElement": [{
+                            "@type": "ListItem",
+                            "position": 1,
+                            "name": "Startseite",
+                            "item": "https://web-service.ubodigat.com/"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 2,
+                            "name": "Installation",
+                            "item": "https://web-service.ubodigat.com/#install-script"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 3,
+                            "name": "Dateimanager",
+                            "item": "https://web-service.ubodigat.com/#filemanager"
+                        },
+                        {
+                            "@type": "ListItem",
+                            "position": 4,
+                            "name": "FAQ",
+                            "item": "https://web-service.ubodigat.com/#faq"
+                        }
+                    ]
+                },
+                {
+                    "@type": "Organization",
+                    "@id": "https://ubodigat.com/#organization",
+                    "name": "ubodigat.com",
+                    "url": "https://ubodigat.com/"
+                }
+            ]
+        }
+    </script>
 </head>
+
 <body>
-  <svg class="sprites" aria-hidden="true">
-    <symbol id="i-server" viewBox="0 0 24 24"><path d="M5 3h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 10h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2ZM7 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 10a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z"/></symbol>
-    <symbol id="i-database" viewBox="0 0 24 24"><path d="M12 3C7.6 3 4 4.6 4 6.5v11c0 1.9 3.6 3.5 8 3.5s8-1.6 8-3.5v-11C20 4.6 16.4 3 12 3Zm0 2c3.3 0 6 1.1 6 1.5S15.3 8 12 8 6 6.9 6 6.5 8.7 5 12 5Zm6 12.5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3v1.8Zm0-5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3V12Z"/></symbol>
-    <symbol id="i-search" viewBox="0 0 24 24"><path d="m20.7 19.3-4.4-4.4a7.4 7.4 0 1 0-1.4 1.4l4.4 4.4 1.4-1.4ZM10.5 16a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z"/></symbol>
-    <symbol id="i-key" viewBox="0 0 24 24"><path d="M12.65 10A6 6 0 1 0 14 12.65l8.35-8.35-1.4-1.4L19 4.8l-1.5-1.5-1.4 1.4L17.6 6.2l-1.4 1.4-1.5-1.5-1.4 1.4 1.5 1.5L12.65 10ZM8 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z"/></symbol>
-    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5ZM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></symbol>
-    <symbol id="i-eye-off" viewBox="0 0 24 24"><path d="M11.83 9H15v3.17L18 15.18V12c0-3.31-2.69-6-6-6-.55 0-1.08.08-1.59.21L12 7.8c-.07.39-.13.79-.17 1.2ZM3.27 2.14 2 3.41l2.96 2.96A11.8 11.8 0 0 0 1 12c1.73 4.39 6 7.5 11 7.5 1.82 0 3.53-.46 5.04-1.27L19.73 21 21 19.73 3.27 2.14ZM12 17c-2.76 0-5-2.24-5-5 0-.77.18-1.5.49-2.14l1.57 1.57c-.03.18-.06.37-.06.57 0 1.66 1.34 3 3 3 .2 0 .38-.03.57-.07L14.14 16.5C13.5 16.82 12.77 17 12 17Zm4.97-4.13L15.4 11.3c.07-.21.1-.44.1-.69 0-1.66-1.34-3-3-3-.24 0-.47.04-.69.1L10.3 6.19A5.97 5.97 0 0 1 12 5.81c2.76 0 5 2.24 5 5 0 .59-.1 1.15-.28 1.67"/></symbol>
-    <symbol id="i-video" viewBox="0 0 24 24"><path d="M17 10.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3.5l4 4v-11l-4 4ZM15 17H5V7h10v10Z"/></symbol>
-    <symbol id="i-package" viewBox="0 0 24 24"><path d="m12 1-9.5 5.5v11L12 23l9.5-5.5v-11L12 1Zm7.5 6.08-3.5 2.08-2-1.16L17.5 5.9l2 1.18Zm-9.9-2.9L12 5.4l2.4 1.4-3.5 2.04-2.3-1.33 1-1.33ZM5.5 8.08l2 1.17-3.5 2.08L2.5 9.25l3-1.17ZM3 11.03l3.5 2.08v4.16L3 19.38v-8.35Zm2 9.26 6.5-3.75v4.16L5 20.29ZM12 15.5l-3.5-2.08v-4.16l3.5 2.08 3.5-2.08v4.16L12 15.5Zm1.5 4.96v-4.16L20 12.59v4.15l-6.5 3.72Z"/></symbol>
-    <symbol id="i-home" viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></symbol>
-    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z"/></symbol>
-    <symbol id="i-check-circle" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm-2 14-4-4 1.4-1.4L10 13.2l6.6-6.6L18 8l-8 8Z"/></symbol>
-    <symbol id="i-filter" viewBox="0 0 24 24"><path d="M4.25 5.61C6.27 8.2 10 13 10 13v6a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-6s3.72-4.8 5.74-7.39A1 1 0 0 0 18.95 4H5.04a1 1 0 0 0-.79 1.61Z"/></symbol>
-    <symbol id="i-arrow-up" viewBox="0 0 24 24"><path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z"/></symbol>
-    <symbol id="i-settings" viewBox="0 0 24 24"><path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.488.488 0 0 0-.59.22L2.74 8.87a.49.49 0 0 0 .12.61l2.03 1.58a7.2 7.2 0 0 0-.07.94c0 .32.02.64.07.94L2.86 14.5a.5.5 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.04.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.01-1.56ZM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z"/></symbol>
-    <symbol id="i-folder-open" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2Zm0 12H4V8h16v10Z"/></symbol>
-    <symbol id="i-chevron-right" viewBox="0 0 24 24"><path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z"/></symbol>
-    <symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm4 18H6V4h7v5h5v11Z"/></symbol>
-    <symbol id="i-zip" viewBox="0 0 24 24"><path d="M20 6h-2V4c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2Zm-6-2h2v2h-2V4Zm6 16H4V8h16v12ZM10 10h4v2h-4v-2Zm0 4h4v2h-4v-2Zm0 4h4v2h-4v-2Z"/></symbol>
-    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7a3 3 0 0 1 3-3h4.2l2.1 2H18a3 3 0 0 1 3 3v7.5a3.5 3.5 0 0 1-3.5 3.5h-11A3.5 3.5 0 0 1 3 16.5V7Zm2 0v9.5A1.5 1.5 0 0 0 6.5 18h11a1.5 1.5 0 0 0 1.5-1.5V9a1 1 0 0 0-1-1h-6.5L9.4 6H6a1 1 0 0 0-1 1Z"/></symbol>
-    <symbol id="i-code" viewBox="0 0 24 24"><path d="M9.7 7.3 5 12l4.7 4.7-1.4 1.4L2.2 12l6.1-6.1 1.4 1.4Zm4.6 0 1.4-1.4 6.1 6.1-6.1 6.1-1.4-1.4L19 12l-4.7-4.7ZM13.5 4l-3 16h-2l3-16h2Z"/></symbol>
-    <symbol id="i-lock" viewBox="0 0 24 24"><path d="M7 10V8a5 5 0 1 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2 0h6V8a3 3 0 1 0-6 0v2Zm3 7a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 12 17Z"/></symbol>
-    <symbol id="i-user" viewBox="0 0 24 24"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z"/></symbol>
-    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 3 17.4 8.4 16 9.8l-3-3V16h-2V6.8l-3 3-1.4-1.4L12 3ZM5 18h14v2H5v-2Z"/></symbol>
-    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M19.2 7.4A8 8 0 0 0 5.1 9.7l-1.9-.6A10 10 0 0 1 20.7 6L22 4.7V10h-5.3l2.5-2.6ZM4.8 16.6A8 8 0 0 0 18.9 14.3l1.9.6A10 10 0 0 1 3.3 18L2 19.3V14h5.3l-2.5 2.6Z"/></symbol>
-    <symbol id="i-check" viewBox="0 0 24 24"><path d="m9.3 16.6-4.2-4.2-1.4 1.4 5.6 5.6L21 7.7l-1.4-1.4L9.3 16.6Z"/></symbol>
-    <symbol id="i-copy" viewBox="0 0 24 24"><path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-1v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V7Zm3-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-7Zm-3 4H7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1h-4a3 3 0 0 1-3-3v-4Z"/></symbol>
-    <symbol id="i-github" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.1-4.7-5A3.9 3.9 0 0 1 6.6 8.7c-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1a9.8 9.8 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 2V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z"/></symbol>
-    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-1 6h2v10H8V9Zm6 0h2v10h-2V9Zm-3 0h2v10h-2V9Z"/></symbol>
-    <symbol id="i-download" viewBox="0 0 24 24"><path d="M11 4h2v8.2l3-3 1.4 1.4L12 16l-5.4-5.4L8 9.2l3 3V4ZM5 18h14v2H5v-2Z"/></symbol>
-    <symbol id="i-globe" viewBox="0 0 24 24"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.5 15.5 0 0 0-1.1-5A8 8 0 0 1 18.9 11ZM12 4.1c.7 1 1.4 3.2 1.7 6.9h-3.4c.3-3.7 1-5.9 1.7-6.9ZM4.1 13h3.1c.1 1.9.5 3.6 1.1 5A8 8 0 0 1 4.1 13Zm3.1-2H4.1A8 8 0 0 1 8.3 6c-.6 1.4-1 3.1-1.1 5ZM12 19.9c-.7-1-1.4-3.2-1.7-6.9h3.4c-.3 3.7-1 5.9-1.7 6.9Zm3.7-1.9c.6-1.4 1-3.1 1.1-5h3.1a8 8 0 0 1-4.2 5Z"/></symbol>
-    <symbol id="i-edit" viewBox="0 0 24 24"><path d="M4 17.5V21h3.5L18.1 10.4l-3.5-3.5L4 17.5ZM20.7 7.8a1 1 0 0 0 0-1.4l-3.1-3.1a1 1 0 0 0-1.4 0l-1.5 1.5 4.5 4.5 1.5-1.5Z"/></symbol>
-    <symbol id="i-info" viewBox="0 0 24 24"><path d="M11 10h2v8h-2v-8Zm0-4h2v2h-2V6Zm1-4a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z"/></symbol>
-    <symbol id="i-sun" viewBox="0 0 24 24"><path d="M11 2h2v3h-2V2Zm0 17h2v3h-2v-3ZM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1Zm12.1 12.1 1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1ZM2 11h3v2H2v-2Zm17 0h3v2h-3v-2ZM4.2 18.4l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM16.3 6.3l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z"/></symbol>
-    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a9.5 9.5 0 1 0 12.3 12.3Z"/></symbol>
-    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2 4 5v7c0 4.4 3.3 8.5 8 9.5 4.7-1 8-5.1 8-9.5V5l-8-3Zm-1 12.4-2.8-2.8 1.4-1.4 1.4 1.4 3.4-3.4 1.4 1.4-4.8 4.8Z"/></symbol>
-    <symbol id="i-terminal" viewBox="0 0 24 24"><path d="M3 3h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 4 5 4-5 4 1.4 1.4L12 12l-6.6-5.4L4 7Zm8 8h6v2h-6v-2Z"/></symbol>
-    <symbol id="i-image" viewBox="0 0 24 24"><path d="M21 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.5 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM5 18l4.5-6L13 16l2.5-3L19 18H5Z"/></symbol>
-  </svg>
+    <svg class="sprites" aria-hidden="true">
+        <symbol id="i-server" viewBox="0 0 24 24">
+            <path d="M5 3h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm0 10h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2ZM7 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2Zm0 10a1 1 0 1 0 0 2 1 1 0 0 0 0-2Z" />
+        </symbol>
+        <symbol id="i-database" viewBox="0 0 24 24">
+            <path d="M12 3C7.6 3 4 4.6 4 6.5v11c0 1.9 3.6 3.5 8 3.5s8-1.6 8-3.5v-11C20 4.6 16.4 3 12 3Zm0 2c3.3 0 6 1.1 6 1.5S15.3 8 12 8 6 6.9 6 6.5 8.7 5 12 5Zm6 12.5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3v1.8Zm0-5c0 .4-2.7 1.5-6 1.5s-6-1.1-6-1.5v-1.8c1.4.8 3.5 1.3 6 1.3s4.6-.5 6-1.3V12Z" />
+        </symbol>
+        <symbol id="i-search" viewBox="0 0 24 24">
+            <path d="m20.7 19.3-4.4-4.4a7.4 7.4 0 1 0-1.4 1.4l4.4 4.4 1.4-1.4ZM10.5 16a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11Z" />
+        </symbol>
+        <symbol id="i-key" viewBox="0 0 24 24">
+            <path d="M12.65 10A6 6 0 1 0 14 12.65l8.35-8.35-1.4-1.4L19 4.8l-1.5-1.5-1.4 1.4L17.6 6.2l-1.4 1.4-1.5-1.5-1.4 1.4 1.5 1.5L12.65 10ZM8 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8Zm0-6a2 2 0 1 0 0 4 2 2 0 0 0 0-4Z" />
+        </symbol>
+        <symbol id="i-eye" viewBox="0 0 24 24">
+            <path d="M12 4.5C7 4.5 2.7 7.6 1 12c1.7 4.4 6 7.5 11 7.5s9.3-3.1 11-7.5c-1.7-4.4-6-7.5-11-7.5ZM12 17a5 5 0 1 1 0-10 5 5 0 0 1 0 10Zm0-8a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+        </symbol>
+        <symbol id="i-eye-off" viewBox="0 0 24 24">
+            <path d="M11.83 9H15v3.17L18 15.18V12c0-3.31-2.69-6-6-6-.55 0-1.08.08-1.59.21L12 7.8c-.07.39-.13.79-.17 1.2ZM3.27 2.14 2 3.41l2.96 2.96A11.8 11.8 0 0 0 1 12c1.73 4.39 6 7.5 11 7.5 1.82 0 3.53-.46 5.04-1.27L19.73 21 21 19.73 3.27 2.14ZM12 17c-2.76 0-5-2.24-5-5 0-.77.18-1.5.49-2.14l1.57 1.57c-.03.18-.06.37-.06.57 0 1.66 1.34 3 3 3 .2 0 .38-.03.57-.07L14.14 16.5C13.5 16.82 12.77 17 12 17Zm4.97-4.13L15.4 11.3c.07-.21.1-.44.1-.69 0-1.66-1.34-3-3-3-.24 0-.47.04-.69.1L10.3 6.19A5.97 5.97 0 0 1 12 5.81c2.76 0 5 2.24 5 5 0 .59-.1 1.15-.28 1.67" />
+        </symbol>
+        <symbol id="i-video" viewBox="0 0 24 24">
+            <path d="M17 10.5V7a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-3.5l4 4v-11l-4 4ZM15 17H5V7h10v10Z" />
+        </symbol>
+        <symbol id="i-package" viewBox="0 0 24 24">
+            <path d="m12 1-9.5 5.5v11L12 23l9.5-5.5v-11L12 1Zm7.5 6.08-3.5 2.08-2-1.16L17.5 5.9l2 1.18Zm-9.9-2.9L12 5.4l2.4 1.4-3.5 2.04-2.3-1.33 1-1.33ZM5.5 8.08l2 1.17-3.5 2.08L2.5 9.25l3-1.17ZM3 11.03l3.5 2.08v4.16L3 19.38v-8.35Zm2 9.26 6.5-3.75v4.16L5 20.29ZM12 15.5l-3.5-2.08v-4.16l3.5 2.08 3.5-2.08v4.16L12 15.5Zm1.5 4.96v-4.16L20 12.59v4.15l-6.5 3.72Z" />
+        </symbol>
+        <symbol id="i-home" viewBox="0 0 24 24">
+            <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" />
+        </symbol>
+        <symbol id="i-alert" viewBox="0 0 24 24">
+            <path d="M12 2 1 21h22L12 2Zm1 15h-2v-2h2v2Zm0-4h-2V9h2v4Z" />
+        </symbol>
+        <symbol id="i-check-circle" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 1 0 0 20A10 10 0 0 0 12 2Zm-2 14-4-4 1.4-1.4L10 13.2l6.6-6.6L18 8l-8 8Z" />
+        </symbol>
+        <symbol id="i-filter" viewBox="0 0 24 24">
+            <path d="M4.25 5.61C6.27 8.2 10 13 10 13v6a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-6s3.72-4.8 5.74-7.39A1 1 0 0 0 18.95 4H5.04a1 1 0 0 0-.79 1.61Z" />
+        </symbol>
+        <symbol id="i-arrow-up" viewBox="0 0 24 24">
+            <path d="M4 12l1.41 1.41L11 7.83V20h2V7.83l5.58 5.59L20 12l-8-8-8 8z" />
+        </symbol>
+        <symbol id="i-settings" viewBox="0 0 24 24">
+            <path d="M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58a.5.5 0 0 0 .12-.61l-1.92-3.32a.488.488 0 0 0-.59-.22l-2.39.96a7.02 7.02 0 0 0-1.62-.94l-.36-2.54a.484.484 0 0 0-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96a.488.488 0 0 0-.59.22L2.74 8.87a.49.49 0 0 0 .12.61l2.03 1.58a7.2 7.2 0 0 0-.07.94c0 .32.02.64.07.94L2.86 14.5a.5.5 0 0 0-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.37 1.04.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.57 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32a.49.49 0 0 0-.12-.61l-2.01-1.56ZM12 15.6a3.6 3.6 0 1 1 0-7.2 3.6 3.6 0 0 1 0 7.2Z" />
+        </symbol>
+        <symbol id="i-folder-open" viewBox="0 0 24 24">
+            <path d="M20 6h-8l-2-2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2Zm0 12H4V8h16v10Z" />
+        </symbol>
+        <symbol id="i-chevron-right" viewBox="0 0 24 24">
+            <path d="M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6-6-6Z" />
+        </symbol>
+        <symbol id="i-file" viewBox="0 0 24 24">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6Zm4 18H6V4h7v5h5v11Z" />
+        </symbol>
+        <symbol id="i-zip" viewBox="0 0 24 24">
+            <path d="M20 6h-2V4c0-1.1-.9-2-2-2h-2c-1.1 0-2 .9-2 2v2H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2Zm-6-2h2v2h-2V4Zm6 16H4V8h16v12ZM10 10h4v2h-4v-2Zm0 4h4v2h-4v-2Zm0 4h4v2h-4v-2Z" />
+        </symbol>
+        <symbol id="i-folder" viewBox="0 0 24 24">
+            <path d="M3 7a3 3 0 0 1 3-3h4.2l2.1 2H18a3 3 0 0 1 3 3v7.5a3.5 3.5 0 0 1-3.5 3.5h-11A3.5 3.5 0 0 1 3 16.5V7Zm2 0v9.5A1.5 1.5 0 0 0 6.5 18h11a1.5 1.5 0 0 0 1.5-1.5V9a1 1 0 0 0-1-1h-6.5L9.4 6H6a1 1 0 0 0-1 1Z" />
+        </symbol>
+        <symbol id="i-code" viewBox="0 0 24 24">
+            <path d="M9.7 7.3 5 12l4.7 4.7-1.4 1.4L2.2 12l6.1-6.1 1.4 1.4Zm4.6 0 1.4-1.4 6.1 6.1-6.1 6.1-1.4-1.4L19 12l-4.7-4.7ZM13.5 4l-3 16h-2l3-16h2Z" />
+        </symbol>
+        <symbol id="i-lock" viewBox="0 0 24 24">
+            <path d="M7 10V8a5 5 0 1 1 10 0v2h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1Zm2 0h6V8a3 3 0 1 0-6 0v2Zm3 7a1.6 1.6 0 1 0 0-3.2A1.6 1.6 0 0 0 12 17Z" />
+        </symbol>
+        <symbol id="i-user" viewBox="0 0 24 24">
+            <path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9Zm0 2c-4.4 0-8 2.4-8 5.4V21h16v-1.6c0-3-3.6-5.4-8-5.4Z" />
+        </symbol>
+        <symbol id="i-upload" viewBox="0 0 24 24">
+            <path d="M12 3 17.4 8.4 16 9.8l-3-3V16h-2V6.8l-3 3-1.4-1.4L12 3ZM5 18h14v2H5v-2Z" />
+        </symbol>
+        <symbol id="i-refresh" viewBox="0 0 24 24">
+            <path d="M19.2 7.4A8 8 0 0 0 5.1 9.7l-1.9-.6A10 10 0 0 1 20.7 6L22 4.7V10h-5.3l2.5-2.6ZM4.8 16.6A8 8 0 0 0 18.9 14.3l1.9.6A10 10 0 0 1 3.3 18L2 19.3V14h5.3l-2.5 2.6Z" />
+        </symbol>
+        <symbol id="i-check" viewBox="0 0 24 24">
+            <path d="m9.3 16.6-4.2-4.2-1.4 1.4 5.6 5.6L21 7.7l-1.4-1.4L9.3 16.6Z" />
+        </symbol>
+        <symbol id="i-copy" viewBox="0 0 24 24">
+            <path d="M8 7a3 3 0 0 1 3-3h7a3 3 0 0 1 3 3v7a3 3 0 0 1-3 3h-1v1a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3v-7a3 3 0 0 1 3-3h1V7Zm3-1a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1V7a1 1 0 0 0-1-1h-7Zm-3 4H7a1 1 0 0 0-1 1v7a1 1 0 0 0 1 1h7a1 1 0 0 0 1-1v-1h-4a3 3 0 0 1-3-3v-4Z" />
+        </symbol>
+        <symbol id="i-github" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.9.6-3.5-1.2-3.5-1.2-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.6 1 1.6 1 .9 1.6 2.4 1.1 3 .8.1-.7.4-1.1.7-1.4-2.3-.3-4.7-1.1-4.7-5A3.9 3.9 0 0 1 6.6 8.7c-.1-.3-.5-1.3.1-2.7 0 0 .9-.3 2.8 1a9.8 9.8 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .6 1.4.2 2.4.1 2.7a3.9 3.9 0 0 1 1 2.7c0 3.9-2.4 4.7-4.7 5 .4.3.7 1 .7 2V21c0 .3.2.6.7.5A10 10 0 0 0 12 2Z" />
+        </symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24">
+            <path d="M9 3h6l1 2h4v2H4V5h4l1-2Zm-1 6h2v10H8V9Zm6 0h2v10h-2V9Zm-3 0h2v10h-2V9Z" />
+        </symbol>
+        <symbol id="i-download" viewBox="0 0 24 24">
+            <path d="M11 4h2v8.2l3-3 1.4 1.4L12 16l-5.4-5.4L8 9.2l3 3V4ZM5 18h14v2H5v-2Z" />
+        </symbol>
+        <symbol id="i-globe" viewBox="0 0 24 24">
+            <path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm6.9 9h-3.1a15.5 15.5 0 0 0-1.1-5A8 8 0 0 1 18.9 11ZM12 4.1c.7 1 1.4 3.2 1.7 6.9h-3.4c.3-3.7 1-5.9 1.7-6.9ZM4.1 13h3.1c.1 1.9.5 3.6 1.1 5A8 8 0 0 1 4.1 13Zm3.1-2H4.1A8 8 0 0 1 8.3 6c-.6 1.4-1 3.1-1.1 5ZM12 19.9c-.7-1-1.4-3.2-1.7-6.9h3.4c-.3 3.7-1 5.9-1.7 6.9Zm3.7-1.9c.6-1.4 1-3.1 1.1-5h3.1a8 8 0 0 1-4.2 5Z" />
+        </symbol>
+        <symbol id="i-edit" viewBox="0 0 24 24">
+            <path d="M4 17.5V21h3.5L18.1 10.4l-3.5-3.5L4 17.5ZM20.7 7.8a1 1 0 0 0 0-1.4l-3.1-3.1a1 1 0 0 0-1.4 0l-1.5 1.5 4.5 4.5 1.5-1.5Z" />
+        </symbol>
+        <symbol id="i-info" viewBox="0 0 24 24">
+            <path d="M11 10h2v8h-2v-8Zm0-4h2v2h-2V6Zm1-4a10 10 0 1 0 0 20 10 10 0 0 0 0-20Zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16Z" />
+        </symbol>
+        <symbol id="i-sun" viewBox="0 0 24 24">
+            <path d="M11 2h2v3h-2V2Zm0 17h2v3h-2v-3ZM4.2 5.6l1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1Zm12.1 12.1 1.4-1.4 2.1 2.1-1.4 1.4-2.1-2.1ZM2 11h3v2H2v-2Zm17 0h3v2h-3v-2ZM4.2 18.4l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM16.3 6.3l2.1-2.1 1.4 1.4-2.1 2.1-1.4-1.4ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Z" />
+        </symbol>
+        <symbol id="i-moon" viewBox="0 0 24 24">
+            <path d="M20.5 15.8A8.5 8.5 0 0 1 8.2 3.5a9.5 9.5 0 1 0 12.3 12.3Z" />
+        </symbol>
+        <symbol id="i-shield" viewBox="0 0 24 24">
+            <path d="M12 2 4 5v7c0 4.4 3.3 8.5 8 9.5 4.7-1 8-5.1 8-9.5V5l-8-3Zm-1 12.4-2.8-2.8 1.4-1.4 1.4 1.4 3.4-3.4 1.4 1.4-4.8 4.8Z" />
+        </symbol>
+        <symbol id="i-terminal" viewBox="0 0 24 24">
+            <path d="M3 3h18a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Zm1 4 5 4-5 4 1.4 1.4L12 12l-6.6-5.4L4 7Zm8 8h6v2h-6v-2Z" />
+        </symbol>
+        <symbol id="i-image" viewBox="0 0 24 24">
+            <path d="M21 3H3a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h18a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2ZM8.5 7a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3ZM5 18l4.5-6L13 16l2.5-3L19 18H5Z" />
+        </symbol>
+    </svg>
 
-  <div class="bg" aria-hidden="true"></div>
-  <canvas class="particle-bg" id="particleBg" aria-hidden="true"></canvas>
+    <div class="bg" aria-hidden="true"></div>
+    <canvas class="particle-bg" id="particleBg" aria-hidden="true"></canvas>
 
-  <header class="header">
-    <div class="container head">
-      <a class="brand" href="#top" aria-label="web-service Startseite">
-        <img src="assets/ubodigatlogo-breit[neutral].svg" alt="ubodigat Logo" width="139" height="36">
-        <span class="brand-copy"><b>web-service.ubodigat.com</b><small>Open-Source Webserver Stack</small></span>
-      </a>
-      <button class="menu" id="mobileMenu" type="button" aria-label="Menü öffnen" aria-expanded="false">
-        <span></span><span></span><span></span>
-      </button>
-      <nav class="nav" id="navLinks" aria-label="Hauptnavigation">
-        <a href="#overview"><svg class="icon"><use href="#i-server"></use></svg><span>Überblick</span></a>
-        <a href="#install-script"><svg class="icon"><use href="#i-download"></use></svg><span>Installation</span></a>
-        <a href="#filemanager"><svg class="icon"><use href="#i-folder"></use></svg><span>Dateimanager</span></a>
-        <a href="#demos"><svg class="icon"><use href="#i-terminal"></use></svg><span>Live-Demos</span></a>
-        <a href="#previews"><svg class="icon"><use href="#i-image"></use></svg><span>Screenshots</span></a>
-        <a href="#security"><svg class="icon"><use href="#i-shield"></use></svg><span>Sicherheit</span></a>
-        <a href="#faq"><svg class="icon"><use href="#i-info"></use></svg><span>FAQ</span></a>
-        <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon"><use href="#i-github"></use></svg><span>GitHub</span></a>
-        <button class="theme" id="themeToggle" type="button" aria-label="Light Mode aktivieren" aria-pressed="false">
-          <span class="theme-orb">
-            <svg class="icon theme-moon"><use href="#i-moon"></use></svg>
-            <svg class="icon theme-sun"><use href="#i-sun"></use></svg>
-          </span>
-        </button>
-      </nav>
-    </div>
-  </header>
-
-  <main>
-    <!-- ── Hero ── -->
-    <section class="hero section" id="top">
-      <div class="container hero-grid">
-        <div class="hero-copy reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-server"></use></svg>Open-Source Webserver Stack für Ubuntu und Debian</p>
-          <h1>Webserver Installationsskript für Apache, PHP und MariaDB</h1>
-          <p class="lead">web-service installiert auf Ubuntu- und Debian-Servern automatisch Apache, PHP, MariaDB, phpMyAdmin, einen browserbasierten Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und ein Update-System.</p>
-          <div class="hero-actions">
-            <a class="btn primary" href="#install-script">Jetzt installieren</a>
-            <a class="btn ghost" href="#filemanager">Dateimanager ansehen</a>
-            <a class="btn ghost" href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon"><use href="#i-github"></use></svg>GitHub</a>
-          </div>
-          <div class="badges">
-            <span>Open Source</span>
-            <span>Ubuntu / Debian</span>
-            <span>Apache / PHP / MariaDB</span>
-            <span>Dateimanager</span>
-            <span>2FA / TOTP</span>
-            <span>One-Click Update</span>
-          </div>
-        </div>
-        <aside class="terminal hero-terminal reveal">
-          <div class="winbar"><i></i><i></i><i></i><span>install.sh</span></div>
-          <div class="term-body">
-            <small># Ein Befehl auf einem frischen Ubuntu / Debian Server</small>
-            <pre><code id="heroCmd">wget -O install.sh https://web-service.ubodigat.com/install/install.sh &amp;&amp; chmod +x install.sh &amp;&amp; ./install.sh</code></pre>
-            <button class="copy" data-copy="install" data-copy-text="wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh" type="button">
-              <svg class="icon"><use href="#i-copy"></use></svg>Befehl kopieren
+    <header class="header">
+        <div class="container head">
+            <a class="brand" href="#top" aria-label="web-service Startseite">
+                <img src="assets/ubodigatlogo-breit[neutral].svg" alt="ubodigat Logo" width="139" height="36">
+                <span class="brand-copy"><b>web-service.ubodigat.com</b><small>Open-Source Webserver Stack</small></span>
+            </a>
+            <button class="menu" id="mobileMenu" type="button" aria-label="Menü öffnen" aria-expanded="false">
+                <span></span><span></span><span></span>
             </button>
-          </div>
-          <div class="stack"><span>Apache</span><span>PHP</span><span>MariaDB</span><span>Admin</span></div>
-        </aside>
-      </div>
-    </section>
-
-    <!-- ── Überblick ── -->
-    <section class="section compact" id="overview">
-      <div class="container split reveal">
-        <div>
-          <p class="kicker"><svg class="icon"><use href="#i-info"></use></svg>Kurzdefinition</p>
-          <h2>Was ist web-service?</h2>
-        </div>
-        <div class="explain">
-          <article>
-            <h3>Manuell</h3>
-            <p>Pakete installieren, Datenbank konfigurieren, PHP-Module prüfen, Benutzerrechte bauen, Uploads absichern und Updates pflegen.</p>
-          </article>
-          <article>
-            <h3>web-service</h3>
-            <p>web-service bündelt diese Schritte in einem Open-Source Installationsskript für einen vollständigen Webserver Stack mit Verwaltung im Browser.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Voraussetzungen ── -->
-    <section class="section compact" id="requirements">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-user"></use></svg>Voraussetzungen und Zielgruppe</p>
-          <h2>Für wen ist web-service geeignet?</h2>
-          <p>web-service richtet sich an Betreiber kleiner Webprojekte, Entwickler, Lernumgebungen und Homeserver-Nutzer, die einen Apache-PHP-MariaDB-Stack mit Webverwaltung nachvollziehbar installieren möchten.</p>
-        </div>
-        <div class="answer-grid reveal">
-          <article class="answer-card">
-            <h3>Kurzdefinition</h3>
-            <p>web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und Debian. Es richtet Server-Stack, Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Updates ein.</p>
-          </article>
-          <article class="answer-card">
-            <h3>Technische Voraussetzungen</h3>
-            <p>Empfohlen wird ein frischer oder gesicherter Ubuntu-/Debian-Server mit SSH-Zugriff, administrativen Rechten und freiem Zugriff auf HTTP/HTTPS.</p>
-          </article>
-          <article class="answer-card">
-            <h3>Geeignete Einsatzbereiche</h3>
-            <p>Das Projekt eignet sich für Testserver, Homeserver, kleine Webprojekte, Lernsysteme und Entwicklungsumgebungen. Produktive Systeme sollten zusätzlich individuell abgesichert werden.</p>
-          </article>
-          <article class="answer-card">
-            <h3>Open Source</h3>
-            <p>Der Quellcode ist öffentlich auf GitHub verfügbar. Die Installation und die statische Projektseite sind ohne externe Frameworks nutzbar.</p>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Installation ── -->
-    <section class="section" id="install-script">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-download"></use></svg>Installation</p>
-          <h2>Ubuntu oder Debian Webserver automatisch installieren</h2>
-          <p>Das Installationsskript richtet Systempakete, Datenbank, Projektdateien und Webinterface ein. Danach wird der Administrator im Browser angelegt.</p>
-          <a class="btn ghost" href="install.html" style="margin-top:4px;"><svg class="icon"><use href="#i-file"></use></svg>Detaillierte Installationsanleitung</a>
-        </div>
-        <div class="install-grid">
-          <div class="card reveal">
-            <h3>Was eingerichtet wird</h3>
-            <ul class="checks">
-              <li>Apache2, PHP und MariaDB</li>
-              <li>phpMyAdmin und Datenbankzugang</li>
-              <li>Web-Dateimanager und Demo-Webseite</li>
-              <li>Admin-Panel, Benutzerverwaltung, ACL und 2FA</li>
-              <li>Versionscheck und Update-Mechanik</li>
-            </ul>
-            <p class="note">Bitte nur auf einem frischen oder gesicherten Server ausführen.</p>
-          </div>
-          <div class="terminal demo-terminal reveal">
-            <div class="winbar"><i></i><i></i><i></i><span>root@server:~</span></div>
-            <div class="term-output" id="terminalOutput">
-              <p>$ ./install.sh</p>
-              <p class="muted">Bereit für die Simulation.</p>
-            </div>
-            <div class="progress"><span id="terminalProgress"></span></div>
-            <button class="btn primary full" id="startTerminal" type="button">Terminal-Demo starten</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Dateimanager ── -->
-    <section class="section" id="filemanager">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-folder"></use></svg>Web-Dateimanager</p>
-          <h2>Browserbasierter Web-Dateimanager für Projektdateien</h2>
-          <p>Der Web-Dateimanager verwaltet Dateien und Ordner im Browser. Er enthält Uploads, Suche, Filter, Pfadnavigation, Datei- und Ordnererstellung sowie Aktionen wie Öffnen, Bearbeiten, Download und Löschen.</p>
-        </div>
-        <div class="fm-real reveal">
-          <div class="top-controls">
-            <div class="fm-topbar-left">
-              <button class="fm-btn secondary" type="button" style="gap:5px;padding:7px 13px;">
-                <svg class="icon" style="transform:scaleX(-1)"><use href="#i-chevron-right"></use></svg>Zurück
-              </button>
-              <span class="fm-admin-badge">
-                <svg class="icon"><use href="#i-user"></use></svg>Admin: <b>admin</b>
-              </span>
-            </div>
-            <div class="right-buttons">
-              <button class="fm-btn info" id="fmSettingsBtn" aria-expanded="false" type="button"><svg class="icon"><use href="#i-settings"></use></svg>Einstellungen</button>
-              <button class="fm-btn secondary" type="button"><svg class="icon"><use href="#i-user"></use></svg>Konto</button>
-              <button class="fm-btn secondary" type="button"><svg class="icon"><use href="#i-trash"></use></svg>Papierkorb</button>
-              <button class="fm-btn danger" type="button"><svg class="icon"><use href="#i-lock"></use></svg>Logout</button>
-              <button class="fm-btn secondary" type="button" id="fmThemeToggle"><svg class="icon"><use href="#i-sun"></use></svg>Tag/Nacht</button>
-              <!-- Settings popup -->
-              <div class="fm-settings-popup" id="fmSettingsPopup" role="dialog" aria-label="Dateimanager Einstellungen">
-                <div class="fm-settings-header">
-                  <span><svg class="icon"><use href="#i-settings"></use></svg> Einstellungen</span>
-                  <button class="fm-settings-close" id="fmSettingsClose" type="button">×</button>
-                </div>
-                <div class="fm-settings-body">
-                  <p class="fm-settings-section-label">Anzeige</p>
-                  <label class="fm-setting-row">
-                    <span><svg class="icon fm-s-icon"><use href="#i-eye"></use></svg>Versteckte Dateien</span>
-                    <span class="switch" id="fmShowHidden"></span>
-                  </label>
-                  <label class="fm-setting-row">
-                    <span><svg class="icon fm-s-icon"><use href="#i-image"></use></svg>Miniaturansichten</span>
-                    <span class="switch on" id="fmShowThumbs"></span>
-                  </label>
-                  <label class="fm-setting-row">
-                    <span><svg class="icon fm-s-icon"><use href="#i-info"></use></svg>Dateigröße anzeigen</span>
-                    <span class="switch on"></span>
-                  </label>
-                  <label class="fm-setting-row">
-                    <span><svg class="icon fm-s-icon"><use href="#i-refresh"></use></svg>Datum anzeigen</span>
-                    <span class="switch on"></span>
-                  </label>
-                  <p class="fm-settings-section-label">Sortierung &amp; Paging</p>
-                  <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
-                    <span style="font-size:12px;color:var(--muted);">Standard-Sortierung</span>
-                    <select class="fm-setting-select">
-                      <option>Name (A–Z)</option>
-                      <option>Name (Z–A)</option>
-                      <option>Datum (neu zuerst)</option>
-                      <option>Größe (groß zuerst)</option>
-                    </select>
-                  </div>
-                  <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
-                    <span style="font-size:12px;color:var(--muted);">Einträge pro Seite</span>
-                    <select class="fm-setting-select">
-                      <option>25</option>
-                      <option selected>50</option>
-                      <option>100</option>
-                      <option>250</option>
-                    </select>
-                  </div>
-                  <p class="fm-settings-section-label">Upload</p>
-                  <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
-                    <span style="font-size:12px;color:var(--muted);">Max. Dateigröße</span>
-                    <select class="fm-setting-select">
-                      <option>512 MB</option>
-                      <option>1 GB</option>
-                      <option selected>2 GB</option>
-                    </select>
-                  </div>
-                  <label class="fm-setting-row">
-                    <span><svg class="icon fm-s-icon"><use href="#i-upload"></use></svg>Drag &amp; Drop Upload</span>
-                    <span class="switch on"></span>
-                  </label>
-                  <p class="fm-settings-section-label">Sitzung</p>
-                  <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
-                    <span style="font-size:12px;color:var(--muted);">Sitzungs-Timeout (Minuten)</span>
-                    <select class="fm-setting-select">
-                      <option>15</option>
-                      <option selected>30</option>
-                      <option>60</option>
-                      <option>120</option>
-                    </select>
-                  </div>
-                </div>
-                <div class="fm-settings-footer">
-                  <button class="fm-btn secondary" id="fmSettingsCancel" type="button">Abbrechen</button>
-                  <button class="fm-btn success" id="fmSettingsSave" type="button"><svg class="icon"><use href="#i-check"></use></svg>Speichern</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="upload-box exact-upload">
-            <button class="custom-upload" id="simulateUpload" type="button"><svg class="icon"><use href="#i-upload"></use></svg>📎 Datei auswählen</button>
-            <span id="uploadState" class="file-name">Keine Datei ausgewählt oder hier ablegen</span>
-          </div>
-          <div class="progress thin"><span id="uploadBar"></span></div>
-          <div class="input-group search-group">
-            <svg class="icon" style="color:var(--muted);margin-left:8px;flex-shrink:0;"><use href="#i-search"></use></svg>
-            <input type="text" id="fmSearch" placeholder="Dateien suchen...">
-          </div>
-          <div class="filter-bar">
-            <span class="filter-label"><svg class="icon"><use href="#i-filter"></use></svg> Filter:</span>
-            <button class="filter-chip active" data-filter="all">Alle</button>
-            <button class="filter-chip" data-filter="folder"><svg class="icon"><use href="#i-folder"></use></svg>Ordner</button>
-            <button class="filter-chip" data-filter="image"><svg class="icon"><use href="#i-image"></use></svg>Bild</button>
-            <button class="filter-chip" data-filter="video"><svg class="icon"><use href="#i-video"></use></svg>Video</button>
-            <button class="filter-chip" data-filter="web"><svg class="icon"><use href="#i-code"></use></svg>Code/Web</button>
-            <button class="filter-chip" data-filter="document"><svg class="icon"><use href="#i-file"></use></svg>Dokument</button>
-            <button class="filter-chip" data-filter="archive"><svg class="icon"><use href="#i-zip"></use></svg>Archiv</button>
-          </div>
-          <div class="fm-breadcrumb" id="fmBreadcrumb">
-            <button data-path="/var/www/html">html</button>
-          </div>
-          <div class="input-group path-group">
-            <input type="text" id="fmPath" value="/var/www/html" readonly>
-            <button class="fm-btn success" id="fmRefresh"><svg class="icon"><use href="#i-refresh"></use></svg>Aktualisieren</button>
-          </div>
-          <div class="input-group">
-            <input type="text" id="fmNewFile" placeholder="Dateiname eingeben...">
-            <button class="fm-btn primary" id="fmCreateFile"><svg class="icon"><use href="#i-file"></use></svg>Datei erstellen</button>
-          </div>
-          <div class="input-group">
-            <input type="text" id="fmNewFolder" placeholder="Ordnername eingeben...">
-            <button class="fm-btn secondary" id="fmCreateFolder"><svg class="icon"><use href="#i-folder"></use></svg>Ordner erstellen</button>
-          </div>
-          <div class="table-responsive">
-            <table class="file-table exact-table">
-              <thead><tr><th>Name</th><th>Status Normalnutzer</th><th>Typ</th><th>Größe</th><th>Letzte Änderung</th><th>Aktionen</th></tr></thead>
-              <tbody id="fmTableBody"></tbody>
-            </table>
-          </div>
-          <!-- Monaco Editor Overlay -->
-          <div class="fm-editor-overlay" id="fmEditorOverlay" aria-modal="true" role="dialog">
-            <div class="fm-editor-topbar">
-              <div class="fm-editor-tab">
-                <svg class="icon"><use href="#i-code"></use></svg>
-                <span id="fmEditorFilename">index.php</span>
-                <button class="fm-editor-tab-close" id="fmEditorClose" title="Schließen">×</button>
-              </div>
-              <div class="fm-editor-actions">
-                <button class="fm-btn success" id="fmEditorSave" type="button" style="height:28px;font-size:12px;padding:4px 12px;"><svg class="icon" style="width:13px;height:13px"><use href="#i-check"></use></svg>Speichern</button>
-                <button class="fm-btn secondary" id="fmEditorCancel" type="button" style="height:28px;font-size:12px;padding:4px 12px;">Abbrechen</button>
-              </div>
-            </div>
-            <div class="fm-editor-body">
-              <div class="fm-editor-gutter" id="fmEditorGutter"></div>
-              <div class="fm-editor-code" id="fmEditorCode" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
-            </div>
-            <div class="fm-editor-status">
-              <b id="fmEditorLang">PHP</b>
-              <span>UTF-8</span>
-              <span>LF</span>
-              <span id="fmEditorLines">1 Zeile</span>
-              <span style="margin-left:auto;">Monaco Editor (Demo)</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Live-Demos ── -->
-    <section class="section" id="demos">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-terminal"></use></svg>Live-Demos</p>
-          <h2>Admin-Panel, Wartung und Rechteverwaltung</h2>
-          <p>Das Admin-Panel zeigt Systeminformationen, Wartungsaktionen und Berechtigungen für Normalnutzer. Die Demo ist rein visuell und führt keine Serveraktionen aus.</p>
-        </div>
-        <div class="admin-demo-stack reveal">
-
-          <!-- Benutzerverwaltung (wie in admin_settings.php) -->
-          <section class="admin-panel-demo">
-            <div class="admin-panel-header">
-              <h3>
-                <span class="panel-icon" style="background:rgba(79,142,247,.15);color:var(--blue);">
-                  <svg class="icon" style="width:13px;height:13px"><use href="#i-user"></use></svg>
-                </span>
-                Benutzerverwaltung
-              </h3>
-              <div style="display:flex;gap:8px;">
-                <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 14px;">
-                  <svg class="icon" style="width:13px;height:13px"><use href="#i-refresh"></use></svg>Protokoll
+            <nav class="nav" id="navLinks" aria-label="Hauptnavigation">
+                <a href="#overview"><svg class="icon">
+                        <use href="#i-server"></use>
+                    </svg><span>Überblick</span></a>
+                <a href="#install-script"><svg class="icon">
+                        <use href="#i-download"></use>
+                    </svg><span>Installation</span></a>
+                <a href="#filemanager"><svg class="icon">
+                        <use href="#i-folder"></use>
+                    </svg><span>Dateimanager</span></a>
+                <a href="#demos"><svg class="icon">
+                        <use href="#i-terminal"></use>
+                    </svg><span>Live-Demos</span></a>
+                <a href="#previews"><svg class="icon">
+                        <use href="#i-image"></use>
+                    </svg><span>Screenshots</span></a>
+                <a href="#security"><svg class="icon">
+                        <use href="#i-shield"></use>
+                    </svg><span>Sicherheit</span></a>
+                <a href="#faq"><svg class="icon">
+                        <use href="#i-info"></use>
+                    </svg><span>FAQ</span></a>
+                <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon">
+                        <use href="#i-github"></use>
+                    </svg><span>GitHub</span></a>
+                <button class="theme" id="themeToggle" type="button" aria-label="Light Mode aktivieren" aria-pressed="false">
+                    <span class="theme-orb">
+                        <svg class="icon theme-moon">
+                            <use href="#i-moon"></use>
+                        </svg>
+                        <svg class="icon theme-sun">
+                            <use href="#i-sun"></use>
+                        </svg>
+                    </span>
                 </button>
-                <button class="admin-btn green" type="button" style="font-size:12px;padding:5px 14px;">
-                  <svg class="icon" style="width:13px;height:13px"><use href="#i-user"></use></svg>+ Neu
-                </button>
-              </div>
-            </div>
-            <div class="table-responsive" style="margin-top:12px;">
-              <table class="file-table">
-                <thead>
-                  <tr>
-                    <th>NAME</th>
-                    <th>ROLLE</th>
-                    <th>2FA</th>
-                    <th>AKTIONEN</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td><b>admin</b></td>
-                    <td><span class="fm-badge public" style="font-size:12px;"><svg class="icon" style="width:12px;height:12px"><use href="#i-shield"></use></svg> Admin</span></td>
-                    <td><span style="color:var(--muted)">—</span></td>
-                    <td>
-                      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                        <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 12px;"><svg class="icon" style="width:13px;height:13px"><use href="#i-edit"></use></svg>Bearbeiten</button>
-                        <button class="mini red" type="button"><svg class="icon" style="width:13px;height:13px"><use href="#i-trash"></use></svg></button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td><b>nutzer1</b></td>
-                    <td><span class="fm-badge locked" style="font-size:12px;"><svg class="icon" style="width:12px;height:12px"><use href="#i-user"></use></svg> Nutzer</span></td>
-                    <td><span class="fm-badge public" style="font-size:11px;padding:3px 8px;"><svg class="icon" style="width:11px;height:11px"><use href="#i-check-circle"></use></svg> aktiv</span></td>
-                    <td>
-                      <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
-                        <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 12px;"><svg class="icon" style="width:13px;height:13px"><use href="#i-edit"></use></svg>Bearbeiten</button>
-                        <button class="mini red" type="button"><svg class="icon" style="width:13px;height:13px"><use href="#i-trash"></use></svg></button>
-                      </div>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+            </nav>
+        </div>
+    </header>
 
-          <!-- Sicherheitsrichtlinien (wie in admin_settings.php) -->
-          <section class="admin-panel-demo">
-            <button class="panel-collapse" type="button">▾</button>
-            <h3>
-              <span class="shield-icon" style="background:rgba(16,185,129,.12);color:var(--green);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:6px;">
-                <svg class="icon" style="width:13px;height:13px"><use href="#i-shield"></use></svg>
-              </span>
-              Sicherheitsrichtlinien
-            </h3>
-
-            <div class="policy-row">
-              <div class="policy-info">
-                <svg class="icon" style="width:18px;height:18px;color:var(--muted);flex-shrink:0;"><use href="#i-shield"></use></svg>
-                <div>
-                  <b>Zwei-Faktor-Authentifizierung</b>
-                  <small>Benutzer ohne 2FA können sich nicht anmelden</small>
+    <main>
+        <!-- ── Hero ── -->
+        <section class="hero section" id="top">
+            <div class="container hero-grid">
+                <div class="hero-copy reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-server"></use>
+                        </svg>Open-Source Webserver Stack für Ubuntu und Debian</p>
+                    <h1>Webserver Installationsskript für Apache, PHP und MariaDB</h1>
+                    <p class="lead">web-service installiert auf Ubuntu- und Debian-Servern automatisch Apache, PHP, MariaDB, phpMyAdmin, einen browserbasierten Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und ein Update-System.</p>
+                    <div class="hero-actions">
+                        <a class="btn primary" href="#install-script">Jetzt installieren</a>
+                        <a class="btn ghost" href="#filemanager">Dateimanager ansehen</a>
+                        <a class="btn ghost" href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon">
+                                <use href="#i-github"></use>
+                            </svg>GitHub</a>
+                    </div>
+                    <div class="badges">
+                        <span>Open Source</span>
+                        <span>Ubuntu / Debian</span>
+                        <span>Apache / PHP / MariaDB</span>
+                        <span>Dateimanager</span>
+                        <span>2FA / TOTP</span>
+                        <span>One-Click Update</span>
+                    </div>
                 </div>
-              </div>
-              <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;">
-                <input type="checkbox" style="accent-color:var(--green);width:15px;height:15px;"> erzwingen
-              </label>
+                <aside class="terminal hero-terminal reveal">
+                    <div class="winbar"><i></i><i></i><i></i><span>install.sh</span></div>
+                    <div class="term-body">
+                        <small># Ein Befehl auf einem frischen Ubuntu / Debian Server</small>
+                        <pre><code id="heroCmd">wget -O install.sh https://web-service.ubodigat.com/install/install.sh &amp;&amp; chmod +x install.sh &amp;&amp; ./install.sh</code></pre>
+                        <button class="copy" data-copy="install" data-copy-text="wget -O install.sh https://web-service.ubodigat.com/install/install.sh && chmod +x install.sh && ./install.sh" type="button">
+                            <svg class="icon">
+                                <use href="#i-copy"></use>
+                            </svg>Befehl kopieren
+                        </button>
+                    </div>
+                    <div class="stack"><span>Apache</span><span>PHP</span><span>MariaDB</span><span>Admin</span></div>
+                </aside>
             </div>
+        </section>
 
-            <div class="policy-row">
-              <div class="policy-info">
-                <svg class="icon" style="width:18px;height:18px;color:var(--amber);flex-shrink:0;"><use href="#i-refresh"></use></svg>
+        <!-- ── Überblick ── -->
+        <section class="section compact" id="overview">
+            <div class="container split reveal">
                 <div>
-                  <b>Sitzungs-Timeout</b>
-                  <small>Automatische Abmeldung nach Inaktivität</small>
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-info"></use>
+                        </svg>Kurzdefinition</p>
+                    <h2>Was ist web-service?</h2>
                 </div>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <input type="number" value="30" min="5" max="480" class="policy-num-input"> Minuten
-              </div>
+                <div class="explain">
+                    <article>
+                        <h3>Manuell</h3>
+                        <p>Pakete installieren, Datenbank konfigurieren, PHP-Module prüfen, Benutzerrechte bauen, Uploads absichern und Updates pflegen.</p>
+                    </article>
+                    <article>
+                        <h3>web-service</h3>
+                        <p>web-service bündelt diese Schritte in einem Open-Source Installationsskript für einen vollständigen Webserver Stack mit Verwaltung im Browser.</p>
+                    </article>
+                </div>
             </div>
+        </section>
 
-            <div class="policy-subsec-label">PASSWORTRICHTLINIEN</div>
+        <!-- ── Voraussetzungen ── -->
+        <section class="section compact" id="requirements">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-user"></use>
+                        </svg>Voraussetzungen und Zielgruppe</p>
+                    <h2>Für wen ist web-service geeignet?</h2>
+                    <p>web-service richtet sich an Betreiber kleiner Webprojekte, Entwickler, Lernumgebungen und Homeserver-Nutzer, die einen Apache-PHP-MariaDB-Stack mit Webverwaltung nachvollziehbar installieren möchten.</p>
+                </div>
+                <div class="answer-grid reveal">
+                    <article class="answer-card">
+                        <h3>Kurzdefinition</h3>
+                        <p>web-service ist ein Open-Source Webserver Installationsskript für Ubuntu und Debian. Es richtet Server-Stack, Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Updates ein.</p>
+                    </article>
+                    <article class="answer-card">
+                        <h3>Technische Voraussetzungen</h3>
+                        <p>Empfohlen wird ein frischer oder gesicherter Ubuntu-/Debian-Server mit SSH-Zugriff, administrativen Rechten und freiem Zugriff auf HTTP/HTTPS.</p>
+                    </article>
+                    <article class="answer-card">
+                        <h3>Geeignete Einsatzbereiche</h3>
+                        <p>Das Projekt eignet sich für Testserver, Homeserver, kleine Webprojekte, Lernsysteme und Entwicklungsumgebungen. Produktive Systeme sollten zusätzlich individuell abgesichert werden.</p>
+                    </article>
+                    <article class="answer-card">
+                        <h3>Open Source</h3>
+                        <p>Der Quellcode ist öffentlich auf GitHub verfügbar. Die Installation und die statische Projektseite sind ohne externe Frameworks nutzbar.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
 
-            <div class="policy-row">
-              <div class="policy-info">
-                <span class="policy-code">🔤</span>
-                <div><b>Mindestlänge</b></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <input type="number" value="15" min="8" max="64" class="policy-num-input"> Zeichen
-              </div>
+        <!-- ── Installation ── -->
+        <section class="section" id="install-script">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-download"></use>
+                        </svg>Installation</p>
+                    <h2>Ubuntu oder Debian Webserver automatisch installieren</h2>
+                    <p>Das Installationsskript richtet Systempakete, Datenbank, Projektdateien und Webinterface ein. Danach wird der Administrator im Browser angelegt.</p>
+                    <a class="btn ghost" href="install.html" style="margin-top:4px;"><svg class="icon">
+                            <use href="#i-file"></use>
+                        </svg>Detaillierte Installationsanleitung</a>
+                </div>
+                <div class="install-grid">
+                    <div class="card reveal">
+                        <h3>Was eingerichtet wird</h3>
+                        <ul class="checks">
+                            <li>Apache2, PHP und MariaDB</li>
+                            <li>phpMyAdmin und Datenbankzugang</li>
+                            <li>Web-Dateimanager und Demo-Webseite</li>
+                            <li>Admin-Panel, Benutzerverwaltung, ACL und 2FA</li>
+                            <li>Versionscheck und Update-Mechanik</li>
+                        </ul>
+                        <p class="note">Bitte nur auf einem frischen oder gesicherten Server ausführen.</p>
+                    </div>
+                    <div class="terminal demo-terminal reveal">
+                        <div class="winbar"><i></i><i></i><i></i><span>root@server:~</span></div>
+                        <div class="term-output" id="terminalOutput">
+                            <p>$ ./install.sh</p>
+                            <p class="muted">Bereit für die Simulation.</p>
+                        </div>
+                        <div class="progress"><span id="terminalProgress"></span></div>
+                        <button class="btn primary full" id="startTerminal" type="button">Terminal-Demo starten</button>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="policy-row">
-              <div class="policy-info">
-                <span class="policy-code">abc</span>
-                <div><b>Kleinbuchstaben (a–z)</b></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
-                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
-              </div>
+        <!-- ── Dateimanager ── -->
+        <section class="section" id="filemanager">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-folder"></use>
+                        </svg>Web-Dateimanager</p>
+                    <h2>Browserbasierter Web-Dateimanager für Projektdateien</h2>
+                    <p>Der Web-Dateimanager verwaltet Dateien und Ordner im Browser. Er enthält Uploads, Suche, Filter, Pfadnavigation, Datei- und Ordnererstellung sowie Aktionen wie Öffnen, Bearbeiten, Download und Löschen.</p>
+                </div>
+                <div class="fm-real reveal">
+                    <div class="top-controls">
+                        <div class="fm-topbar-left">
+                            <button class="fm-btn secondary" type="button" style="gap:5px;padding:7px 13px;">
+                                <svg class="icon" style="transform:scaleX(-1)">
+                                    <use href="#i-chevron-right"></use>
+                                </svg>Zurück
+                            </button>
+                            <span class="fm-admin-badge">
+                                <svg class="icon">
+                                    <use href="#i-user"></use>
+                                </svg>Admin: <b>admin</b>
+                            </span>
+                        </div>
+                        <div class="right-buttons">
+                            <button class="fm-btn info" id="fmSettingsBtn" aria-expanded="false" type="button"><svg class="icon">
+                                    <use href="#i-settings"></use>
+                                </svg>Einstellungen</button>
+                            <button class="fm-btn secondary" type="button"><svg class="icon">
+                                    <use href="#i-user"></use>
+                                </svg>Konto</button>
+                            <button class="fm-btn secondary" type="button"><svg class="icon">
+                                    <use href="#i-trash"></use>
+                                </svg>Papierkorb</button>
+                            <button class="fm-btn danger" type="button"><svg class="icon">
+                                    <use href="#i-lock"></use>
+                                </svg>Logout</button>
+                            <button class="fm-btn secondary" type="button" id="fmThemeToggle"><svg class="icon">
+                                    <use href="#i-sun"></use>
+                                </svg>Tag/Nacht</button>
+                            <!-- Settings popup -->
+                            <div class="fm-settings-popup" id="fmSettingsPopup" role="dialog" aria-label="Dateimanager Einstellungen">
+                                <div class="fm-settings-header">
+                                    <span><svg class="icon">
+                                            <use href="#i-settings"></use>
+                                        </svg> Einstellungen</span>
+                                    <button class="fm-settings-close" id="fmSettingsClose" type="button">×</button>
+                                </div>
+                                <div class="fm-settings-body">
+                                    <p class="fm-settings-section-label">Anzeige</p>
+                                    <label class="fm-setting-row">
+                                        <span><svg class="icon fm-s-icon">
+                                                <use href="#i-eye"></use>
+                                            </svg>Versteckte Dateien</span>
+                                        <span class="switch" id="fmShowHidden"></span>
+                                    </label>
+                                    <label class="fm-setting-row">
+                                        <span><svg class="icon fm-s-icon">
+                                                <use href="#i-image"></use>
+                                            </svg>Miniaturansichten</span>
+                                        <span class="switch on" id="fmShowThumbs"></span>
+                                    </label>
+                                    <label class="fm-setting-row">
+                                        <span><svg class="icon fm-s-icon">
+                                                <use href="#i-info"></use>
+                                            </svg>Dateigröße anzeigen</span>
+                                        <span class="switch on"></span>
+                                    </label>
+                                    <label class="fm-setting-row">
+                                        <span><svg class="icon fm-s-icon">
+                                                <use href="#i-refresh"></use>
+                                            </svg>Datum anzeigen</span>
+                                        <span class="switch on"></span>
+                                    </label>
+                                    <p class="fm-settings-section-label">Sortierung &amp; Paging</p>
+                                    <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
+                                        <span style="font-size:12px;color:var(--muted);">Standard-Sortierung</span>
+                                        <select class="fm-setting-select">
+                                            <option>Name (A–Z)</option>
+                                            <option>Name (Z–A)</option>
+                                            <option>Datum (neu zuerst)</option>
+                                            <option>Größe (groß zuerst)</option>
+                                        </select>
+                                    </div>
+                                    <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
+                                        <span style="font-size:12px;color:var(--muted);">Einträge pro Seite</span>
+                                        <select class="fm-setting-select">
+                                            <option>25</option>
+                                            <option selected>50</option>
+                                            <option>100</option>
+                                            <option>250</option>
+                                        </select>
+                                    </div>
+                                    <p class="fm-settings-section-label">Upload</p>
+                                    <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
+                                        <span style="font-size:12px;color:var(--muted);">Max. Dateigröße</span>
+                                        <select class="fm-setting-select">
+                                            <option>512 MB</option>
+                                            <option>1 GB</option>
+                                            <option selected>2 GB</option>
+                                        </select>
+                                    </div>
+                                    <label class="fm-setting-row">
+                                        <span><svg class="icon fm-s-icon">
+                                                <use href="#i-upload"></use>
+                                            </svg>Drag &amp; Drop Upload</span>
+                                        <span class="switch on"></span>
+                                    </label>
+                                    <p class="fm-settings-section-label">Sitzung</p>
+                                    <div class="fm-setting-row" style="flex-direction:column;align-items:flex-start;gap:5px;">
+                                        <span style="font-size:12px;color:var(--muted);">Sitzungs-Timeout (Minuten)</span>
+                                        <select class="fm-setting-select">
+                                            <option>15</option>
+                                            <option selected>30</option>
+                                            <option>60</option>
+                                            <option>120</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="fm-settings-footer">
+                                    <button class="fm-btn secondary" id="fmSettingsCancel" type="button">Abbrechen</button>
+                                    <button class="fm-btn success" id="fmSettingsSave" type="button"><svg class="icon">
+                                            <use href="#i-check"></use>
+                                        </svg>Speichern</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="upload-box exact-upload">
+                        <button class="custom-upload" id="simulateUpload" type="button"><svg class="icon">
+                                <use href="#i-upload"></use>
+                            </svg>📎 Datei auswählen</button>
+                        <span id="uploadState" class="file-name">Keine Datei ausgewählt oder hier ablegen</span>
+                    </div>
+                    <div class="progress thin"><span id="uploadBar"></span></div>
+                    <div class="input-group search-group">
+                        <svg class="icon" style="color:var(--muted);margin-left:8px;flex-shrink:0;">
+                            <use href="#i-search"></use>
+                        </svg>
+                        <input type="text" id="fmSearch" placeholder="Dateien suchen...">
+                    </div>
+                    <div class="filter-bar">
+                        <span class="filter-label"><svg class="icon">
+                                <use href="#i-filter"></use>
+                            </svg> Filter:</span>
+                        <button class="filter-chip active" data-filter="all">Alle</button>
+                        <button class="filter-chip" data-filter="folder"><svg class="icon">
+                                <use href="#i-folder"></use>
+                            </svg>Ordner</button>
+                        <button class="filter-chip" data-filter="image"><svg class="icon">
+                                <use href="#i-image"></use>
+                            </svg>Bild</button>
+                        <button class="filter-chip" data-filter="video"><svg class="icon">
+                                <use href="#i-video"></use>
+                            </svg>Video</button>
+                        <button class="filter-chip" data-filter="web"><svg class="icon">
+                                <use href="#i-code"></use>
+                            </svg>Code/Web</button>
+                        <button class="filter-chip" data-filter="document"><svg class="icon">
+                                <use href="#i-file"></use>
+                            </svg>Dokument</button>
+                        <button class="filter-chip" data-filter="archive"><svg class="icon">
+                                <use href="#i-zip"></use>
+                            </svg>Archiv</button>
+                    </div>
+                    <div class="fm-breadcrumb" id="fmBreadcrumb">
+                        <button data-path="/var/www/html">html</button>
+                    </div>
+                    <div class="input-group path-group">
+                        <input type="text" id="fmPath" value="/var/www/html" readonly>
+                        <button class="fm-btn success" id="fmRefresh"><svg class="icon">
+                                <use href="#i-refresh"></use>
+                            </svg>Aktualisieren</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="fmNewFile" placeholder="Dateiname eingeben...">
+                        <button class="fm-btn primary" id="fmCreateFile"><svg class="icon">
+                                <use href="#i-file"></use>
+                            </svg>Datei erstellen</button>
+                    </div>
+                    <div class="input-group">
+                        <input type="text" id="fmNewFolder" placeholder="Ordnername eingeben...">
+                        <button class="fm-btn secondary" id="fmCreateFolder"><svg class="icon">
+                                <use href="#i-folder"></use>
+                            </svg>Ordner erstellen</button>
+                    </div>
+                    <div class="table-responsive">
+                        <table class="file-table exact-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Status Normalnutzer</th>
+                                    <th>Typ</th>
+                                    <th>Größe</th>
+                                    <th>Letzte Änderung</th>
+                                    <th>Aktionen</th>
+                                </tr>
+                            </thead>
+                            <tbody id="fmTableBody"></tbody>
+                        </table>
+                    </div>
+                    <!-- Monaco Editor Overlay -->
+                    <div class="fm-editor-overlay" id="fmEditorOverlay" aria-modal="true" role="dialog">
+                        <div class="fm-editor-topbar">
+                            <div class="fm-editor-tab">
+                                <svg class="icon">
+                                    <use href="#i-code"></use>
+                                </svg>
+                                <span id="fmEditorFilename">index.php</span>
+                                <button class="fm-editor-tab-close" id="fmEditorClose" title="Schließen">×</button>
+                            </div>
+                            <div class="fm-editor-actions">
+                                <button class="fm-btn success" id="fmEditorSave" type="button" style="height:28px;font-size:12px;padding:4px 12px;"><svg class="icon" style="width:13px;height:13px">
+                                        <use href="#i-check"></use>
+                                    </svg>Speichern</button>
+                                <button class="fm-btn secondary" id="fmEditorCancel" type="button" style="height:28px;font-size:12px;padding:4px 12px;">Abbrechen</button>
+                            </div>
+                        </div>
+                        <div class="fm-editor-body">
+                            <div class="fm-editor-gutter" id="fmEditorGutter"></div>
+                            <div class="fm-editor-code" id="fmEditorCode" contenteditable="true" spellcheck="false" autocorrect="off" autocapitalize="off"></div>
+                        </div>
+                        <div class="fm-editor-status">
+                            <b id="fmEditorLang">PHP</b>
+                            <span>UTF-8</span>
+                            <span>LF</span>
+                            <span id="fmEditorLines">1 Zeile</span>
+                            <span style="margin-left:auto;">Monaco Editor (Demo)</span>
+                        </div>
+                    </div>
+                </div>
             </div>
+        </section>
 
-            <div class="policy-row">
-              <div class="policy-info">
-                <span class="policy-code">ABC</span>
-                <div><b>Großbuchstaben (A–Z)</b></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
-                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
-              </div>
-            </div>
+        <!-- ── Live-Demos ── -->
+        <section class="section" id="demos">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-terminal"></use>
+                        </svg>Live-Demos</p>
+                    <h2>Admin-Panel, Wartung und Rechteverwaltung</h2>
+                    <p>Das Admin-Panel zeigt Systeminformationen, Wartungsaktionen und Berechtigungen für Normalnutzer. Die Demo ist rein visuell und führt keine Serveraktionen aus.</p>
+                </div>
+                <div class="admin-demo-stack reveal">
 
-            <div class="policy-row">
-              <div class="policy-info">
-                <span class="policy-code">123</span>
-                <div><b>Zahlen (0–9)</b></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
-                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
-              </div>
-            </div>
+                    <!-- Benutzerverwaltung (wie in admin_settings.php) -->
+                    <section class="admin-panel-demo">
+                        <div class="admin-panel-header">
+                            <h3>
+                                <span class="panel-icon" style="background:rgba(79,142,247,.15);color:var(--blue);">
+                                    <svg class="icon" style="width:13px;height:13px">
+                                        <use href="#i-user"></use>
+                                    </svg>
+                                </span>
+                                Benutzerverwaltung
+                            </h3>
+                            <div style="display:flex;gap:8px;">
+                                <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 14px;">
+                                    <svg class="icon" style="width:13px;height:13px">
+                                        <use href="#i-refresh"></use>
+                                    </svg>Protokoll
+                                </button>
+                                <button class="admin-btn green" type="button" style="font-size:12px;padding:5px 14px;">
+                                    <svg class="icon" style="width:13px;height:13px">
+                                        <use href="#i-user"></use>
+                                    </svg>+ Neu
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-responsive" style="margin-top:12px;">
+                            <table class="file-table">
+                                <thead>
+                                    <tr>
+                                        <th>NAME</th>
+                                        <th>ROLLE</th>
+                                        <th>2FA</th>
+                                        <th>AKTIONEN</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><b>admin</b></td>
+                                        <td><span class="fm-badge public" style="font-size:12px;"><svg class="icon" style="width:12px;height:12px">
+                                                    <use href="#i-shield"></use>
+                                                </svg> Admin</span></td>
+                                        <td><span style="color:var(--muted)">—</span></td>
+                                        <td>
+                                            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                                                <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 12px;"><svg class="icon" style="width:13px;height:13px">
+                                                        <use href="#i-edit"></use>
+                                                    </svg>Bearbeiten</button>
+                                                <button class="mini red" type="button"><svg class="icon" style="width:13px;height:13px">
+                                                        <use href="#i-trash"></use>
+                                                    </svg></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><b>nutzer1</b></td>
+                                        <td><span class="fm-badge locked" style="font-size:12px;"><svg class="icon" style="width:12px;height:12px">
+                                                    <use href="#i-user"></use>
+                                                </svg> Nutzer</span></td>
+                                        <td><span class="fm-badge public" style="font-size:11px;padding:3px 8px;"><svg class="icon" style="width:11px;height:11px">
+                                                    <use href="#i-check-circle"></use>
+                                                </svg> aktiv</span></td>
+                                        <td>
+                                            <div style="display:flex;gap:6px;align-items:center;flex-wrap:wrap;">
+                                                <button class="admin-btn blue" type="button" style="font-size:12px;padding:5px 12px;"><svg class="icon" style="width:13px;height:13px">
+                                                        <use href="#i-edit"></use>
+                                                    </svg>Bearbeiten</button>
+                                                <button class="mini red" type="button"><svg class="icon" style="width:13px;height:13px">
+                                                        <use href="#i-trash"></use>
+                                                    </svg></button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </section>
 
-            <div class="policy-row" style="border-bottom:0;">
-              <div class="policy-info">
-                <span class="policy-code" style="font-size:13px;">✱</span>
-                <div><b>Sonderzeichen (!@#$...)</b></div>
-              </div>
-              <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
-                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
-                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
-              </div>
-            </div>
+                    <!-- Sicherheitsrichtlinien (wie in admin_settings.php) -->
+                    <section class="admin-panel-demo">
+                        <button class="panel-collapse" type="button">▾</button>
+                        <h3>
+                            <span class="shield-icon" style="background:rgba(16,185,129,.12);color:var(--green);border-radius:50%;display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;margin-right:6px;">
+                                <svg class="icon" style="width:13px;height:13px">
+                                    <use href="#i-shield"></use>
+                                </svg>
+                            </span>
+                            Sicherheitsrichtlinien
+                        </h3>
 
-            <button class="admin-btn blue" type="button" style="margin-top:16px;"><svg class="icon"><use href="#i-check"></use></svg>Richtlinien speichern</button>
-          </section>
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <svg class="icon" style="width:18px;height:18px;color:var(--muted);flex-shrink:0;">
+                                    <use href="#i-shield"></use>
+                                </svg>
+                                <div>
+                                    <b>Zwei-Faktor-Authentifizierung</b>
+                                    <small>Benutzer ohne 2FA können sich nicht anmelden</small>
+                                </div>
+                            </div>
+                            <label style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);cursor:pointer;white-space:nowrap;">
+                                <input type="checkbox" style="accent-color:var(--green);width:15px;height:15px;"> erzwingen
+                            </label>
+                        </div>
 
-          <!-- System-Info & Wartung -->
-          <section class="admin-panel-demo">
-            <button class="panel-collapse" type="button">▾</button>
-            <h3><span class="panel-icon">i</span> System-Info &amp; Wartung</h3>
-            <p class="admin-meta">Version: <b id="currentVersion">1.6.9</b> &nbsp; PHP: <b>8.2.31</b> &nbsp; Root: <b>/var/www/html</b></p>
-            <div class="admin-actions">
-              <button class="admin-btn blue" id="checkUpdate" type="button"><svg class="icon"><use href="#i-refresh"></use></svg>Update prüfen</button>
-              <button class="admin-btn green" id="doUpdate" type="button" disabled><svg class="icon"><use href="#i-arrow-up"></use></svg>Version aktualisieren</button>
-              <button class="admin-btn red" type="button"><svg class="icon"><use href="#i-trash"></use></svg>Installation bereinigen</button>
-            </div>
-            <p id="updateMsg" class="admin-hint">Klicke auf "Update prüfen" um die Demo zu starten.</p>
-            <div id="updateBadge" class="update-badge hidden">
-              <span class="pulse"></span>
-              <svg class="icon"><use href="#i-arrow-up"></use></svg>
-              Neue Version verfügbar: <b id="newVersion">v1.7.0</b>
-            </div>
-            <span id="updateStatus" class="sr-status">Version: 1.6.9</span>
-          </section>
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <svg class="icon" style="width:18px;height:18px;color:var(--amber);flex-shrink:0;">
+                                    <use href="#i-refresh"></use>
+                                </svg>
+                                <div>
+                                    <b>Sitzungs-Timeout</b>
+                                    <small>Automatische Abmeldung nach Inaktivität</small>
+                                </div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <input type="number" value="30" min="5" max="480" class="policy-num-input"> Minuten
+                            </div>
+                        </div>
 
-          <section class="admin-panel-demo permissions-demo">
-            <button class="panel-collapse" type="button">▾</button>
-            <h3><span class="shield-icon">◇</span> Berechtigungen für Normalnutzer</h3>
-            <h4>Globale Standardwerte</h4>
-            <p class="admin-hint">Diese Regeln gelten, sofern keine ordnerspezifische Regel existiert.</p>
-            <div class="perm-grid">
-              <label class="perm-row"><input type="checkbox"> <svg class="icon"><use href="#i-trash"></use></svg><span>Löschen</span></label>
-              <label class="perm-row"><input type="checkbox" checked> <svg class="icon"><use href="#i-edit"></use></svg><span>Umbenennen</span></label>
-              <label class="perm-row"><input type="checkbox" checked> <svg class="icon"><use href="#i-upload"></use></svg><span>Upload</span></label>
-              <label class="perm-row"><input type="checkbox" checked> <svg class="icon"><use href="#i-code"></use></svg><span>Erstellen</span></label>
-              <label class="perm-row"><input type="checkbox" checked> <svg class="icon"><use href="#i-edit"></use></svg><span>Bearbeiten</span></label>
+                        <div class="policy-subsec-label">PASSWORTRICHTLINIEN</div>
+
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <span class="policy-code">🔤</span>
+                                <div><b>Mindestlänge</b></div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <input type="number" value="15" min="8" max="64" class="policy-num-input"> Zeichen
+                            </div>
+                        </div>
+
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <span class="policy-code">abc</span>
+                                <div><b>Kleinbuchstaben (a–z)</b></div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
+                                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
+                            </div>
+                        </div>
+
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <span class="policy-code">ABC</span>
+                                <div><b>Großbuchstaben (A–Z)</b></div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
+                                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
+                            </div>
+                        </div>
+
+                        <div class="policy-row">
+                            <div class="policy-info">
+                                <span class="policy-code">123</span>
+                                <div><b>Zahlen (0–9)</b></div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
+                                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
+                            </div>
+                        </div>
+
+                        <div class="policy-row" style="border-bottom:0;">
+                            <div class="policy-info">
+                                <span class="policy-code" style="font-size:13px;">✱</span>
+                                <div><b>Sonderzeichen (!@#$...)</b></div>
+                            </div>
+                            <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);white-space:nowrap;">
+                                <label style="display:flex;align-items:center;gap:5px;cursor:pointer;"><input type="checkbox" checked style="accent-color:var(--green);"> erforderlich</label>
+                                <span>min.</span><input type="number" value="1" min="1" max="10" class="policy-num-input-sm">
+                            </div>
+                        </div>
+
+                        <button class="admin-btn blue" type="button" style="margin-top:16px;"><svg class="icon">
+                                <use href="#i-check"></use>
+                            </svg>Richtlinien speichern</button>
+                    </section>
+
+                    <!-- System-Info & Wartung -->
+                    <section class="admin-panel-demo">
+                        <button class="panel-collapse" type="button">▾</button>
+                        <h3><span class="panel-icon">i</span> System-Info &amp; Wartung</h3>
+                        <p class="admin-meta">Version: <b id="currentVersion">1.7.0</b> &nbsp; PHP: <b>8.2.31</b> &nbsp; Root: <b>/var/www/html</b></p>
+                        <div class="admin-actions">
+                            <button class="admin-btn blue" id="checkUpdate" type="button"><svg class="icon">
+                                    <use href="#i-refresh"></use>
+                                </svg>Update prüfen</button>
+                            <button class="admin-btn green" id="doUpdate" type="button" disabled><svg class="icon">
+                                    <use href="#i-arrow-up"></use>
+                                </svg>Version aktualisieren</button>
+                            <button class="admin-btn red" type="button"><svg class="icon">
+                                    <use href="#i-trash"></use>
+                                </svg>Installation bereinigen</button>
+                        </div>
+                        <p id="updateMsg" class="admin-hint">Klicke auf "Update prüfen" um die Demo zu starten.</p>
+                        <div id="updateBadge" class="update-badge hidden">
+                            <span class="pulse"></span>
+                            <svg class="icon">
+                                <use href="#i-arrow-up"></use>
+                            </svg>
+                            Neue Version verfügbar: <b id="newVersion">v1.7.0</b>
+                        </div>
+                        <span id="updateStatus" class="sr-status">Version: 1.7.0</span>
+                    </section>
+
+                    <section class="admin-panel-demo permissions-demo">
+                        <button class="panel-collapse" type="button">▾</button>
+                        <h3><span class="shield-icon">◇</span> Berechtigungen für Normalnutzer</h3>
+                        <h4>Globale Standardwerte</h4>
+                        <p class="admin-hint">Diese Regeln gelten, sofern keine ordnerspezifische Regel existiert.</p>
+                        <div class="perm-grid">
+                            <label class="perm-row"><input type="checkbox"> <svg class="icon">
+                                    <use href="#i-trash"></use>
+                                </svg><span>Löschen</span></label>
+                            <label class="perm-row"><input type="checkbox" checked> <svg class="icon">
+                                    <use href="#i-edit"></use>
+                                </svg><span>Umbenennen</span></label>
+                            <label class="perm-row"><input type="checkbox" checked> <svg class="icon">
+                                    <use href="#i-upload"></use>
+                                </svg><span>Upload</span></label>
+                            <label class="perm-row"><input type="checkbox" checked> <svg class="icon">
+                                    <use href="#i-code"></use>
+                                </svg><span>Erstellen</span></label>
+                            <label class="perm-row"><input type="checkbox" checked> <svg class="icon">
+                                    <use href="#i-edit"></use>
+                                </svg><span>Bearbeiten</span></label>
+                        </div>
+                        <button class="admin-btn blue compact-btn" type="button"><svg class="icon">
+                                <use href="#i-check"></use>
+                            </svg>Globale Rechte speichern</button>
+                        <div class="permission-divider"></div>
+                        <h4>Ordnerspezifische Regeln</h4>
+                        <p class="admin-hint">Hier kannst du exakte Berechtigungen für einzelne Verzeichnisse festlegen.</p>
+                        <div class="folder-rule-box">
+                            <label>Ordner auswählen oder Pfad eingeben</label>
+                            <div class="folder-inputs">
+                                <select id="folderRuleSelect">
+                                    <option value="">Ordner wählen --</option>
+                                    <option value="projekt">projekt</option>
+                                    <option value="projekt/bilder">projekt/bilder</option>
+                                    <option value="projekt/css">projekt/css</option>
+                                    <option value="projekt/js">projekt/js</option>
+                                    <option value="uploads">uploads</option>
+                                </select>
+                                <input id="folderRulePath" value="" placeholder="oder Pfad eingeben ...">
+                            </div>
+                            <div class="toggle-grid">
+                                <label><span class="switch"></span> Privat</label>
+                                <label><span class="switch"></span> Upload</label>
+                                <label><span class="switch"></span> Erstellen</label>
+                                <label><span class="switch"></span> Bearbeiten</label>
+                                <label><span class="switch"></span> Umbenennen</label>
+                                <label><span class="switch"></span> Löschen</label>
+                            </div>
+                            <button class="admin-btn green compact-btn" type="button"><svg class="icon">
+                                    <use href="#i-check"></use>
+                                </svg>Regel speichern</button>
+                        </div>
+                        <div class="saved-rule">
+                            <div><b>uploads</b><span>Privat</span><span class="on">Upload</span><span>Erstellen</span><span>Bearbeiten</span><span>Umbenennen</span><span>Löschen</span></div>
+                            <div><button class="mini yellow" type="button"><svg class="icon">
+                                        <use href="#i-edit"></use>
+                                    </svg></button><button class="mini red" type="button"><svg class="icon">
+                                        <use href="#i-trash"></use>
+                                    </svg></button></div>
+                        </div>
+                    </section>
+                </div>
             </div>
-            <button class="admin-btn blue compact-btn" type="button"><svg class="icon"><use href="#i-check"></use></svg>Globale Rechte speichern</button>
-            <div class="permission-divider"></div>
-            <h4>Ordnerspezifische Regeln</h4>
-            <p class="admin-hint">Hier kannst du exakte Berechtigungen für einzelne Verzeichnisse festlegen.</p>
-            <div class="folder-rule-box">
-              <label>Ordner auswählen oder Pfad eingeben</label>
-              <div class="folder-inputs">
-                <select id="folderRuleSelect">
-                  <option value="">Ordner wählen --</option>
-                  <option value="projekt">projekt</option>
-                  <option value="projekt/bilder">projekt/bilder</option>
-                  <option value="projekt/css">projekt/css</option>
-                  <option value="projekt/js">projekt/js</option>
-                  <option value="uploads">uploads</option>
-                </select>
-                <input id="folderRulePath" value="" placeholder="oder Pfad eingeben ...">
-              </div>
-              <div class="toggle-grid">
-                <label><span class="switch"></span> Privat</label>
-                <label><span class="switch"></span> Upload</label>
-                <label><span class="switch"></span> Erstellen</label>
-                <label><span class="switch"></span> Bearbeiten</label>
-                <label><span class="switch"></span> Umbenennen</label>
-                <label><span class="switch"></span> Löschen</label>
-              </div>
-              <button class="admin-btn green compact-btn" type="button"><svg class="icon"><use href="#i-check"></use></svg>Regel speichern</button>
+        </section>
+
+        <!-- ── Screenshots ── -->
+        <section class="section" id="previews">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-image"></use>
+                        </svg>Screenshots / Previews</p>
+                    <h2>Echte Screenshots der wichtigsten Weboberflächen</h2>
+                    <p>Klicke auf eine Kachel für die Großansicht. Die Screenshots zeigen die reale installierte Oberfläche.</p>
+                </div>
+                <div class="preview-grid">
+
+                    <!-- Login (mock) -->
+                    <button class="preview reveal" data-title="Login" data-desc="Passwort und optionaler TOTP-Code sichern den Zugang." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Login</em></span>
+                        <span class="mock login"><b>Admin Login</b><small>Passwort + 2FA</small><i></i></span>
+                    </button>
+
+                    <!-- Web-Dateimanager (echter Screenshot) -->
+                    <button class="preview reveal" data-title="Web-Dateimanager" data-desc="Dateiliste mit Upload-Fortschritt, Pfadnavigation, Filter und Aktionen." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Dateimanager</em></span>
+                        <span class="mock screenshot">
+                            <img src="assets/pic/Screenshot%202026-06-15%20002351.png" alt="Web-Dateimanager Screenshot" loading="lazy">
+                        </span>
+                    </button>
+
+                    <!-- Upload (mock) -->
+                    <button class="preview reveal" data-title="Upload" data-desc="Chunk-Upload bis 2 GB mit Echtzeit-Fortschrittsbalken." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Upload</em></span>
+                        <span class="mock upload"><b></b><i></i></span>
+                    </button>
+
+                    <!-- Konto & Akzentfarbe (echter Screenshot) -->
+                    <button class="preview reveal" data-title="Konto &amp; Akzentfarbe" data-desc="Benutzereinstellungen, Sicherheit und individuelle Akzentfarbe der Oberfläche." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Konto</em></span>
+                        <span class="mock screenshot">
+                            <img src="assets/pic/Screenshot%202026-06-15%20002245.png" alt="Konto und Akzentfarbe Screenshot" loading="lazy">
+                        </span>
+                    </button>
+
+                    <!-- Papierkorb (echter Screenshot) -->
+                    <button class="preview reveal" data-title="Papierkorb" data-desc="Gelöschte Dateien und Ordner mit Wiederherstellung oder endgültigem Löschen." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Papierkorb</em></span>
+                        <span class="mock screenshot">
+                            <img src="assets/pic/Screenshot%202026-06-15%20002304.png" alt="Papierkorb Screenshot" loading="lazy">
+                        </span>
+                    </button>
+
+                    <!-- Monaco Editor (mock) -->
+                    <button class="preview reveal" data-title="Monaco Editor" data-desc="Code direkt im Browser bearbeiten – mit Syntax-Highlighting." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Editor</em></span>
+                        <span class="mock code"><code>&lt;?php</code><code>echo $page;</code><code>?&gt;</code></span>
+                    </button>
+
+                    <!-- Benutzerverwaltung (mock) -->
+                    <button class="preview reveal" data-title="Benutzerverwaltung" data-desc="Admin- und Benutzerrollen mit 2FA-Status und Berechtigungen." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Benutzer</em></span>
+                        <span class="mock users"><b>Admin</b><b>User</b><b>2FA</b></span>
+                    </button>
+
+                    <!-- Protokoll / Audit-Log (echter Screenshot) -->
+                    <button class="preview reveal" data-title="Protokoll / Audit-Log" data-desc="Vollständige Aufzeichnung aller Aktionen: Uploads, Logins, Updates und Rechteänderungen." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Protokoll</em></span>
+                        <span class="mock screenshot">
+                            <img src="assets/pic/Screenshot%202026-06-15%20002445.png" alt="Protokoll Audit-Log Screenshot" loading="lazy">
+                        </span>
+                    </button>
+
+                    <!-- Admin-Dashboard (echter Screenshot) -->
+                    <button class="preview reveal" data-title="Admin-Panel" data-desc="Design-Hintergründe, System-Info, Versionscheck und One-Click-Update." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Admin</em></span>
+                        <span class="mock screenshot">
+                            <img src="assets/pic/Screenshot%202026-06-15%20002012.png" alt="Admin-Panel Screenshot" loading="lazy">
+                        </span>
+                    </button>
+
+                    <!-- 2FA Einrichten (mock) -->
+                    <button class="preview reveal" data-title="2FA Einrichten" data-desc="Authenticator-App einrichten und TOTP-Code für den Admin-Login aktivieren." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>2FA</em></span>
+                        <span class="mock twofa"><b>482 913</b><small>Authenticator Code</small></span>
+                    </button>
+
+                    <!-- Update-System (mock) -->
+                    <button class="preview reveal" data-title="Update-System" data-desc="Versionscheck via GitHub-API und One-Click-Update auf neue Versionen." type="button">
+                        <span class="browser"><i></i><i></i><i></i><em>Update</em></span>
+                        <span class="mock update"><b>v1.7.0</b><small>Update verfügbar</small><i></i></span>
+                    </button>
+
+                </div>
             </div>
-            <div class="saved-rule">
-              <div><b>uploads</b><span>Privat</span><span class="on">Upload</span><span>Erstellen</span><span>Bearbeiten</span><span>Umbenennen</span><span>Löschen</span></div>
-              <div><button class="mini yellow" type="button"><svg class="icon"><use href="#i-edit"></use></svg></button><button class="mini red" type="button"><svg class="icon"><use href="#i-trash"></use></svg></button></div>
+        </section>
+
+        <!-- ── Features ── -->
+        <section class="section" id="features">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-check-circle"></use>
+                        </svg>Funktionen</p>
+                    <h2>Funktionen des Open-Source Webserver Stacks</h2>
+                </div>
+                <div class="features reveal">
+                    <article><svg class="icon">
+                            <use href="#i-server"></use>
+                        </svg>
+                        <h3>Server-Setup</h3>
+                        <p>Apache, PHP und MariaDB automatisch einrichten.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-folder"></use>
+                        </svg>
+                        <h3>Web-Dateimanager</h3>
+                        <p>Dateien und Ordner im Browser verwalten.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-code"></use>
+                        </svg>
+                        <h3>Monaco Editor</h3>
+                        <p>Code direkt im Browser bearbeiten.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-upload"></use>
+                        </svg>
+                        <h3>Chunk-Upload</h3>
+                        <p>Upload bis 2 GB mit Fortschrittsanzeige.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-user"></use>
+                        </svg>
+                        <h3>Benutzerverwaltung</h3>
+                        <p>Admins und Normalnutzer trennen.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-lock"></use>
+                        </svg>
+                        <h3>Rollen / ACL</h3>
+                        <p>Ordnerspezifische Benutzerrechte.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-shield"></use>
+                        </svg>
+                        <h3>2FA / TOTP</h3>
+                        <p>Admin-Login mit Authenticator-Code absichern.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-server"></use>
+                        </svg>
+                        <h3>phpMyAdmin</h3>
+                        <p>Datenbanken über den Browser verwalten.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-refresh"></use>
+                        </svg>
+                        <h3>Versionscheck</h3>
+                        <p>Neue Versionen automatisch erkennen.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-download"></use>
+                        </svg>
+                        <h3>One-Click Update</h3>
+                        <p>Dateimanager auf neue Versionen aktualisieren.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-image"></use>
+                        </svg>
+                        <h3>Media-Viewer</h3>
+                        <p>Bilder und Videos direkt im Browser ansehen.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-lock"></use>
+                        </svg>
+                        <h3>Sicherheitsschutz</h3>
+                        <p>Sessions, Pfade und MIME-Typen prüfen.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-search"></use>
+                        </svg>
+                        <h3>Suche &amp; Filter</h3>
+                        <p>Dateien nach Typ und Name blitzschnell filtern.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-video"></use>
+                        </svg>
+                        <h3>Metadaten-Editor</h3>
+                        <p>Audio- und Video-Metadaten im Browser bearbeiten.</p>
+                    </article>
+                    <article><svg class="icon">
+                            <use href="#i-eye"></use>
+                        </svg>
+                        <h3>Ordner-Sichtbarkeit</h3>
+                        <p>Öffentliche und private Ordner gezielt steuern.</p>
+                    </article>
+                </div>
             </div>
-          </section>
+        </section>
+
+        <!-- ── Sicherheit ── -->
+        <section class="section" id="security">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-shield"></use>
+                        </svg>Sicherheit</p>
+                    <h2>Sicherheitsfunktionen für Webserver und Dateimanager</h2>
+                </div>
+                <div class="security-list reveal">
+                    <span><svg class="icon">
+                            <use href="#i-shield"></use>
+                        </svg>2FA / TOTP</span>
+                    <span><svg class="icon">
+                            <use href="#i-lock"></use>
+                        </svg>Session-Timeout</span>
+                    <span><svg class="icon">
+                            <use href="#i-check-circle"></use>
+                        </svg>MIME-Typ-Prüfung</span>
+                    <span><svg class="icon">
+                            <use href="#i-alert"></use>
+                        </svg>Pfadschutz (Traversal)</span>
+                    <span><svg class="icon">
+                            <use href="#i-user"></use>
+                        </svg>Rollen / Rechte (ACL)</span>
+                    <span><svg class="icon">
+                            <use href="#i-folder"></use>
+                        </svg>Geschützte Systemordner</span>
+                    <span><svg class="icon">
+                            <use href="#i-settings"></use>
+                        </svg>Sichere Admin-Verwaltung</span>
+                    <span><svg class="icon">
+                            <use href="#i-refresh"></use>
+                        </svg>Kontrollierte Updates</span>
+                    <span><svg class="icon">
+                            <use href="#i-key"></use>
+                        </svg>Bcrypt-Passwort-Hashing</span>
+                    <span><svg class="icon">
+                            <use href="#i-alert"></use>
+                        </svg>Brute-Force-Schutz</span>
+                    <span><svg class="icon">
+                            <use href="#i-eye-off"></use>
+                        </svg>XSS-Vorbeugung</span>
+                    <span><svg class="icon">
+                            <use href="#i-upload"></use>
+                        </svg>Upload-Größenlimit</span>
+                    <span><svg class="icon">
+                            <use href="#i-database"></use>
+                        </svg>SQL-Injection-Schutz</span>
+                    <span><svg class="icon">
+                            <use href="#i-lock"></use>
+                        </svg>HTTPS-Weiterleitung</span>
+                    <span><svg class="icon">
+                            <use href="#i-eye"></use>
+                        </svg>Audit-Log (Protokoll)</span>
+                    <span><svg class="icon">
+                            <use href="#i-server"></use>
+                        </svg>Apache-Härtungsoptionen</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── Vergleich ── -->
+        <section class="section">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-check"></use>
+                        </svg>Vergleich</p>
+                    <h2>Manuelle Einrichtung vs. web-service</h2>
+                </div>
+                <div class="table-card reveal">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Bereich</th>
+                                <th>Manuell</th>
+                                <th>web-service</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Installation</td>
+                                <td>Viele einzelne Schritte</td>
+                                <td>Automatisiert</td>
+                            </tr>
+                            <tr>
+                                <td>Datenbank</td>
+                                <td>Benutzer und DB selbst anlegen</td>
+                                <td>Integriert</td>
+                            </tr>
+                            <tr>
+                                <td>PHP-Module</td>
+                                <td>Manuell suchen und installieren</td>
+                                <td>Automatisch</td>
+                            </tr>
+                            <tr>
+                                <td>Dateimanager</td>
+                                <td>Separates Tool nötig</td>
+                                <td>Integriert</td>
+                            </tr>
+                            <tr>
+                                <td>Benutzerverwaltung</td>
+                                <td>Selbst entwickeln</td>
+                                <td>Integriert</td>
+                            </tr>
+                            <tr>
+                                <td>Admin-Bereich</td>
+                                <td>Selbst bauen</td>
+                                <td>Integriert</td>
+                            </tr>
+                            <tr>
+                                <td>Updates</td>
+                                <td>Dateien manuell ersetzen</td>
+                                <td>Versionscheck + One-Click</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── FAQ ── -->
+        <section class="section" id="faq">
+            <div class="container">
+                <div class="section-head reveal">
+                    <p class="kicker"><svg class="icon">
+                            <use href="#i-info"></use>
+                        </svg>FAQ</p>
+                    <h2>Häufige Fragen zu web-service</h2>
+                    <p>Kurze Antworten für Nutzer, Suchmaschinen und KI-Antwortsysteme.</p>
+                </div>
+                <div class="faq-grid reveal">
+                    <article class="faq-card">
+                        <h3>Was ist web-service?</h3>
+                        <p>web-service ist ein Open-Source Installationsskript für einen vollständigen Webserver mit Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Update-System.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Welche Systeme werden unterstützt?</h3>
+                        <p>Das Projekt ist für Ubuntu- und Debian-Server ausgelegt. Es sollte auf einem frischen oder vorher gesicherten System ausgeführt werden.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Was installiert das Skript genau?</h3>
+                        <p>Das Skript installiert und konfiguriert Apache, PHP, MariaDB, phpMyAdmin, Projektdateien, Web-Dateimanager, Adminbereich, Rollen/Rechte, 2FA und Update-Funktionen.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Ist web-service kostenlos?</h3>
+                        <p>Ja. web-service steht unter der Apache License 2.0 und ist vollständig Open Source auf GitHub verfügbar.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Brauche ich Programmierkenntnisse?</h3>
+                        <p>Grundkenntnisse im Umgang mit SSH und Linux-Servern sind hilfreich. Die Installation selbst ist auf einen einzigen Befehl reduziert.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Gibt es einen Web-Dateimanager?</h3>
+                        <p>Ja. web-service enthält einen browserbasierten Dateimanager mit Upload, Dateiliste, Aktionen, Monaco Editor und Media-Viewer.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Unterstützt web-service 2FA?</h3>
+                        <p>Ja. Das Projekt enthält 2FA/TOTP-Funktionen zur Absicherung von Admin-Zugängen.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Kann ich Updates automatisch durchführen?</h3>
+                        <p>web-service enthält Versionscheck und One-Click-Updates. Vor Updates sollte trotzdem immer ein Backup vorhanden sein.</p>
+                    </article>
+                    <article class="faq-card">
+                        <h3>Ist das Projekt für Homeserver geeignet?</h3>
+                        <p>Ja, besonders für Lern-, Test- und kleine Webserver-Setups. Bei öffentlichem Betrieb sollten Firewall, Backups, HTTPS und Serverhärtung geprüft werden.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ── CTA ── -->
+        <section class="section">
+            <div class="container cta reveal">
+                <h2>Open-Source Webserver Stack für Ubuntu, Debian und Homeserver</h2>
+                <p>web-service hilft beim schnellen Einrichten eines Apache-PHP-MariaDB-Stacks mit browserbasierter Verwaltung. Es ersetzt keine individuelle Sicherheitsprüfung, reduziert aber den manuellen Einrichtungsaufwand deutlich.</p>
+                <div>
+                    <a class="btn primary" href="#install-script">Installation starten</a>
+                    <a class="btn ghost" href="#filemanager">Dateimanager ansehen</a>
+                    <a class="btn ghost" href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon">
+                            <use href="#i-github"></use>
+                        </svg>GitHub öffnen</a>
+                    <a class="btn ghost" href="#demos">Demos testen</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container foot">
+            <div><b>web-service</b><span>Open Source Webserver-Stack von ubodigat.com</span></div>
+            <div>
+                <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer">GitHub</a>
+                <a href="LICENSE">Apache License 2.0</a>
+                <a href="https://ubodigat.com" target="_blank" rel="noreferrer">ubodigat.com</a>
+                <span>Version 1.7.0</span>
+            </div>
         </div>
-      </div>
-    </section>
+    </footer>
 
-    <!-- ── Screenshots ── -->
-    <section class="section" id="previews">
-      <div class="container">
-        <div class="section-head reveal"><p class="kicker"><svg class="icon"><use href="#i-image"></use></svg>Screenshots / Previews</p><h2>Echte Screenshots der wichtigsten Weboberflächen</h2><p>Klicke auf eine Kachel für die Großansicht. Die Screenshots zeigen die reale installierte Oberfläche.</p></div>
-        <div class="preview-grid">
-
-          <!-- Login (mock) -->
-          <button class="preview reveal" data-title="Login" data-desc="Passwort und optionaler TOTP-Code sichern den Zugang." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Login</em></span>
-            <span class="mock login"><b>Admin Login</b><small>Passwort + 2FA</small><i></i></span>
-          </button>
-
-          <!-- Web-Dateimanager (echter Screenshot) -->
-          <button class="preview reveal" data-title="Web-Dateimanager" data-desc="Dateiliste mit Upload-Fortschritt, Pfadnavigation, Filter und Aktionen." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Dateimanager</em></span>
-            <span class="mock screenshot">
-              <img src="assets/pic/Screenshot%202026-06-15%20002351.png" alt="Web-Dateimanager Screenshot" loading="lazy">
-            </span>
-          </button>
-
-          <!-- Upload (mock) -->
-          <button class="preview reveal" data-title="Upload" data-desc="Chunk-Upload bis 2 GB mit Echtzeit-Fortschrittsbalken." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Upload</em></span>
-            <span class="mock upload"><b></b><i></i></span>
-          </button>
-
-          <!-- Konto & Akzentfarbe (echter Screenshot) -->
-          <button class="preview reveal" data-title="Konto &amp; Akzentfarbe" data-desc="Benutzereinstellungen, Sicherheit und individuelle Akzentfarbe der Oberfläche." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Konto</em></span>
-            <span class="mock screenshot">
-              <img src="assets/pic/Screenshot%202026-06-15%20002245.png" alt="Konto und Akzentfarbe Screenshot" loading="lazy">
-            </span>
-          </button>
-
-          <!-- Papierkorb (echter Screenshot) -->
-          <button class="preview reveal" data-title="Papierkorb" data-desc="Gelöschte Dateien und Ordner mit Wiederherstellung oder endgültigem Löschen." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Papierkorb</em></span>
-            <span class="mock screenshot">
-              <img src="assets/pic/Screenshot%202026-06-15%20002304.png" alt="Papierkorb Screenshot" loading="lazy">
-            </span>
-          </button>
-
-          <!-- Monaco Editor (mock) -->
-          <button class="preview reveal" data-title="Monaco Editor" data-desc="Code direkt im Browser bearbeiten – mit Syntax-Highlighting." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Editor</em></span>
-            <span class="mock code"><code>&lt;?php</code><code>echo $page;</code><code>?&gt;</code></span>
-          </button>
-
-          <!-- Benutzerverwaltung (mock) -->
-          <button class="preview reveal" data-title="Benutzerverwaltung" data-desc="Admin- und Benutzerrollen mit 2FA-Status und Berechtigungen." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Benutzer</em></span>
-            <span class="mock users"><b>Admin</b><b>User</b><b>2FA</b></span>
-          </button>
-
-          <!-- Protokoll / Audit-Log (echter Screenshot) -->
-          <button class="preview reveal" data-title="Protokoll / Audit-Log" data-desc="Vollständige Aufzeichnung aller Aktionen: Uploads, Logins, Updates und Rechteänderungen." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Protokoll</em></span>
-            <span class="mock screenshot">
-              <img src="assets/pic/Screenshot%202026-06-15%20002445.png" alt="Protokoll Audit-Log Screenshot" loading="lazy">
-            </span>
-          </button>
-
-          <!-- Admin-Dashboard (echter Screenshot) -->
-          <button class="preview reveal" data-title="Admin-Panel" data-desc="Design-Hintergründe, System-Info, Versionscheck und One-Click-Update." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Admin</em></span>
-            <span class="mock screenshot">
-              <img src="assets/pic/Screenshot%202026-06-15%20002012.png" alt="Admin-Panel Screenshot" loading="lazy">
-            </span>
-          </button>
-
-          <!-- 2FA Einrichten (mock) -->
-          <button class="preview reveal" data-title="2FA Einrichten" data-desc="Authenticator-App einrichten und TOTP-Code für den Admin-Login aktivieren." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>2FA</em></span>
-            <span class="mock twofa"><b>482 913</b><small>Authenticator Code</small></span>
-          </button>
-
-          <!-- Update-System (mock) -->
-          <button class="preview reveal" data-title="Update-System" data-desc="Versionscheck via GitHub-API und One-Click-Update auf neue Versionen." type="button">
-            <span class="browser"><i></i><i></i><i></i><em>Update</em></span>
-            <span class="mock update"><b>v1.6.9</b><small>Update verfügbar</small><i></i></span>
-          </button>
-
+    <div class="lightbox" id="lightbox" aria-hidden="true" aria-modal="true" role="dialog">
+        <button id="closeLightbox" type="button" aria-label="Schließen">×</button>
+        <div class="lightbox-card">
+            <div class="browser"><i></i><i></i><i></i><em id="lightboxTitle">Preview</em></div>
+            <div id="lightboxContent"></div>
+            <p id="lightboxDesc"></p>
         </div>
-      </div>
-    </section>
-
-    <!-- ── Features ── -->
-    <section class="section" id="features">
-      <div class="container">
-        <div class="section-head reveal"><p class="kicker"><svg class="icon"><use href="#i-check-circle"></use></svg>Funktionen</p><h2>Funktionen des Open-Source Webserver Stacks</h2></div>
-        <div class="features reveal">
-          <article><svg class="icon"><use href="#i-server"></use></svg><h3>Server-Setup</h3><p>Apache, PHP und MariaDB automatisch einrichten.</p></article>
-          <article><svg class="icon"><use href="#i-folder"></use></svg><h3>Web-Dateimanager</h3><p>Dateien und Ordner im Browser verwalten.</p></article>
-          <article><svg class="icon"><use href="#i-code"></use></svg><h3>Monaco Editor</h3><p>Code direkt im Browser bearbeiten.</p></article>
-          <article><svg class="icon"><use href="#i-upload"></use></svg><h3>Chunk-Upload</h3><p>Upload bis 2 GB mit Fortschrittsanzeige.</p></article>
-          <article><svg class="icon"><use href="#i-user"></use></svg><h3>Benutzerverwaltung</h3><p>Admins und Normalnutzer trennen.</p></article>
-          <article><svg class="icon"><use href="#i-lock"></use></svg><h3>Rollen / ACL</h3><p>Ordnerspezifische Benutzerrechte.</p></article>
-          <article><svg class="icon"><use href="#i-shield"></use></svg><h3>2FA / TOTP</h3><p>Admin-Login mit Authenticator-Code absichern.</p></article>
-          <article><svg class="icon"><use href="#i-server"></use></svg><h3>phpMyAdmin</h3><p>Datenbanken über den Browser verwalten.</p></article>
-          <article><svg class="icon"><use href="#i-refresh"></use></svg><h3>Versionscheck</h3><p>Neue Versionen automatisch erkennen.</p></article>
-          <article><svg class="icon"><use href="#i-download"></use></svg><h3>One-Click Update</h3><p>Dateimanager auf neue Versionen aktualisieren.</p></article>
-          <article><svg class="icon"><use href="#i-image"></use></svg><h3>Media-Viewer</h3><p>Bilder und Videos direkt im Browser ansehen.</p></article>
-          <article><svg class="icon"><use href="#i-lock"></use></svg><h3>Sicherheitsschutz</h3><p>Sessions, Pfade und MIME-Typen prüfen.</p></article>
-          <article><svg class="icon"><use href="#i-search"></use></svg><h3>Suche &amp; Filter</h3><p>Dateien nach Typ und Name blitzschnell filtern.</p></article>
-          <article><svg class="icon"><use href="#i-video"></use></svg><h3>Metadaten-Editor</h3><p>Audio- und Video-Metadaten im Browser bearbeiten.</p></article>
-          <article><svg class="icon"><use href="#i-eye"></use></svg><h3>Ordner-Sichtbarkeit</h3><p>Öffentliche und private Ordner gezielt steuern.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Sicherheit ── -->
-    <section class="section" id="security">
-      <div class="container">
-        <div class="section-head reveal"><p class="kicker"><svg class="icon"><use href="#i-shield"></use></svg>Sicherheit</p><h2>Sicherheitsfunktionen für Webserver und Dateimanager</h2></div>
-        <div class="security-list reveal">
-          <span><svg class="icon"><use href="#i-shield"></use></svg>2FA / TOTP</span>
-          <span><svg class="icon"><use href="#i-lock"></use></svg>Session-Timeout</span>
-          <span><svg class="icon"><use href="#i-check-circle"></use></svg>MIME-Typ-Prüfung</span>
-          <span><svg class="icon"><use href="#i-alert"></use></svg>Pfadschutz (Traversal)</span>
-          <span><svg class="icon"><use href="#i-user"></use></svg>Rollen / Rechte (ACL)</span>
-          <span><svg class="icon"><use href="#i-folder"></use></svg>Geschützte Systemordner</span>
-          <span><svg class="icon"><use href="#i-settings"></use></svg>Sichere Admin-Verwaltung</span>
-          <span><svg class="icon"><use href="#i-refresh"></use></svg>Kontrollierte Updates</span>
-          <span><svg class="icon"><use href="#i-key"></use></svg>Bcrypt-Passwort-Hashing</span>
-          <span><svg class="icon"><use href="#i-alert"></use></svg>Brute-Force-Schutz</span>
-          <span><svg class="icon"><use href="#i-eye-off"></use></svg>XSS-Vorbeugung</span>
-          <span><svg class="icon"><use href="#i-upload"></use></svg>Upload-Größenlimit</span>
-          <span><svg class="icon"><use href="#i-database"></use></svg>SQL-Injection-Schutz</span>
-          <span><svg class="icon"><use href="#i-lock"></use></svg>HTTPS-Weiterleitung</span>
-          <span><svg class="icon"><use href="#i-eye"></use></svg>Audit-Log (Protokoll)</span>
-          <span><svg class="icon"><use href="#i-server"></use></svg>Apache-Härtungsoptionen</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── Vergleich ── -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head reveal"><p class="kicker"><svg class="icon"><use href="#i-check"></use></svg>Vergleich</p><h2>Manuelle Einrichtung vs. web-service</h2></div>
-        <div class="table-card reveal">
-          <table>
-            <thead><tr><th>Bereich</th><th>Manuell</th><th>web-service</th></tr></thead>
-            <tbody>
-              <tr><td>Installation</td><td>Viele einzelne Schritte</td><td>Automatisiert</td></tr>
-              <tr><td>Datenbank</td><td>Benutzer und DB selbst anlegen</td><td>Integriert</td></tr>
-              <tr><td>PHP-Module</td><td>Manuell suchen und installieren</td><td>Automatisch</td></tr>
-              <tr><td>Dateimanager</td><td>Separates Tool nötig</td><td>Integriert</td></tr>
-              <tr><td>Benutzerverwaltung</td><td>Selbst entwickeln</td><td>Integriert</td></tr>
-              <tr><td>Admin-Bereich</td><td>Selbst bauen</td><td>Integriert</td></tr>
-              <tr><td>Updates</td><td>Dateien manuell ersetzen</td><td>Versionscheck + One-Click</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── FAQ ── -->
-    <section class="section" id="faq">
-      <div class="container">
-        <div class="section-head reveal">
-          <p class="kicker"><svg class="icon"><use href="#i-info"></use></svg>FAQ</p>
-          <h2>Häufige Fragen zu web-service</h2>
-          <p>Kurze Antworten für Nutzer, Suchmaschinen und KI-Antwortsysteme.</p>
-        </div>
-        <div class="faq-grid reveal">
-          <article class="faq-card"><h3>Was ist web-service?</h3><p>web-service ist ein Open-Source Installationsskript für einen vollständigen Webserver mit Apache, PHP, MariaDB, Web-Dateimanager, Admin-Panel, Benutzerverwaltung, 2FA und Update-System.</p></article>
-          <article class="faq-card"><h3>Welche Systeme werden unterstützt?</h3><p>Das Projekt ist für Ubuntu- und Debian-Server ausgelegt. Es sollte auf einem frischen oder vorher gesicherten System ausgeführt werden.</p></article>
-          <article class="faq-card"><h3>Was installiert das Skript genau?</h3><p>Das Skript installiert und konfiguriert Apache, PHP, MariaDB, phpMyAdmin, Projektdateien, Web-Dateimanager, Adminbereich, Rollen/Rechte, 2FA und Update-Funktionen.</p></article>
-          <article class="faq-card"><h3>Ist web-service kostenlos?</h3><p>Ja. web-service steht unter der Apache License 2.0 und ist vollständig Open Source auf GitHub verfügbar.</p></article>
-          <article class="faq-card"><h3>Brauche ich Programmierkenntnisse?</h3><p>Grundkenntnisse im Umgang mit SSH und Linux-Servern sind hilfreich. Die Installation selbst ist auf einen einzigen Befehl reduziert.</p></article>
-          <article class="faq-card"><h3>Gibt es einen Web-Dateimanager?</h3><p>Ja. web-service enthält einen browserbasierten Dateimanager mit Upload, Dateiliste, Aktionen, Monaco Editor und Media-Viewer.</p></article>
-          <article class="faq-card"><h3>Unterstützt web-service 2FA?</h3><p>Ja. Das Projekt enthält 2FA/TOTP-Funktionen zur Absicherung von Admin-Zugängen.</p></article>
-          <article class="faq-card"><h3>Kann ich Updates automatisch durchführen?</h3><p>web-service enthält Versionscheck und One-Click-Updates. Vor Updates sollte trotzdem immer ein Backup vorhanden sein.</p></article>
-          <article class="faq-card"><h3>Ist das Projekt für Homeserver geeignet?</h3><p>Ja, besonders für Lern-, Test- und kleine Webserver-Setups. Bei öffentlichem Betrieb sollten Firewall, Backups, HTTPS und Serverhärtung geprüft werden.</p></article>
-        </div>
-      </div>
-    </section>
-
-    <!-- ── CTA ── -->
-    <section class="section">
-      <div class="container cta reveal">
-        <h2>Open-Source Webserver Stack für Ubuntu, Debian und Homeserver</h2>
-        <p>web-service hilft beim schnellen Einrichten eines Apache-PHP-MariaDB-Stacks mit browserbasierter Verwaltung. Es ersetzt keine individuelle Sicherheitsprüfung, reduziert aber den manuellen Einrichtungsaufwand deutlich.</p>
-        <div>
-          <a class="btn primary" href="#install-script">Installation starten</a>
-          <a class="btn ghost" href="#filemanager">Dateimanager ansehen</a>
-          <a class="btn ghost" href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer"><svg class="icon"><use href="#i-github"></use></svg>GitHub öffnen</a>
-          <a class="btn ghost" href="#demos">Demos testen</a>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container foot">
-      <div><b>web-service</b><span>Open Source Webserver-Stack von ubodigat.com</span></div>
-      <div>
-        <a href="https://github.com/ubodigat/web-service.ubodigat.com" target="_blank" rel="noreferrer">GitHub</a>
-        <a href="LICENSE">Apache License 2.0</a>
-        <a href="https://ubodigat.com" target="_blank" rel="noreferrer">ubodigat.com</a>
-        <span>Version 1.6.9</span>
-      </div>
     </div>
-  </footer>
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-  <div class="lightbox" id="lightbox" aria-hidden="true" aria-modal="true" role="dialog">
-    <button id="closeLightbox" type="button" aria-label="Schließen">×</button>
-    <div class="lightbox-card">
-      <div class="browser"><i></i><i></i><i></i><em id="lightboxTitle">Preview</em></div>
-      <div id="lightboxContent"></div>
-      <p id="lightboxDesc"></p>
-    </div>
-  </div>
-  <div class="toast" id="toast" role="status" aria-live="polite"></div>
-
-  <script src="script.js"></script>
+    <script src="script.js"></script>
 </body>
+
 </html>
