@@ -1,6 +1,6 @@
 # web-service.ubodigat.com
 
-![Version](https://img.shields.io/badge/version-1.7.3-blue.svg)
+![Version](https://img.shields.io/badge/version-1.7.4-blue.svg)
 ![License](https://img.shields.io/badge/license-Apache%20License%202.0-green)
 ![Platform](https://img.shields.io/badge/platform-Ubuntu%20%7C%20Debian-orange.svg)
 ![Stack](https://img.shields.io/badge/stack-Apache%20%7C%20PHP%20%7C%20MariaDB-lightgrey.svg)

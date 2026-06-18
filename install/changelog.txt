@@ -1,1 +1,1 @@
-18.06.2026 | v1.7.3 | Bugfix Filterung, Bugfix speichern Sicherheitsrichtlinien
+18.06.2026 | v1.7.4 | Bugfix Filterung
